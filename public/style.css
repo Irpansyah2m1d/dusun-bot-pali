@@ -730,6 +730,109 @@ pre {
     line-height: 1.7;
 }
 
+/* Live Kamus */
+.live-kamus {
+    padding: 100px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.kamus-container {
+    background: var(--slate-gray);
+    padding: 60px 40px;
+    border-radius: 40px;
+    border: 1px solid var(--border-glass);
+    text-align: center;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.search-box {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+.search-box input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    padding: 20px 60px 20px 30px;
+    border-radius: 100px;
+    color: white;
+    font-size: 1.2rem;
+    font-family: inherit;
+    transition: 0.3s;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--emerald-green);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 30px var(--emerald-glow);
+}
+
+.search-icon {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    opacity: 0.5;
+}
+
+.kamus-result {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.result-grid {
+    display: grid;
+    gap: 16px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.result-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px 30px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid var(--border-glass);
+    animation: fadeIn 0.4s ease-out;
+}
+
+.result-item .word {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--emerald-green);
+}
+
+.result-item .arrow {
+    color: var(--text-muted);
+}
+
+.result-item .meaning {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.placeholder-text,
+.no-result {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.no-result {
+    color: #ff5f56;
+}
+
 /* Footer */
 footer {
     padding: 100px 5% 40px;

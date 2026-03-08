@@ -93,6 +93,19 @@
             </div>
         </section>
 
+        <section id="kamus-live" class="live-kamus">
+            <div class="kamus-container fade-in">
+                <h2 class="section-title">Coba Kamus Live</h2>
+                <div class="search-box">
+                    <input type="text" id="kamus-input" placeholder="Cari kata (Contoh: Makan atau Ngicu)...">
+                    <div class="search-icon">🔍</div>
+                </div>
+                <div id="kamus-result" class="kamus-result">
+                    <div class="placeholder-text">Hasil pencarian akan tampil di sini secara live...</div>
+                </div>
+            </div>
+        </section>
+
         <section id="mission" class="mission">
             <div class="mission-container">
                 <div class="mission-text">
@@ -289,6 +302,42 @@
                 mobileMenu.classList.remove('active');
                 navLinks.classList.remove('active');
             });
+        });
+
+        // Live Kamus Logic
+        const kamusInput = document.getElementById('kamus-input');
+        const kamusResult = document.getElementById('kamus-result');
+
+        kamusInput.addEventListener('input', async (e) => {
+            const query = e.target.value.trim();
+            if (query.length < 2) {
+                kamusResult.innerHTML = '<div class="placeholder-text">Hasil pencarian akan tampil di sini secara live...</div>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/kamus?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (data.success && data.results.length > 0) {
+                    let html = '<div class="result-grid">';
+                    data.results.forEach(res => {
+                        html += `
+                            <div class="result-item">
+                                <div class="word">${res.dusun}</div>
+                                <div class="arrow">↔</div>
+                                <div class="meaning">${res.indonesia}</div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    kamusResult.innerHTML = html;
+                } else {
+                    kamusResult.innerHTML = '<div class="no-result">Kata tidak ditemukan dalam kamus.</div>';
+                }
+            } catch (err) {
+                kamusResult.innerHTML = '<div class="no-result">Terjadi kesalahan saat mencari.</div>';
+            }
         });
     </script>
 </body>
