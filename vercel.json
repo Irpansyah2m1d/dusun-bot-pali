@@ -4,6 +4,14 @@
     {
       "source": "/api/chat",
       "destination": "/api/chat.js"
+    },
+    {
+      "source": "/api/kamus",
+      "destination": "/api/kamus.js"
+    },
+    {
+      "source": "/api/translate",
+      "destination": "/api/translate.js"
     }
   ],
   "headers": [
