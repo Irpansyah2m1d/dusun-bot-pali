@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
@@ -16,13 +16,14 @@
 
     <header>
         <nav>
-            <div class="logo-area">
+            <div class="logo-area" onclick="window.scrollTo(0, 0)">
                 <img src="logo.png" alt="Dusun Bot Logo" class="nav-logo">
                 <span>Dusun Bot <span class="accent">PALI</span></span>
             </div>
             <div class="nav-links">
                 <a href="#features">Fitur</a>
-                <a href="#docs">Dokumentasi</a>
+                <a href="#mission">Misi</a>
+                <a href="#docs">API</a>
                 <a href="#partners">Partner</a>
                 <a href="https://github.com/Irpansyah2m1d/dusun-bot-pali" target="_blank" class="btn-github">GitHub</a>
             </div>
@@ -32,11 +33,12 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1 class="fade-in">Melestarikan Dialek, <br><span class="gradient-text">Menghubungkan Teknologi.</span></h1>
-                <p class="fade-in delay-1">API Open Source cerdas untuk Bahasa Dusun PALI (Sumatera Selatan). Menggunakan teknologi RAG (Retrieval-Augmented Generation) & Kecerdasan Buatan.</p>
+                <span class="badge fade-in">V1.0.0 Alpha</span>
+                <h1 class="fade-in">Melestarikan Dialek,<br><span class="gradient-text">Hubungkan Teknologi.</span></h1>
+                <p class="fade-in delay-1">API Open Source cerdas untuk Bahasa Dusun PALI (Sumatera Selatan). Menggunakan teknologi RAG & Kecerdasan Buatan Terkini.</p>
                 <div class="hero-btns fade-in delay-2">
-                    <a href="#docs" class="btn-primary">Mulai Sekarang</a>
-                    <a href="https://wa.me/6282281488763" target="_blank" class="btn-secondary">Hubungi Kami</a>
+                    <a href="#docs" class="btn-primary">Mulai Integrasi</a>
+                    <a href="https://wa.me/6282281488763" target="_blank" class="btn-secondary">Hubungi Pengembang</a>
                 </div>
             </div>
             <div class="hero-visual fade-in delay-3">
@@ -48,36 +50,36 @@
         </section>
 
         <section id="features" class="features">
-            <h2 class="section-title">Fitur Utama</h2>
+            <h2 class="section-title">Fitur Unggulan</h2>
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="icon">💬</div>
                     <h3>Chatbot AI</h3>
-                    <p>Ngobrol santai dan alami dengan dialek PALI yang kental. Didukung oleh Gemini, Groq, dan Z.ai.</p>
+                    <p>Percakapan natural dengan dialek PALI kental. Didukung Gemini, Groq, dan Z.ai (GLM).</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">📖</div>
                     <h3>Pencarian Kamus</h3>
-                    <p>Cari kosa kata bolak-balik (Indonesia ↔ PALI) secepat kilat tanpa perlu API Key.</p>
+                    <p>Akses database 2.8k+ kosa kata bolak-balik (Indonesia ↔ PALI) secara instan tanpa API Key.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">🌐</div>
-                    <h3>Penerjemah</h3>
-                    <p>Terjemahkan kalimat panjang secara profesional dan akurat sesuai dengan hukum dialek PALI.</p>
+                    <h3>Penerjemah Kalimat</h3>
+                    <p>Mesin terjemah khusus kalimat panjang dengan akurasi dialek PALI yang tajam dan akurat.</p>
                 </div>
             </div>
         </section>
 
-        <section class="mission">
+        <section id="mission" class="mission">
             <div class="mission-container">
                 <div class="mission-text">
                     <span class="badge">Misi Pelestarian</span>
-                    <h2>Mengapa Dusun Bot Ada?</h2>
-                    <p>Bahasa daerah adalah warisan yang tak ternilai. Namun di era digital, dialek lokal seringkali terlupakan. Dusun Bot lahir di <b>Air Itam, PALI</b> untuk memastikan dialek nenek moyang kita tetap hidup dalam barisan kode dan kecerdasan buatan.</p>
+                    <h2>Menghidupkan Akar Budaya dalam Barisan Kode</h2>
+                    <p>Dusun Bot lahir di <b>Air Itam, PALI</b> sebagai respons atas kekhawatiran memudarnya dialek lokal di era digital. Kami membangun jembatan antara warisan nenek moyang dan teknologi masa depan.</p>
                     <ul class="mission-list">
-                        <li>✅ Dokumentasi Digital Dialek PALI</li>
-                        <li>✅ Jembatan Komunikasi Lintas Generasi</li>
-                        <li>✅ Inovasi Digital Berbasis Budaya Lokal</li>
+                        <li><i>✅</i> Dokumentasi Digital Dialek PALI</li>
+                        <li><i>✅</i> Jembatan Komunikasi Lintas Generasi</li>
+                        <li><i>✅</i> Inovasi Digital Berbasis Budaya Lokal</li>
                     </ul>
                 </div>
                 <div class="mission-stats">
@@ -94,14 +96,14 @@
         </section>
 
         <section class="tech-stack">
-            <h2 class="section-title">Teknologi Di Balik Layar</h2>
+            <h2 class="section-title">Teknologi Modern</h2>
             <div class="tech-grid">
                 <div class="tech-item">Node.js</div>
-                <div class="tech-item">Google Gemini</div>
-                <div class="tech-item">Groq / Llama</div>
-                <div class="tech-item">Arsitektur RAG</div>
-                <div class="tech-item">Vercel Edge</div>
-                <div class="tech-item">Penyimpanan JSON</div>
+                <div class="tech-item">Google Gemini Flash</div>
+                <div class="tech-item">Groq / Llama 3.3</div>
+                <div class="tech-item">RAG Architecture</div>
+                <div class="tech-item">Vercel Edge API</div>
+                <div class="tech-item">JSON Storage</div>
             </div>
         </section>
 
@@ -109,9 +111,9 @@
             <h2 class="section-title">Mulai Integrasi</h2>
             <div class="docs-wrapper">
                 <div class="docs-sidebar">
-                    <div class="step-item active">1. Ambil API Key</div>
-                    <div class="step-item">2. Pilih Provider</div>
-                    <div class="step-item">3. Panggil Endpoint</div>
+                    <div class="step-item active" onclick="updateDocStep(0)">1. Dapatkan API Key</div>
+                    <div class="step-item" onclick="updateDocStep(1)">2. Pilih Provider</div>
+                    <div class="step-item" onclick="updateDocStep(2)">3. Panggil Endpoint</div>
                 </div>
                 <div class="docs-container">
                     <div class="docs-tabs">
@@ -126,94 +128,49 @@
                             <span class="dot green"></span>
                             <span class="filename">POST https://dusun-bot-pali.vercel.app/api/chat</span>
                         </div>
-                        <pre><code>{
+                        <pre id="code-block"><code>{
   "prompt": "Lagi ngape serekak ikak?",
   "provider": "gemini",
-  "userApiKey": "API_KEY_GEMINI_ANDA"
+  "userApiKey": "YOUR_API_KEY"
 }</code></pre>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="use-cases">
-            <h2 class="section-title">Dapat Digunakan Untuk:</h2>
-            <div class="use-case-grid">
-                <div class="use-case-card">
-                    <span>🤖</span>
-                    <h3>WhatsApp Bot</h3>
-                    <p>Bangun asisten WhatsApp yang bisa menjawab menggunakan dialek PALI secara otomatis.</p>
-                </div>
-                <div class="use-case-card">
-                    <span>📚</span>
-                    <h3>Aplikasi Edukasi</h3>
-                    <p>Media belajar Bahasa Dusun untuk anak muda kita agar tidak lupa kosa kata asli.</p>
-                </div>
-                <div class="use-case-card">
-                    <span>💼</span>
-                    <h3>Layanan Publik</h3>
-                    <p>Integrasi chatbot untuk layanan desa atau kecamatan dengan bahasa yang lebih akrab.</p>
-                </div>
-            </div>
-        </section>
-
         <section id="partners" class="partners">
-            <h2 class="section-title">Didukung Oleh</h2>
+            <h2 class="section-title">Didukung & Digunakan Oleh</h2>
             <div class="partner-grid">
                 <a href="https://kdai.my.id" target="_blank" class="partner-card">
-                    <img src="kdai.png" alt="KDAI Logo">
+                    <img src="kdai.png" alt="KDAI" onerror="this.src='https://via.placeholder.com/150?text=KDAI'">
                     <span>KDAI</span>
                 </a>
                 <a href="https://kampunginggristempirai.com" target="_blank" class="partner-card">
-                    <img src="kita.png" alt="KITA Logo">
+                    <img src="kita.png" alt="KITA" onerror="this.src='https://via.placeholder.com/150?text=KITA'">
                     <span>KITA</span>
                 </a>
             </div>
         </section>
 
         <section class="faq">
-            <h2 class="section-title">Pertanyaan Sering Muncul</h2>
+            <h2 class="section-title">Pertanyaan Umum (FAQ)</h2>
             <div class="faq-accordion">
-                <details class="faq-item">
+                <details class="faq-item" open>
                     <summary>Apa itu Dusun Bot PALI?</summary>
                     <div class="faq-content">
-                        <p>Dusun Bot PALI adalah sebuah project Open Source API yang dikembangkan untuk melestarikan dialek daerah Penukal Abab Lematang Ilir melalui teknologi Kecerdasan Buatan.</p>
+                        <p>Dusun Bot PALI adalah project API Open Source yang dirancang untuk melestarikan dan mendigitalisasi dialek daerah PALI (Sumatera Selatan) menggunakan bantuan AI.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Bagaimana cara kerja API ini?</summary>
+                    <summary>Bagaimana Cara Menggunakannya secara Gratis?</summary>
                     <div class="faq-content">
-                        <p>API ini menggunakan metode RAG (Retrieval-Augmented Generation) di mana sistem akan mencari kosa kata yang relevan dari database kamus lokal sebelum diproses oleh model AI seperti Gemini atau Llama.</p>
+                        <p>Dengo cuma butuh API Key dari Google AI Studio atau Groq Cloud. Kedua layanan tersebut memiliki kuota gratis yang sangat cukup untuk penggunaan pribadi atau project kecil.</p>
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>Apakah saya perlu membayar untuk menggunakan API ini?</summary>
+                    <summary>Bisakah Saya Berkontribusi Menambah Kata?</summary>
                     <div class="faq-content">
-                        <p>Project Dusun Bot sendiri bersifat gratis dan Open Source. Namun, untuk fitur Chat dan Terjemahan, Anda memerlukan API Key dari provider (seperti Google Gemini) yang mungkin memiliki batasan kuota gratisnya sendiri.</p>
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Provider AI mana yang paling bagus untuk Bahasa Dusun?</summary>
-                    <div class="faq-content">
-                        <p>Kami sangat merekomendasikan <b>Google Gemini</b> karena kemampuannya dalam memahami konteks bahasa daerah yang lebih natural dibandingkan model lainnya saat ini.</p>
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Bagaimana cara mendapatkan API Key?</summary>
-                    <div class="faq-content">
-                        <p>Anda bisa mendapatkan API Key Gemini secara gratis melalui Google AI Studio, atau Groq API Key melalui halaman Groq Cloud Console.</p>
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Bisakah saya berkontribusi menambah kosa kata?</summary>
-                    <div class="faq-content">
-                        <p>Sangat bisa! Kami mengundang Anda untuk berkontribusi baik melalui Pull Request di GitHub maupun dengan mengirimkan data kosa kata melalui WhatsApp atau Email kami.</p>
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Apakah data kamus akan terus diperbarui?</summary>
-                    <div class="faq-content">
-                        <p>Ya, kami terus berusaha untuk memperkaya dataset kamus agar hasil terjemahan dan percakapan chatbot menjadi semakin akurat dan luwes.</p>
+                        <p>Sangat bisa! Project ini adalah milik komunitas. Dengo bisa mengirimkan kosa kata baru melalui WhatsApp Pengembang atau langsung melakukan Pull Request di GitHub.</p>
                     </div>
                 </details>
             </div>
@@ -224,35 +181,38 @@
         <div class="footer-content">
             <div class="footer-info">
                 <h3>Kampung Digital Air Itam</h3>
-                <p>Membangun peradaban digital dari desa.</p>
+                <p>Membangun Masa Depan Digital Berbasis Desa & Budaya.</p>
                 <div class="socials">
                     <a href="https://irpansyah.vercel.app/" target="_blank">Portfolio</a>
                     <a href="https://kdai.my.id" target="_blank">Komunitas</a>
                     <a href="https://wa.me/6282281488763" target="_blank">WhatsApp</a>
                 </div>
             </div>
-            <p class="copyright">&copy; 2026 Dikembangkan oleh <a href="https://irpansyah.vercel.app/" class="accent">Irpansyah</a>. Project Open Source untuk PALI.</p>
+            <p class="copyright">&copy; 2026 Crafted with ❤️ by <a href="https://irpansyah.vercel.app/">Irpansyah</a>. Merdeka dalam Berkarya.</p>
         </div>
     </footer>
 
     <script>
+        // Track mouse for card glow
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.onmousemove = e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+            }
+        });
+
+        // Tab functionality
         const tabs = document.querySelectorAll('.tab');
         const codeDisplay = document.querySelector('code');
         const filenameDisplay = document.querySelector('.filename');
 
         const docs = {
-            chat: {
-                url: 'POST https://dusun-bot-pali.vercel.app/api/chat',
-                code: '{\n  "prompt": "Lagi ngape serekak ikak?",\n  "provider": "gemini",\n  "userApiKey": "API_KEY_GEMINI_ANDA"\n}'
-            },
-            kamus: {
-                url: 'GET https://dusun-bot-pali.vercel.app/api/kamus?q=makan',
-                code: '// Respon Langsung Kosa Kata\n{\n  "success": true,\n  "query": "makan",\n  "results": [...]\n}'
-            },
-            translate: {
-                url: 'POST https://dusun-bot-pali.vercel.app/api/translate',
-                code: '{\n  "text": "Besok saya ke pasar",\n  "direction": "id-to-dusun",\n  "userApiKey": "API_KEY_ANDA"\n}'
-            }
+            chat: { url: 'POST /api/chat', code: '{\n  "prompt": "Lagi ngape serekak ikak?",\n  "provider": "gemini",\n  "userApiKey": "YOUR_API_KEY"\n}' },
+            kamus: { url: 'GET /api/kamus?q=makan', code: '// Tanpa API Key\n{\n  "success": true,\n  "query": "makan",\n  "results": [...] \n}' },
+            translate: { url: 'POST /api/translate', code: '{\n  "text": "Besok saya ke pasar",\n  "direction": "id-to-dusun",\n  "userApiKey": "YOUR_API_KEY"\n}' }
         };
 
         tabs.forEach(tab => {
@@ -264,6 +224,12 @@
                 codeDisplay.innerText = docs[type].code;
             });
         });
+
+        function updateDocStep(step) {
+            document.querySelectorAll('.step-item').forEach((item, idx) => {
+                item.classList.toggle('active', idx === step);
+            });
+        }
     </script>
 </body>
 </html>
