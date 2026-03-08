@@ -66,7 +66,9 @@
             <div class="nav-links" id="nav-links">
                 <a href="/">Beranda</a>
                 <a href="/#features">Fitur</a>
+                <a href="/#mission">Misi</a>
                 <a href="/#docs">API</a>
+                <a href="/#partners">Partner</a>
                 <a href="https://github.com/Irpansyah2m1d/dusun-bot-pali" target="_blank" class="btn-github">GitHub</a>
             </div>
             <div class="menu-toggle" id="mobile-menu">
@@ -185,12 +187,10 @@
                                             <span class="to">${translation}</span>
                                         </div>
                                     </div>
-                                    ${example ? `
-                                    <div class="result-example">
-                                        <span class="ex-label">Contoh dalam Kalimat:</span>
-                                        <p class="ex-text">"${example}"</p>
+                                    <div class="result-examples-dual">
+                                        ${res.contoh_id ? `<span class="ex-pair"><b>ID:</b> ${res.contoh_id}</span>` : ''}
+                                        ${res.contoh_dusun ? `<span class="ex-pair"><b>PALI:</b> ${res.contoh_dusun}</span>` : ''}
                                     </div>
-                                    ` : ''}
                                 </div>
                             `;
                         });

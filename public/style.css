@@ -17,6 +17,12 @@
     scroll-behavior: smooth;
 }
 
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 body {
     background-color: var(--slate-black);
     color: var(--text-white);
@@ -100,6 +106,7 @@ nav {
     align-items: center;
     max-width: 1400px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .logo-area {
@@ -169,6 +176,7 @@ nav {
         top: 0;
         height: 100vh;
         width: 70%;
+        max-width: 300px;
         background: var(--slate-gray);
         flex-direction: column;
         justify-content: center;
@@ -176,6 +184,7 @@ nav {
         box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
         z-index: 1000;
         padding: 40px;
+        overflow-y: auto;
     }
 
     .nav-links.active {
@@ -848,12 +857,12 @@ pre {
 
 .result-item {
     background: rgba(255, 255, 255, 0.03);
-    padding: 24px 32px;
-    border-radius: 24px;
+    padding: 16px 24px;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 10px;
     border: 1px solid var(--border-glass);
     animation: fadeIn 0.4s ease-out;
     text-align: left;
@@ -866,43 +875,64 @@ pre {
 }
 
 .word-group .from {
-    font-size: 1.6rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--emerald-green);
 }
 
 .word-group .arrow {
     color: var(--text-muted);
-    font-size: 1.2rem;
+    font-size: 0.9rem;
 }
 
 .word-group .to {
-    font-size: 1.6rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: white;
 }
 
+.result-examples-dual {
+    width: 100%;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-glass);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ex-pair {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.ex-pair b {
+    color: var(--emerald-green);
+    font-size: 0.7rem;
+    margin-right: 6px;
+}
+
 .result-example {
     width: 100%;
-    padding-top: 16px;
+    padding-top: 10px;
     border-top: 1px solid var(--border-glass);
 }
 
 .ex-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--emerald-green);
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 1px;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .ex-text {
-    font-size: 1.15rem;
+    font-size: 0.9rem;
     color: var(--text-muted);
     font-style: italic;
-    line-height: 1.8;
+    line-height: 1.6;
 }
 
 .placeholder-text,
