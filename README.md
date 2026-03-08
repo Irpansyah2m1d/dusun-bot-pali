@@ -2,7 +2,10 @@
 
 **Dusun Bot** adalah Open-Source API chatbot dan mesin terjemahan Bahasa Dusun PALI (Penukal Abab Lematang Ilir), Sumatera Selatan. Project ini bertujuan untuk melestarikan dialek lokal PALI melalui teknologi AI (Artificial Intelligence) dengan metode RAG (*Retrieval-Augmented Generation*).
 
-Project ini diinisiasi oleh **Irpansyah - Kampung Digital Air Itam** (@mpai_belajo).
+---
+
+## 🌐 Live Demo & Landing Page
+Akses fitur dan dokumentasi UI di: **[https://dusun-bot-pali.vercel.app](https://dusun-bot-pali.vercel.app)**
 
 ---
 
@@ -58,26 +61,10 @@ Endpoint untuk mengobrol santai dengan Dusun Bot.
 ### 2. Kamus Search (`/api/kamus`)
 Endpoint untuk mencari kosa kata tanpa menggunakan AI (Gratis & Cepat).
 *   **Method**: `GET` / `POST`
-*   **Query Params (GET)**: `?q=makan`
-*   **Body (POST)**:
-    ```json
-    {
-      "query": "makan"
-    }
-    ```
 
 ### 3. Translate AI (`/api/translate`)
 Endpoint untuk menejermahkan kalimat panjang secara akurat tanpa basa-basi.
 *   **Method**: `POST`
-*   **Body (JSON)**:
-    ```json
-    {
-      "text": "Besok saya ingin pergi ke pasar bersama ibu saya.",
-      "direction": "id-to-dusun", // Pilihan: "id-to-dusun" atau "dusun-to-id"
-      "provider": "gemini",
-      "userApiKey": "API_KEY_DENGIO"
-    }
-    ```
 
 ---
 

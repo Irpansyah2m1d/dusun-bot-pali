@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dusun Bot PALI - Melestarikan Dialek, Menghubungkan Teknologi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="dusun_bot_logo_1772981266582.png">
+</head>
+<body>
+    <div class="glow-orb" id="orb1"></div>
+    <div class="glow-orb" id="orb2"></div>
+
+    <header>
+        <nav>
+            <div class="logo-area">
+                <img src="dusun_bot_logo_1772981266582.png" alt="Dusun Bot Logo" class="nav-logo">
+                <span>Dusun Bot <span class="accent">PALI</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Fitur</a>
+                <a href="#docs">Dokumentasi</a>
+                <a href="https://github.com/Irpansyah2m1d/dusun-bot-pali" target="_blank" class="btn-github">GitHub</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="fade-in">Melestarikan Dialek, <br><span class="gradient-text">Menghubungkan Teknologi.</span></h1>
+                <p class="fade-in delay-1">API Open Source cerdas untuk Bahasa Dusun PALI (Sumatera Selatan). Menggunakan teknologi RAG (Retrieval-Augmented Generation) & Artificial Intelligence.</p>
+                <div class="hero-btns fade-in delay-2">
+                    <a href="#docs" class="btn-primary">Mulai Sekarang</a>
+                    <a href="https://wa.me/6282281488763" target="_blank" class="btn-secondary">Kontribusi</a>
+                </div>
+            </div>
+            <div class="hero-visual fade-in delay-3">
+                <div class="logo-container">
+                    <img src="dusun_bot_logo_1772981266582.png" alt="Dusun Bot Hero Logo" class="floating-logo">
+                    <div class="pulse"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <h2 class="section-title">Fitur Utama</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">💬</div>
+                    <h3>Chatbot AI</h3>
+                    <p>Ngobrol santai ngen alami dengan dialek PALI kental. Didukung Gemini, Groq, ngen Z.ai.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📖</div>
+                    <h3>Kamus Search</h3>
+                    <p>Pencarian kosa kata bolak-balik (Indonesia ↔ PALI) secepat kilat tanpa API Key.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🌐</div>
+                    <h3>Translator</h3>
+                    <p>Terjemahkan kalimat panjang secara profesional ngen akurat sesuai hukum dialek PALI.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="docs" class="docs">
+            <h2 class="section-title">Dokumentasi Endpoint</h2>
+            <div class="docs-container">
+                <div class="docs-tabs">
+                    <div class="tab chat active">/api/chat</div>
+                    <div class="tab kamus">/api/kamus</div>
+                    <div class="tab translate">/api/translate</div>
+                </div>
+                <div class="code-editor">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="filename">POST https://dusun-bot-pali.vercel.app/api/chat</span>
+                    </div>
+                    <pre><code>{
+  "prompt": "Lagi ngape serekak ikak?",
+  "provider": "gemini",
+  "userApiKey": "YOUR_GEMINI_KEY"
+}</code></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Kampung Digital Air Itam</h3>
+                <p>Membangun peradaban digital dari desa.</p>
+                <div class="socials">
+                    <a href="https://irpansyah.vercel.app/" target="_blank">Portfolio</a>
+                    <a href="https://kdai.my.id" target="_blank">Komunitas</a>
+                    <a href="https://wa.me/6282281488763" target="_blank">WhatsApp</a>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2026 Developed by <a href="https://irpansyah.vercel.app/" class="accent">Irpansyah</a>. Project Open Source untuk PALI.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality (simplified for static demo)
+        const tabs = document.querySelectorAll('.tab');
+        const codeDisplay = document.querySelector('code');
+        const filenameDisplay = document.querySelector('.filename');
+
+        const docs = {
+            chat: {
+                url: 'POST https://dusun-bot-pali.vercel.app/api/chat',
+                code: '{\n  "prompt": "Lagi ngape serekak ikak?",\n  "provider": "gemini",\n  "userApiKey": "YOUR_GEMINI_KEY"\n}'
+            },
+            kamus: {
+                url: 'GET https://dusun-bot-pali.vercel.app/api/kamus?q=makan',
+                code: '// Respon Langsung Kosa Kata\n{\n  "success": true,\n  "query": "makan",\n  "results": [...]\n}'
+            },
+            translate: {
+                url: 'POST https://dusun-bot-pali.vercel.app/api/translate',
+                code: '{\n  "text": "Besok saya ke pasar",\n  "direction": "id-to-dusun",\n  "userApiKey": "YOUR_API_KEY"\n}'
+            }
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const type = tab.classList[1];
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                filenameDisplay.innerText = docs[type].url;
+                codeDisplay.innerText = docs[type].code;
+            });
+        });
+    </script>
+</body>
+</html>
