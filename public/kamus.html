@@ -132,6 +132,7 @@
         const totalStats = document.getElementById('total-stats');
         const toggleBtns = document.querySelectorAll('.toggle-btn');
         let currentDir = 'id-to-dusun';
+        let searchTimeout;
 
         toggleBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -145,59 +146,64 @@
             });
         });
 
-        kamusInput.addEventListener('input', async (e) => {
+        kamusInput.addEventListener('input', (e) => {
             const query = e.target.value.trim();
             
-            if (query === '') {
+            clearTimeout(searchTimeout);
+
+            // Reset immediately if empty or too short
+            if (query.length < 2) {
                 kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata di atas untuk mulai mencari...</div>';
                 totalStats.style.display = 'none';
                 return;
             }
 
-            if (query.length < 2) return;
+            searchTimeout = setTimeout(async () => {
+                kamusResult.innerHTML = '<div class="placeholder-text">Mencari...</div>';
 
-            try {
-                const response = await fetch(`/api/kamus?q=${encodeURIComponent(query)}`);
-                const data = await response.json();
+                try {
+                    const response = await fetch(`/api/kamus?q=${encodeURIComponent(query)}`);
+                    const data = await response.json();
 
-                if (data.success && data.results.length > 0) {
-                    totalStats.innerText = `Ditemukan ${data.totalResults} hasil kosa kata`;
-                    totalStats.style.display = 'block';
+                    if (data.success && data.results.length > 0) {
+                        totalStats.innerText = `Ditemukan ${data.totalResults} hasil kosa kata`;
+                        totalStats.style.display = 'block';
 
-                    let html = '<div class="result-grid">';
-                    data.results.forEach(res => {
-                        const word = currentDir === 'id-to-dusun' ? res.indonesia : res.dusun;
-                        const translation = currentDir === 'id-to-dusun' ? res.dusun : res.indonesia;
-                        let example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
-                        if (!example) example = res.contoh_dusun || res.contoh_id;
+                        let html = '<div class="result-grid">';
+                        data.results.forEach(res => {
+                            const word = currentDir === 'id-to-dusun' ? res.indonesia : res.dusun;
+                            const translation = currentDir === 'id-to-dusun' ? res.dusun : res.indonesia;
+                            let example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
+                            if (!example) example = res.contoh_dusun || res.contoh_id;
 
-                        html += `
-                            <div class="result-item">
-                                <div class="result-main">
-                                    <div class="word-group">
-                                        <span class="from">${word}</span>
-                                        <span class="arrow">➔</span>
-                                        <span class="to">${translation}</span>
+                            html += `
+                                <div class="result-item">
+                                    <div class="result-main">
+                                        <div class="word-group">
+                                            <span class="from">${word}</span>
+                                            <span class="arrow">➔</span>
+                                            <span class="to">${translation}</span>
+                                        </div>
                                     </div>
+                                    ${example ? `
+                                    <div class="result-example">
+                                        <span class="ex-label">Contoh dalam Kalimat:</span>
+                                        <p class="ex-text">"${example}"</p>
+                                    </div>
+                                    ` : ''}
                                 </div>
-                                ${example ? `
-                                <div class="result-example">
-                                    <span class="ex-label">Contoh dalam Kalimat:</span>
-                                    <p class="ex-text">"${example}"</p>
-                                </div>
-                                ` : ''}
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    kamusResult.innerHTML = html;
-                } else {
-                    totalStats.style.display = 'none';
-                    kamusResult.innerHTML = '<div class="no-result">Kata tidak ditemukan dalam kamus.</div>';
+                            `;
+                        });
+                        html += '</div>';
+                        kamusResult.innerHTML = html;
+                    } else {
+                        totalStats.style.display = 'none';
+                        kamusResult.innerHTML = '<div class="no-result">Kata tidak ditemukan dalam kamus.</div>';
+                    }
+                } catch (err) {
+                    kamusResult.innerHTML = '<div class="no-result">Terjadi kesalahan saat mencari.</div>';
                 }
-            } catch (err) {
-                kamusResult.innerHTML = '<div class="no-result">Terjadi kesalahan saat mencari.</div>';
-            }
+            }, 500);
         });
     </script>
 </body>

@@ -866,7 +866,7 @@ pre {
 }
 
 .word-group .from {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--emerald-green);
 }
@@ -877,7 +877,7 @@ pre {
 }
 
 .word-group .to {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: white;
 }
@@ -899,10 +899,10 @@ pre {
 }
 
 .ex-text {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--text-muted);
     font-style: italic;
-    line-height: 1.5;
+    line-height: 1.8;
 }
 
 .placeholder-text,

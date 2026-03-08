@@ -323,6 +323,7 @@
         const kamusResult = document.getElementById('kamus-result');
         const toggleBtns = document.querySelectorAll('.toggle-btn');
         let currentDir = 'id-to-dusun';
+        let searchTimeout;
 
         toggleBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -331,63 +332,66 @@
                 currentDir = btn.dataset.dir;
                 kamusInput.placeholder = currentDir === 'id-to-dusun' ? 'Masukkan kata Bahasa Indonesia...' : 'Masukkan kata Bahasa Dusun PALI...';
                 kamusInput.value = '';
-                kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata untuk melihat terjemahan dan contoh kalimat...</div>';
+                kamusResult.innerHTML = '<div class="placeholder-text">Coba cari satu kata di sini secara live...</div>';
             });
         });
 
-        kamusInput.addEventListener('input', async (e) => {
+        kamusInput.addEventListener('input', (e) => {
             const query = e.target.value.trim();
             
-            // Immediate reset if empty
-            if (query === '') {
-                kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata untuk melihat terjemahan dan contoh kalimat...</div>';
-                return;
-            }
+            // Clear existing timeout
+            clearTimeout(searchTimeout);
 
+            // Reset if empty or too short
             if (query.length < 2) {
+                kamusResult.innerHTML = '<div class="placeholder-text">Coba cari satu kata di sini secara live...</div>';
                 return;
             }
 
-            try {
-                const response = await fetch(`/api/kamus?q=${encodeURIComponent(query)}`);
-                const data = await response.json();
+            // Wait 500ms after user stops typing
+            searchTimeout = setTimeout(async () => {
+                kamusResult.innerHTML = '<div class="placeholder-text">Mencari...</div>';
 
-                if (data.success && data.results.length > 0) {
-                    let html = '<div class="result-grid">';
-                    data.results.forEach(res => {
-                        const word = currentDir === 'id-to-dusun' ? res.indonesia : res.dusun;
-                        const translation = currentDir === 'id-to-dusun' ? res.dusun : res.indonesia;
-                        
-                        // Pick example based on direction, fallback to any example available
-                        let example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
-                        if (!example) example = res.contoh_dusun || res.contoh_id; 
-                        
-                        html += `
-                            <div class="result-item">
-                                <div class="result-main">
-                                    <div class="word-group">
-                                        <span class="from">${word}</span>
-                                        <span class="arrow">➔</span>
-                                        <span class="to">${translation}</span>
+                try {
+                    const response = await fetch(`/api/kamus?q=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+
+                    if (data.success && data.results.length > 0) {
+                        let html = '<div class="result-grid">';
+                        // Show only top 3 results on index page
+                        data.results.slice(0, 3).forEach(res => {
+                            const word = currentDir === 'id-to-dusun' ? res.indonesia : res.dusun;
+                            const translation = currentDir === 'id-to-dusun' ? res.dusun : res.indonesia;
+                            let example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
+                            if (!example) example = res.contoh_dusun || res.contoh_id; 
+                            
+                            html += `
+                                <div class="result-item">
+                                    <div class="result-main">
+                                        <div class="word-group">
+                                            <span class="from">${word}</span>
+                                            <span class="arrow">➔</span>
+                                            <span class="to">${translation}</span>
+                                        </div>
                                     </div>
+                                    ${example ? `
+                                    <div class="result-example">
+                                        <span class="ex-label">Contoh dalam Kalimat:</span>
+                                        <p class="ex-text">"${example}"</p>
+                                    </div>
+                                    ` : ''}
                                 </div>
-                                ${example ? `
-                                <div class="result-example">
-                                    <span class="ex-label">Contoh dalam Kalimat:</span>
-                                    <p class="ex-text">"${example}"</p>
-                                </div>
-                                ` : ''}
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    kamusResult.innerHTML = html;
-                } else {
-                    kamusResult.innerHTML = '<div class="no-result">Kata tidak ditemukan dalam kamus.</div>';
+                            `;
+                        });
+                        html += '</div>';
+                        kamusResult.innerHTML = html;
+                    } else {
+                        kamusResult.innerHTML = '<div class="no-result">Kata tidak ditemukan dalam kamus.</div>';
+                    }
+                } catch (err) {
+                    kamusResult.innerHTML = '<div class="no-result">Terjadi kesalahan saat mencari.</div>';
                 }
-            } catch (err) {
-                kamusResult.innerHTML = '<div class="no-result">Terjadi kesalahan saat mencari.</div>';
-            }
+            }, 500); // 500ms delay
         });
     </script>
 </body>
