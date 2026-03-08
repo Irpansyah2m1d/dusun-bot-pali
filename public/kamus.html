@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamus Lengkap Dusun PALI - Dusun Bot</title>
+    <meta name="description" content="Eksplorasi ribuan kosa kata Bahasa Dusun PALI secara lengkap dan interaktif.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/dusun-bot.png">
+    <style>
+        .kamus-page {
+            padding: 120px 5% 60px;
+            min-height: 100vh;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .kamus-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .kamus-header h1 {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            font-weight: 900;
+        }
+        .kamus-header p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--emerald-green);
+            text-decoration: none;
+            font-weight: 700;
+            margin-bottom: 30px;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        .full-search {
+            background: var(--slate-gray);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+        }
+        .total-stats {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--emerald-green);
+            font-weight: 600;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-orb" id="orb1"></div>
+    <div class="glow-orb" id="orb2"></div>
+
+    <header>
+        <nav>
+            <div class="logo-area" onclick="window.location.href='/'">
+                <img src="/dusun-bot.png" alt="Dusun Bot Logo" class="nav-logo">
+                <span>Dusun Bot <span class="accent">PALI</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="btn-secondary" style="padding: 10px 20px;">Beranda</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="kamus-page">
+        <a href="/" class="back-btn">← Kembali ke Beranda</a>
+        
+        <div class="kamus-header fade-in">
+            <h1>Kamus Digital <span class="accent">PALI</span></h1>
+            <p>Telusuri ribuan kosa kata dan dialek warisan leluhur PALI.</p>
+        </div>
+
+        <div class="full-search fade-in">
+            <div class="kamus-toggle">
+                <button class="toggle-btn active" data-dir="id-to-dusun">ID ➔ PALI</button>
+                <button class="toggle-btn" data-dir="dusun-to-id">PALI ➔ ID</button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="kamus-input" placeholder="Masukkan kata Bahasa Indonesia...">
+                <div class="search-icon">🔍</div>
+            </div>
+            
+            <div id="total-stats" class="total-stats">Ditemukan 0 hasil</div>
+
+            <div id="kamus-result" class="kamus-result" style="margin-top: 30px;">
+                <div class="placeholder-text">Ketik kata di atas untuk mulai mencari...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p class="copyright">&copy; 2024 Dusun Bot PALI. Bagian dari <a href="https://kdai.my.id" target="_blank">Kampung Digital Air Itam</a>.</p>
+        </div>
+    </footer>
+
+    <script>
+        const kamusInput = document.getElementById('kamus-input');
+        const kamusResult = document.getElementById('kamus-result');
+        const totalStats = document.getElementById('total-stats');
+        const toggleBtns = document.querySelectorAll('.toggle-btn');
+        let currentDir = 'id-to-dusun';
+
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggleBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentDir = btn.dataset.dir;
+                kamusInput.placeholder = currentDir === 'id-to-dusun' ? 'Masukkan kata Bahasa Indonesia...' : 'Masukkan kata Bahasa Dusun PALI...';
+                kamusInput.value = '';
+                kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata di atas untuk mulai mencari...</div>';
+                totalStats.style.display = 'none';
+            });
+        });
+
+        kamusInput.addEventListener('input', async (e) => {
+            const query = e.target.value.trim();
+            
+            if (query === '') {
+                kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata di atas untuk mulai mencari...</div>';
+                totalStats.style.display = 'none';
+                return;
+            }
+
+            if (query.length < 2) return;
+
+            try {
+                const response = await fetch(`/api/kamus?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (data.success && data.results.length > 0) {
+                    totalStats.innerText = `Ditemukan ${data.totalResults} hasil`;
+                    totalStats.style.display = 'block';
+
+                    let html = '<div class="result-grid">';
+                    data.results.forEach(res => {
+                        const word = currentDir === 'id-to-dusun' ? res.indonesia : res.dusun;
+                        const translation = currentDir === 'id-to-dusun' ? res.dusun : res.indonesia;
+                        let example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
+                        if (!example) example = res.contoh_dusun || res.contoh_id;
+
+                        html += `
+                            <div class="result-item">
+                                <div class="result-main">
+                                    <div class="word-group">
+                                        <span class="from">${word}</span>
+                                        <span class="arrow">➔</span>
+                                        <span class="to">${translation}</span>
+                                    </div>
+                                </div>
+                                ${example ? `
+                                <div class="result-example">
+                                    <span class="ex-label">Contoh dalam Kalimat:</span>
+                                    <p class="ex-text">"${example}"</p>
+                                </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    kamusResult.innerHTML = html;
+                } else {
+                    totalStats.style.display = 'none';
+                    kamusResult.innerHTML = '<div class="no-result">Kata tidak ditemukan dalam kamus.</div>';
+                }
+            } catch (err) {
+                kamusResult.innerHTML = '<div class="no-result">Terjadi kesalahan saat mencari.</div>';
+            }
+        });
+    </script>
+</body>
+</html>
