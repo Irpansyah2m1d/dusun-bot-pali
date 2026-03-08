@@ -141,6 +141,60 @@ nav {
     opacity: 1;
 }
 
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+@media (max-width: 900px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        right: -100%;
+        top: 0;
+        height: 100vh;
+        width: 70%;
+        background: var(--slate-gray);
+        flex-direction: column;
+        justify-content: center;
+        transition: 0.4s;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        padding: 40px;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .menu-toggle.active .bar:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active .bar:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+}
+
 .btn-github {
     background: white;
     color: black !important;
@@ -434,6 +488,39 @@ nav {
     display: block;
 }
 
+/* Tech Stack Pills */
+.tech-stack {
+    padding: 80px 5%;
+    text-align: center;
+}
+
+.tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.tech-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border: 1px solid var(--border-glass);
+    transition: 0.3s;
+}
+
+.tech-item:hover {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--emerald-green);
+    border-color: var(--emerald-green);
+    transform: translateY(-3px);
+}
+
 /* Documentation & Sidebar Sidebar Styles */
 .docs {
     padding: 120px 5%;
@@ -699,7 +786,7 @@ footer {
 
     .docs-sidebar {
         width: 100%;
-        flexDirection: row;
+        flex-direction: row;
         overflow-x: auto;
         padding-bottom: 10px;
     }
@@ -710,7 +797,7 @@ footer {
     }
 
     .hero-visual {
-        display: none;
+        display: none !important;
     }
 
     .hero {

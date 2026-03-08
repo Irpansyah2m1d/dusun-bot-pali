@@ -20,12 +20,17 @@
                 <img src="logo.png" alt="Dusun Bot Logo" class="nav-logo">
                 <span>Dusun Bot <span class="accent">PALI</span></span>
             </div>
-            <div class="nav-links">
+            <div class="nav-links" id="nav-links">
                 <a href="#features">Fitur</a>
                 <a href="#mission">Misi</a>
                 <a href="#docs">API</a>
                 <a href="#partners">Partner</a>
                 <a href="https://github.com/Irpansyah2m1d/dusun-bot-pali" target="_blank" class="btn-github">GitHub</a>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </div>
         </nav>
     </header>
@@ -230,6 +235,23 @@
                 item.classList.toggle('active', idx === step);
             });
         }
+
+        // Hamburger Menu Toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
     </script>
 </body>
 </html>
