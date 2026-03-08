@@ -223,7 +223,7 @@ nav {
 
 /* Hero */
 .hero {
-    padding: 10px 5% 60px;
+    padding: 40px 5% 80px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -237,10 +237,10 @@ nav {
 }
 
 .hero-content h1 {
-    font-size: 3rem;
+    font-size: 3.2rem;
     font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 20px;
+    line-height: 1.2;
+    margin-bottom: 28px;
 }
 
 .gradient-text {
@@ -251,11 +251,11 @@ nav {
 }
 
 .hero-content p {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     color: var(--text-muted);
-    max-width: 600px;
-    margin-bottom: 40px;
-    line-height: 1.6;
+    max-width: 650px;
+    margin-bottom: 48px;
+    line-height: 1.8;
 }
 
 .hero-btns {
@@ -421,8 +421,8 @@ nav {
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
 }
 
 .mission-text h2 {
