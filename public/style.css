@@ -751,7 +751,33 @@ pre {
 .search-box {
     position: relative;
     max-width: 600px;
-    margin: 0 auto 40px;
+    margin: 0 auto 30px;
+}
+
+.kamus-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.toggle-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    padding: 10px 24px;
+    border-radius: 100px;
+    color: var(--text-muted);
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+
+.toggle-btn.active {
+    background: var(--emerald-green);
+    color: var(--slate-black);
+    border-color: var(--emerald-green);
+    box-shadow: 0 5px 15px var(--emerald-glow);
 }
 
 .search-box input {
@@ -791,36 +817,69 @@ pre {
 
 .result-grid {
     display: grid;
-    gap: 16px;
-    max-width: 700px;
+    gap: 20px;
+    max-width: 800px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .result-item {
     background: rgba(255, 255, 255, 0.03);
-    padding: 20px 30px;
-    border-radius: 20px;
+    padding: 24px 32px;
+    border-radius: 24px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
     border: 1px solid var(--border-glass);
     animation: fadeIn 0.4s ease-out;
+    text-align: left;
 }
 
-.result-item .word {
-    font-size: 1.4rem;
+.word-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.word-group .from {
+    font-size: 1.5rem;
     font-weight: 800;
     color: var(--emerald-green);
 }
 
-.result-item .arrow {
+.word-group .arrow {
     color: var(--text-muted);
+    font-size: 1.2rem;
 }
 
-.result-item .meaning {
-    font-size: 1.4rem;
-    font-weight: 600;
+.word-group .to {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.result-example {
+    width: 100%;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-glass);
+}
+
+.ex-label {
+    font-size: 0.8rem;
+    color: var(--emerald-green);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.ex-text {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.5;
 }
 
 .placeholder-text,

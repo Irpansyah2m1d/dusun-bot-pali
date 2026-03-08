@@ -96,12 +96,19 @@
         <section id="kamus-live" class="live-kamus">
             <div class="kamus-container fade-in">
                 <h2 class="section-title">Coba Kamus Live</h2>
+                
+                <div class="kamus-toggle">
+                    <button class="toggle-btn active" data-dir="id-to-dusun">ID ➔ PALI</button>
+                    <button class="toggle-btn" data-dir="dusun-to-id">PALI ➔ ID</button>
+                </div>
+
                 <div class="search-box">
-                    <input type="text" id="kamus-input" placeholder="Cari kata (Contoh: Makan atau Ngicu)...">
+                    <input type="text" id="kamus-input" placeholder="Masukkan kata Bahasa Indonesia...">
                     <div class="search-icon">🔍</div>
                 </div>
+
                 <div id="kamus-result" class="kamus-result">
-                    <div class="placeholder-text">Hasil pencarian akan tampil di sini secara live...</div>
+                    <div class="placeholder-text">Ketik kata untuk melihat terjemahan dan contoh kalimat...</div>
                 </div>
             </div>
         </section>
@@ -307,11 +314,24 @@
         // Live Kamus Logic
         const kamusInput = document.getElementById('kamus-input');
         const kamusResult = document.getElementById('kamus-result');
+        const toggleBtns = document.querySelectorAll('.toggle-btn');
+        let currentDir = 'id-to-dusun';
+
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggleBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentDir = btn.dataset.dir;
+                kamusInput.placeholder = currentDir === 'id-to-dusun' ? 'Masukkan kata Bahasa Indonesia...' : 'Masukkan kata Bahasa Dusun PALI...';
+                kamusInput.value = '';
+                kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata untuk melihat terjemahan dan contoh kalimat...</div>';
+            });
+        });
 
         kamusInput.addEventListener('input', async (e) => {
             const query = e.target.value.trim();
             if (query.length < 2) {
-                kamusResult.innerHTML = '<div class="placeholder-text">Hasil pencarian akan tampil di sini secara live...</div>';
+                kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata untuk melihat terjemahan dan contoh kalimat...</div>';
                 return;
             }
 
@@ -322,11 +342,25 @@
                 if (data.success && data.results.length > 0) {
                     let html = '<div class="result-grid">';
                     data.results.forEach(res => {
+                        const word = currentDir === 'id-to-dusun' ? res.indonesia : res.dusun;
+                        const translation = currentDir === 'id-to-dusun' ? res.dusun : res.indonesia;
+                        const example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
+                        
                         html += `
                             <div class="result-item">
-                                <div class="word">${res.dusun}</div>
-                                <div class="arrow">↔</div>
-                                <div class="meaning">${res.indonesia}</div>
+                                <div class="result-main">
+                                    <div class="word-group">
+                                        <span class="from">${word}</span>
+                                        <span class="arrow">➔</span>
+                                        <span class="to">${translation}</span>
+                                    </div>
+                                </div>
+                                ${example ? `
+                                <div class="result-example">
+                                    <span class="ex-label">Contoh Kalimat:</span>
+                                    <p class="ex-text">"${example}"</p>
+                                </div>
+                                ` : ''}
                             </div>
                         `;
                     });
