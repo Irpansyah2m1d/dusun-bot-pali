@@ -330,8 +330,14 @@
 
         kamusInput.addEventListener('input', async (e) => {
             const query = e.target.value.trim();
-            if (query.length < 2) {
+            
+            // Immediate reset if empty
+            if (query === '') {
                 kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata untuk melihat terjemahan dan contoh kalimat...</div>';
+                return;
+            }
+
+            if (query.length < 2) {
                 return;
             }
 
@@ -344,7 +350,10 @@
                     data.results.forEach(res => {
                         const word = currentDir === 'id-to-dusun' ? res.indonesia : res.dusun;
                         const translation = currentDir === 'id-to-dusun' ? res.dusun : res.indonesia;
-                        const example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
+                        
+                        // Pick example based on direction, fallback to any example available
+                        let example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
+                        if (!example) example = res.contoh_dusun || res.contoh_id; 
                         
                         html += `
                             <div class="result-item">
@@ -357,7 +366,7 @@
                                 </div>
                                 ${example ? `
                                 <div class="result-example">
-                                    <span class="ex-label">Contoh Kalimat:</span>
+                                    <span class="ex-label">Contoh dalam Kalimat:</span>
                                     <p class="ex-text">"${example}"</p>
                                 </div>
                                 ` : ''}
