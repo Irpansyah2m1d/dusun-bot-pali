@@ -801,25 +801,73 @@ footer {
     }
 
     .hero {
+        padding: 80px 5% 40px;
         text-align: center;
         justify-content: center;
     }
 
     .hero-content h1 {
-        font-size: 3.5rem;
+        font-size: 2.2rem;
+        margin-bottom: 16px;
     }
 
     .hero-content p {
-        margin: 0 auto 40px;
+        font-size: 1rem;
+        margin: 0 auto 30px;
+        line-height: 1.5;
     }
 
-    .hero-btns {
-        justify-content: center;
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
     }
 
     .mission-container {
         flex-direction: column;
         text-align: center;
+        gap: 30px;
+    }
+
+    .mission-stats {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        justify-content: center;
+    }
+
+    .stat-card {
+        padding: 15px;
+        min-width: 120px;
+        flex: 1;
+    }
+
+    .stat-val {
+        font-size: 1.8rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+    }
+
+    .features,
+    .mission,
+    .docs,
+    .partners,
+    .faq {
+        padding: 40px 5%;
+    }
+
+    .feature-card {
+        padding: 20px;
+    }
+
+    .tech-stack {
+        padding: 30px 5%;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 24px;
     }
 }
 
