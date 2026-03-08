@@ -1,0 +1,9 @@
+node_modules/
+.env
+local-server.js
+migrate_kamus.js
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.vercel

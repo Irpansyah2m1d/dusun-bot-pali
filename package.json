@@ -1,0 +1,20 @@
+{
+  "name": "dusun-ai-api",
+  "version": "1.0.0",
+  "description": "API Open Source untuk chatbot Bahasa Dusun menggunakan RAG sederhana",
+  "main": "api/chat.js",
+  "engines": {
+    "node": "18.x"
+  },
+  "scripts": {
+    "start": "node api/chat.js",
+    "dev": "node local-server.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2"
+  },
+  "author": "",
+  "license": "MIT"
+}

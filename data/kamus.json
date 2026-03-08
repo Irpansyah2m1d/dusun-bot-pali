@@ -1,0 +1,3374 @@
+[
+  {
+    "indonesia": "Makan",
+    "dusun": "makan",
+    "contoh_id": "",
+    "contoh_dusun": "makan"
+  },
+  {
+    "indonesia": "mau",
+    "dusun": "endok / ndok",
+    "contoh_id": "",
+    "contoh_dusun": "aku ndak makan, ndok minum"
+  },
+  {
+    "indonesia": "apa kabar",
+    "dusun": "tope kabor",
+    "contoh_id": "",
+    "contoh_dusun": "tope kabor, mane lague"
+  },
+  {
+    "indonesia": "kamu",
+    "dusun": "dengo, nga",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "orang",
+    "dusun": "wang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mana",
+    "dusun": "mane",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kalian",
+    "dusun": "menengo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kenapa",
+    "dusun": "ngape",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ayo",
+    "dusun": "payo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak",
+    "dusun": "dok",
+    "contoh_id": "",
+    "contoh_dusun": "aku dok tau"
+  },
+  {
+    "indonesia": "tanya",
+    "dusun": "tanye",
+    "contoh_id": "",
+    "contoh_dusun": "aku nih ndok betanye"
+  },
+  {
+    "indonesia": "nama",
+    "dusun": "name",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mereka",
+    "dusun": "mensitu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "meskipun",
+    "dusun": "lajun",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ganteng",
+    "dusun": "rengke, alap, belagak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cantik",
+    "dusun": "rengke, alap, belagak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "beres-beres",
+    "dusun": "besemiok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "robek",
+    "dusun": "pedo, cerek, koyak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "belajar",
+    "dusun": "belajo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bahasa ",
+    "dusun": "base",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bagaiamana",
+    "dusun": "cakmane, makmane",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "siapa",
+    "dusun": "sape",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "waktu itu",
+    "dusun": "nimpou",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak mungkin",
+    "dusun": "kade",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kalau",
+    "dusun": "kalu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lapar",
+    "dusun": "lapo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sangat",
+    "dusun": "nian, tekate",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hari ini",
+    "dusun": "serekak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidur",
+    "dusun": "tedok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "minum",
+    "dusun": "minom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pulang",
+    "dusun": "balek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tolong",
+    "dusun": "tolong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sekarang",
+    "dusun": "menggari",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "minta",
+    "dusun": "mintek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bagus",
+    "dusun": "rengke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jelek",
+    "dusun": "jot, ejot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "terima kasih",
+    "dusun": "makaseh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "iya",
+    "dusun": "yex",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "suka",
+    "dusun": "ribong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lihat",
+    "dusun": "keleke, kelek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "melihat",
+    "dusun": "ngeleke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bicara",
+    "dusun": "becawo, begesoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bercanda",
+    "dusun": "belore",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tulis",
+    "dusun": "noles, toles",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "senang",
+    "dusun": "lados",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "haus",
+    "dusun": "ranang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "capek",
+    "dusun": "keret",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sakit",
+    "dusun": "saket",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "besar",
+    "dusun": "beso'",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kecil",
+    "dusun": "kecik",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "panas",
+    "dusun": "angat",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dingin",
+    "dusun": "dengen",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kemarin",
+    "dusun": "kemari",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sering",
+    "dusun": "neman",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jarang",
+    "dusun": "jarong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cepat ",
+    "dusun": "gacong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lambat",
+    "dusun": "lelet, olek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pergi",
+    "dusun": "pegi",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kerja",
+    "dusun": "begawe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "masak",
+    "dusun": "bemasok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mencuci, cuci",
+    "dusun": "nyabon, masuh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jawab",
+    "dusun": "jawob",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lupa",
+    "dusun": "lupe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "paham",
+    "dusun": "ngerti",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mulai",
+    "dusun": "mulai",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pinjam",
+    "dusun": "minjom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sulit",
+    "dusun": "solet",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ramai",
+    "dusun": "rami",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak ada",
+    "dusun": "dak getek, getek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "belakang",
+    "dusun": "belakong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bawah",
+    "dusun": "bawoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "atas",
+    "dusun": "pocok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "uang",
+    "dusun": "sen",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "teman",
+    "dusun": "kanti, kanca",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "keluarga",
+    "dusun": "keluargo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jalan",
+    "dusun": "jalon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kirim",
+    "dusun": "kerem, keremke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bayar",
+    "dusun": "mayo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kursus",
+    "dusun": "korsos",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pakai",
+    "dusun": "ngeneke, ",
+    "contoh_id": "",
+    "contoh_dusun": "pakai lah baju dengo"
+  },
+  {
+    "indonesia": "benci",
+    "dusun": "luat",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hemat",
+    "dusun": "otep",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kaya",
+    "dusun": "bajik",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "miskin",
+    "dusun": "buntu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bau",
+    "dusun": "embow",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "harum",
+    "dusun": "berum",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "terang",
+    "dusun": "nyantak, terang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gelap",
+    "dusun": "kelman",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "penuh",
+    "dusun": "penoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kosong",
+    "dusun": "kosong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak ada ",
+    "dusun": "getek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pasar ",
+    "dusun": "kalangan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "celana",
+    "dusun": "celane",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "biasanya",
+    "dusun": "biaso eg",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tergesa-gesa",
+    "dusun": "tegupu gupu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sebenarnya",
+    "dusun": "sebeno e",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tiba-tiba",
+    "dusun": "tibo-tibo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dimana",
+    "dusun": "dimene",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cukup",
+    "dusun": "cokop, diloh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "aja",
+    "dusun": "bae",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "langit",
+    "dusun": "langet",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bulan ",
+    "dusun": "bulon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hujan",
+    "dusun": "ujon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "air",
+    "dusun": "ayik",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bunga",
+    "dusun": "bunge",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mata",
+    "dusun": "mate",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nafas",
+    "dusun": "hawe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "demam",
+    "dusun": "sonop",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sampah",
+    "dusun": "tedon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pakaian",
+    "dusun": "peraboh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dompet",
+    "dusun": "kelepe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pensil",
+    "dusun": "mentelot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mobil",
+    "dusun": "mubil",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "negara",
+    "dusun": "negaro",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak paham",
+    "dusun": "idok terti",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "baik",
+    "dusun": "ilok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bodoh",
+    "dusun": "buyon, dongok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "beruntung",
+    "dusun": "beruntung",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sabar",
+    "dusun": "sabor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dermawan ",
+    "dusun": "pengenjuk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nasehat",
+    "dusun": "negoke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak",
+    "dusun": "nggon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ini",
+    "dusun": "ikak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "disini",
+    "dusun": "disikok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "disana",
+    "dusun": "disitu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menyetrika",
+    "dusun": "ngosok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "belanja",
+    "dusun": "belanje",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membeli",
+    "dusun": "belion",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membaca",
+    "dusun": "mace",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengambil ",
+    "dusun": "ngambik",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menyapa",
+    "dusun": "ngawel",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berani",
+    "dusun": "melawan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sedangkan",
+    "dusun": "sedongke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lalu",
+    "dusun": "dem tu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kemudian",
+    "dusun": "dem itu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sebab",
+    "dusun": "sebob",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "karena",
+    "dusun": "karne",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sehingga",
+    "dusun": "jadie",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "maka",
+    "dusun": "itulah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kata saya",
+    "dusun": "jeku",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "akibatnya",
+    "dusun": "akibot eg",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "seperti itu",
+    "dusun": "metu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak berbohong",
+    "dusun": "idok ngolahke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menipu",
+    "dusun": "ngolahke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jika",
+    "dusun": "kalu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dia",
+    "dusun": "nye",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "laki-laki",
+    "dusun": "lanang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "perempuan",
+    "dusun": "betine",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bahkan",
+    "dusun": "bahkon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "apalagi",
+    "dusun": "apelagi",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak mau",
+    "dusun": "nggon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pertama",
+    "dusun": "pertame",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kedua ",
+    "dusun": "kedue",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ternyata",
+    "dusun": "bekos eg",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "baru",
+    "dusun": "mpai",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "deras",
+    "dusun": "deros",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "wah",
+    "dusun": "dooooo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bahagia",
+    "dusun": "lados",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "diam",
+    "dusun": "diom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nah",
+    "dusun": "neh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sendiri",
+    "dusun": "suangan, dewek an",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "diriku sendiri",
+    "dusun": "aku dewek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "seseorang",
+    "dusun": "suang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "1 orang",
+    "dusun": "suang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "apa",
+    "dusun": "ape, tope",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gugup",
+    "dusun": "regok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bosan",
+    "dusun": "malak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "puas",
+    "dusun": "senang ati",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "memandang",
+    "dusun": "ngeleke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "merapa",
+    "dusun": "natap",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mencicipi",
+    "dusun": "ngecap",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menyimak",
+    "dusun": "nengoke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "merasa",
+    "dusun": "merase",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bersih-bersih",
+    "dusun": "bimpun",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membuang",
+    "dusun": "nabohke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sesuatu",
+    "dusun": "setuek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membereskan",
+    "dusun": "bimpun",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "langit-langit",
+    "dusun": "pagu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "teras",
+    "dusun": "garong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lama",
+    "dusun": "lame",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sebentar",
+    "dusun": "sejoros",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hanya",
+    "dusun": "cuma",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pusing",
+    "dusun": "peneng",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak bisa",
+    "dusun": "de bacok, bacok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bengkak",
+    "dusun": "bengkok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mendung",
+    "dusun": "jot ari",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gerimis",
+    "dusun": "rentek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lembap",
+    "dusun": "lembob",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "banjir",
+    "dusun": "ayik dalom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bundar",
+    "dusun": "buntok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lebar",
+    "dusun": "libok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sempit",
+    "dusun": "sempet",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "rendah",
+    "dusun": "bawoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak tinggi",
+    "dusun": "petet",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "badan",
+    "dusun": "awak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tebal",
+    "dusun": "tebol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tipis",
+    "dusun": "tepes",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengukur",
+    "dusun": "ngokor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menimbang",
+    "dusun": "nimbong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "memotong, motong",
+    "dusun": "netak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membongkar",
+    "dusun": "mungkor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "memperbaiki",
+    "dusun": "meno ke, ngolah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sudah",
+    "dusun": "dem",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "belum",
+    "dusun": "lum",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "selesai",
+    "dusun": "dem",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "transit",
+    "dusun": "singgoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berbelok",
+    "dusun": "melok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menyalip",
+    "dusun": "motong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menepi",
+    "dusun": "minggir",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gembira",
+    "dusun": "lados",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kesal",
+    "dusun": "luat",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak suka",
+    "dusun": "idok agom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "curiga",
+    "dusun": "curigo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kacamata",
+    "dusun": "kacemate",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sandal",
+    "dusun": "terompah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sebagian",
+    "dusun": "separoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "seluruhnya",
+    "dusun": "gelek e",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "masing-masing",
+    "dusun": "suang-suang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "semua",
+    "dusun": "gelek eg",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berlebih",
+    "dusun": "tepeliwat",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "batal",
+    "dusun": "orong, idak jadi",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menghargai",
+    "dusun": "ngargeke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengeluh",
+    "dusun": "berutuk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "masa depan",
+    "dusun": "mase depon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nongkrong",
+    "dusun": "berungguk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jalan-jalan",
+    "dusun": "medong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "danda",
+    "dusun": "beringki",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "wangi",
+    "dusun": "berum",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "galak",
+    "dusun": "renge",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "barusan",
+    "dusun": "mpai kelah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dulu",
+    "dusun": "nimpotu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "segera",
+    "dusun": "secepat eg",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pahit",
+    "dusun": "paet",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tetangga",
+    "dusun": "parak umah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dekat",
+    "dusun": "parak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak bisa dengar",
+    "dusun": "bacok nengo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "botol",
+    "dusun": "gudu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "toples",
+    "dusun": "gedo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sabun",
+    "dusun": "sabon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bantal",
+    "dusun": "bantol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kasur",
+    "dusun": "kasor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "meja",
+    "dusun": "mejo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "memberi tahu",
+    "dusun": "nunjuke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "memukul",
+    "dusun": "mentong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berteriak",
+    "dusun": "mencerek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "rebahan",
+    "dusun": "ngenop",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mencicipi ",
+    "dusun": "ngecap",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "malu",
+    "dusun": "maluan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cinta",
+    "dusun": "ribong, agom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kaget",
+    "dusun": "tekejut",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sore",
+    "dusun": "petang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "subuh",
+    "dusun": "persiang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "fajar",
+    "dusun": "persiang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tengah malam",
+    "dusun": "dalu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "besok",
+    "dusun": "risok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lusa",
+    "dusun": "luse",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nanti",
+    "dusun": "kagik",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jarang",
+    "dusun": "jarong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ibu",
+    "dusun": "emak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ayah",
+    "dusun": "bok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kakak perempuan",
+    "dusun": "ayuk, kopek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nenek",
+    "dusun": "kajut",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kakek",
+    "dusun": "puguk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "paman",
+    "dusun": "mamang, misat, mengian",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bibi",
+    "dusun": "bibik, misot, mesok, mentengo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "saudara",
+    "dusun": "adik beradik",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "harga",
+    "dusun": "rege",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hadiah",
+    "dusun": "hadioh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "palu",
+    "dusun": "tokol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "getah",
+    "dusun": "jedol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kabel",
+    "dusun": "kabol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mencium",
+    "dusun": "nyiom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menelan",
+    "dusun": "neguk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tutup",
+    "dusun": "totop",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mulut",
+    "dusun": "molot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "telinga",
+    "dusun": "telinge",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "perut",
+    "dusun": "perot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hambar",
+    "dusun": "getek abe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "amis",
+    "dusun": "anyo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menyengat (berkaitan dengan bau tajam)",
+    "dusun": "merebok e",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "licin",
+    "dusun": "liot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tajam",
+    "dusun": "tajom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "batuk",
+    "dusun": "lelah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "flu",
+    "dusun": "seme",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kena",
+    "dusun": "kene",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "terkena",
+    "dusun": "kene",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gatal",
+    "dusun": "gatol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sakit",
+    "dusun": "saket",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "obat",
+    "dusun": "ubot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "datang",
+    "dusun": "datong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dirawat",
+    "dusun": "diloroh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "coba, mencoba",
+    "dusun": "cuka, nyuka",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cepat",
+    "dusun": "gacong, begancong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lambat",
+    "dusun": "olek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pacar",
+    "dusun": "kelinjongon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gila",
+    "dusun": "gile",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kayak",
+    "dusun": "cak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ahli",
+    "dusun": "pakam, padek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bermain",
+    "dusun": "maen",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "luas",
+    "dusun": "libok, lapang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bisa",
+    "dusun": "pacak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cari , mencari",
+    "dusun": "nontot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kita",
+    "dusun": "kitek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ya",
+    "dusun": "yex",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "wah",
+    "dusun": "booo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nyalakan, hidupkan (benda)",
+    "dusun": "marakke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kakak laki-laki",
+    "dusun": "koyong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tahu",
+    "dusun": "tau",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "telah",
+    "dusun": "lah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "seorang kekasih",
+    "dusun": "kelinjongon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "langsung",
+    "dusun": "langsong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jawab",
+    "dusun": "jawob",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak kena, salah sasaran",
+    "dusun": "kecol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "halo ",
+    "dusun": "halo cah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mual",
+    "dusun": "luwai",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menghina",
+    "dusun": "moyok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cukup",
+    "dusun": "diloh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "malas",
+    "dusun": "sedut ngerjut",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ikut",
+    "dusun": "milu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mata",
+    "dusun": "mate",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jatuh",
+    "dusun": "tetrokop",
+    "contoh_id": "",
+    "contoh_dusun": "aku jatuh (tetrokop) berjalan tadi"
+  },
+  {
+    "indonesia": "kurus",
+    "dusun": "koros",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "suami",
+    "dusun": "laki",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "istri",
+    "dusun": "bini",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sepeda",
+    "dusun": "kretongen",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mau",
+    "dusun": "galok",
+    "contoh_id": "",
+    "contoh_dusun": "aku mau (galok) sama kamu"
+  },
+  {
+    "indonesia": "jendela",
+    "dusun": "jendelo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengunjungi",
+    "dusun": "nyingok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengantar",
+    "dusun": "ngantat",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menjemput",
+    "dusun": "nyingok, ngedos, napotke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "perasaan syok",
+    "dusun": "Yasaman, yacacam, yasabih,",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak tahu lagi",
+    "dusun": "nyunyang",
+    "contoh_id": "",
+    "contoh_dusun": "aku nyerah aku nyunyang (tidak tahu lagi)"
+  },
+  {
+    "indonesia": "pisau",
+    "dusun": "lading",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "omongan",
+    "dusun": "cawa",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bangkai",
+    "dusun": "buntong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kecewa",
+    "dusun": "cene",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "senter",
+    "dusun": "belor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membonceng",
+    "dusun": "ngendeng",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "buaya",
+    "dusun": "boye",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bekerja",
+    "dusun": "begawe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "baru",
+    "dusun": "anyar",
+    "contoh_id": "",
+    "contoh_dusun": "motor baru (motor anyar)"
+  },
+  {
+    "indonesia": "susah",
+    "dusun": "kare, sukar",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jembatan",
+    "dusun": "Jeromboh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jengkol",
+    "dusun": "jering",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "monyet",
+    "dusun": "kere",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bercanda",
+    "dusun": "belore",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berapa",
+    "dusun": "berepe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sesak nafas",
+    "dusun": "mengas",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ular",
+    "dusun": "ulo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pencuri",
+    "dusun": "pemaleng",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mencuri",
+    "dusun": "maleng",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "begal",
+    "dusun": "penodong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "di begal",
+    "dusun": "di todong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menyangka",
+    "dusun": "nyangke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nyata",
+    "dusun": "nyate",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sebuah",
+    "dusun": "sikok",
+    "contoh_id": "",
+    "contoh_dusun": "sebuah (sikok) dompet"
+  },
+  {
+    "indonesia": "punya",
+    "dusun": "ade",
+    "contoh_id": "",
+    "contoh_dusun": "irpan punya (ade) motor"
+  },
+  {
+    "indonesia": "berbicara",
+    "dusun": "becawo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ngomong",
+    "dusun": "becawo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ia",
+    "dusun": "nye",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "angka",
+    "dusun": "angke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "melainkan",
+    "dusun": "melainke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tanpa jeda",
+    "dusun": "idok peri",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jeda ",
+    "dusun": "peri",
+    "contoh_id": "",
+    "contoh_dusun": "tanpa  jeda (idok peri) dia belajar terus"
+  },
+  {
+    "indonesia": "nya",
+    "dusun": "nye",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kepemilikan",
+    "dusun": "tuan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berbuah",
+    "dusun": "bebuoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dapat",
+    "dusun": "dapot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "diselenggarakan",
+    "dusun": "di adeke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengadakan",
+    "dusun": "ngadeke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membuat",
+    "dusun": "muot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "satu",
+    "dusun": "sikok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lima",
+    "dusun": "lime",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tiga",
+    "dusun": "tige",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "belas",
+    "dusun": "belos",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dua",
+    "dusun": "due",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "loker",
+    "dusun": "lokak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "polisi",
+    "dusun": "pelisi",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nyawa",
+    "dusun": "nyawe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mungkin",
+    "dusun": "kalu, pacak bae",
+    "contoh_id": "",
+    "contoh_dusun": "orang yang mungkin (kalu) anda kenal"
+  },
+  {
+    "indonesia": "sekitar",
+    "dusun": "ngaji, aji",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membuka",
+    "dusun": "mukok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "buka",
+    "dusun": "mukok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "habis",
+    "dusun": "abis",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "masih ada",
+    "dusun": "masih gede",
+    "contoh_id": "",
+    "contoh_dusun": "sudah abis martabaknya, masih ada (masih gede)"
+  },
+  {
+    "indonesia": "membeli",
+    "dusun": "meli",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "beli",
+    "dusun": "meli",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengembalikan",
+    "dusun": "malik ke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menerima",
+    "dusun": "nerime",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "juga",
+    "dusun": "pulek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kaya",
+    "dusun": "beduit",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidur",
+    "dusun": "tedok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ngantuk",
+    "dusun": "ngantok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "merokok",
+    "dusun": "ngudut",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lanjutkan",
+    "dusun": "lajukelah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "memasak",
+    "dusun": "masak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lauk",
+    "dusun": "laok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ikan asin",
+    "dusun": "balur",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pekasam",
+    "dusun": "pede",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ikan asap",
+    "dusun": "ikan salai",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jual",
+    "dusun": "juol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menjual",
+    "dusun": "nyuol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak enak badan",
+    "dusun": "idok ilok awak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "enak",
+    "dusun": "ilok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sholat",
+    "dusun": "semayong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "masjid",
+    "dusun": "mesjid",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jalan",
+    "dusun": "jalon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "balai desa",
+    "dusun": "baloi desa",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hitam",
+    "dusun": "itam",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "merah",
+    "dusun": "abong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "warna",
+    "dusun": "warne",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kuning",
+    "dusun": "koneng",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hijau",
+    "dusun": "ijou",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gayung",
+    "dusun": "timbuk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kebun karet",
+    "dusun": "kebon balom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "barang",
+    "dusun": "barong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bangku",
+    "dusun": "pance",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berdiri",
+    "dusun": "temegi, tegok",
+    "contoh_id": "",
+    "contoh_dusun": "coba kamu berdiri (temegi)"
+  },
+  {
+    "indonesia": "duduk lesehan",
+    "dusun": "melepoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ada",
+    "dusun": "ade",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "anak-anak",
+    "dusun": "budak kecik",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "angin",
+    "dusun": "angen",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "buang air besar",
+    "dusun": "birek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "buang air kecil",
+    "dusun": "kemek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sadap karet",
+    "dusun": "mantang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pergi kamu dari sini",
+    "dusun": "kesahlah dengo nih sikok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "periksa",
+    "dusun": "keleke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lagi apa",
+    "dusun": "lagi ngape",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "merespon",
+    "dusun": "melayanke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tolong respon",
+    "dusun": "tolong layanke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "panggilan kepada kakak orang tua",
+    "dusun": "uwak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "terletak di",
+    "dusun": "ade di",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "terlalu ",
+    "dusun": "igek",
+    "contoh_id": "",
+    "contoh_dusun": "janganlah terlalu sombong (janganlah sombong igek)"
+  },
+  {
+    "indonesia": "kawin lari",
+    "dusun": "belarian",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jangan",
+    "dusun": "jangon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kejar",
+    "dusun": "alaw, kejor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menikahi wanita",
+    "dusun": "minikenye",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berkelahi, berantem",
+    "dusun": "begoco, belagi",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengusir",
+    "dusun": "kesalah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "satu kali",
+    "dusun": "sekali",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menyalahkan",
+    "dusun": "nempoke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bertemu",
+    "dusun": "betemu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tergila-gila",
+    "dusun": "tegile gile",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "karena",
+    "dusun": "oleh",
+    "contoh_id": "",
+    "contoh_dusun": "tergila-gila karena (ole) wanita itu"
+  },
+  {
+    "indonesia": "kata ancaman",
+    "dusun": "awas bae",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kita tapi diri sendiri, saya",
+    "dusun": "toboh, tubuh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pura-pura",
+    "dusun": "icak icak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bangun",
+    "dusun": "gerok",
+    "contoh_id": "",
+    "contoh_dusun": "baru bangun (mpai gerok)"
+  },
+  {
+    "indonesia": "buat",
+    "dusun": "mikin",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menunjukan sikap bingung atau tidak tau",
+    "dusun": "entah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kerbau",
+    "dusun": "kebou",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "itik",
+    "dusun": "etek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menunjukan ekspresi yang menyengsarakan kita",
+    "dusun": "monoooo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "eskavator",
+    "dusun": "pelar",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kereta api",
+    "dusun": "sepor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "trauma",
+    "dusun": "tekesot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "rencana",
+    "dusun": "rasan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "wajah (muka seseorang)",
+    "dusun": "ulas, rai",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "basahan untuk mandi",
+    "dusun": "telesan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mukena",
+    "dusun": "telekong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "meledak",
+    "dusun": "meletop",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengambil getah karet dari mangkok",
+    "dusun": "nateng",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nyeruput",
+    "dusun": "ngirop, atau irop",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "penciuman",
+    "dusun": "embau",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "rusuh, ribut",
+    "dusun": "erok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sok",
+    "dusun": "cak",
+    "contoh_id": "",
+    "contoh_dusun": "sok melawan, berani (cak melawan)"
+  },
+  {
+    "indonesia": "memberikan",
+    "dusun": "ngenjuk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "orang yang berjualan keliling (pedagang kaki lima)",
+    "dusun": "ngenyot",
+    "contoh_id": "",
+    "contoh_dusun": "orang pedagang kaki lima (wang ngenyot)"
+  },
+  {
+    "indonesia": "berhutang",
+    "dusun": "butong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kiri (menunjukkan arah)",
+    "dusun": "kidou",
+    "contoh_id": "",
+    "contoh_dusun": "belok kiri (kidou)"
+  },
+  {
+    "indonesia": "biarkan",
+    "dusun": "nangkelah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sapa",
+    "dusun": "awel",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "iya (setuju atau ok)",
+    "dusun": "aoooo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bermain",
+    "dusun": "busik",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kasih, beri",
+    "dusun": "njuk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ubi ungu",
+    "dusun": "besile",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ubi kayu",
+    "dusun": "biwol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "senyum",
+    "dusun": "cenge",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "masak nasi",
+    "dusun": "betanak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ikan lele",
+    "dusun": "keli",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "plastik yang di bakar meleleh",
+    "dusun": "ngelocot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sedotan",
+    "dusun": "cocop, pipet",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jatuh dari tempat yang tinggi",
+    "dusun": "tetek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menyatu (lebih dari 2 objek atau benda menyatu)",
+    "dusun": "betangkup",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kuda",
+    "dusun": "kudo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ayahnya kake",
+    "dusun": "puyang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "orang tua (sebutan untuk kedua orang tua)",
+    "dusun": "rentue",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mertua laki-laki",
+    "dusun": "kiai",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hantu",
+    "dusun": "antu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sial",
+    "dusun": "andom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menjauh",
+    "dusun": "nyauh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "orang yang terkena penyakit gatal-gatal",
+    "dusun": "keridoson",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "diganggu orang yang sudah mati",
+    "dusun": "keteguran",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "serangga kutu busuk",
+    "dusun": "kepinding",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lembek",
+    "dusun": "loyak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "permentasi buah durian",
+    "dusun": "jeruk, tempoyak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "orang yang dimandikan dengan jeruk nipis",
+    "dusun": "belanger",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bacaan mantra-mantra oleh dukun",
+    "dusun": "jampi",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "terakhir",
+    "dusun": "tengion",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pembohong",
+    "dusun": "pemebung",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gigi ompong",
+    "dusun": "gigi ronggong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kerkeluarnya sesuatu dalam tubuh makhluk hidup",
+    "dusun": "tebruye",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "benda tajam yang memasuki badan sehingga menyebabkan infeksi",
+    "dusun": "tetanus",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ikan ukuran kecil-kecil",
+    "dusun": "rosep",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pisang yang di campur dengan gandum sehingga tercampur aduk",
+    "dusun": "godo-godo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lalapan",
+    "dusun": "ulam",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bepergian keluar",
+    "dusun": "berayou, medong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menjaga bayi atau anak kecil",
+    "dusun": "ngasoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lomba",
+    "dusun": "lombo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hutan yang telah digunduli dan di tanami kembali",
+    "dusun": "ume",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "luntur",
+    "dusun": "lontor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mengambil ikan dengan alat tradisional menggunakan tangan",
+    "dusun": "nangguk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menangkap ikan dengan menggunakan jaring ya di kombinasi dengan bambu",
+    "dusun": "nangkol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menangkap ikan dengan menggunakan jaring kecil dengan tangan",
+    "dusun": "ngecis",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "benar,betul",
+    "dusun": "nyelah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pagi",
+    "dusun": "pagi",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "membawa",
+    "dusun": "meweh, ngunde",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "berat",
+    "dusun": "berot",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "di depan",
+    "dusun": "di penan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ke depan",
+    "dusun": "ke penan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sudahlah",
+    "dusun": "dek pulek",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tidak boleh",
+    "dusun": "idok bulih",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pelit, kikir",
+    "dusun": "penyeti, kelet",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pelan-pelan",
+    "dusun": "begoyo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pelan-pelan tapi cepat",
+    "dusun": "bekinco",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tingal (menunjukkan sesuatu barang dengan jumlah sedikit)",
+    "dusun": "gede",
+    "contoh_id": "",
+    "contoh_dusun": "tinggal sedikit (gede sedikit)"
+  },
+  {
+    "indonesia": "kembalian uang",
+    "dusun": "sosok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "memberikan kembalian uang",
+    "dusun": "nyosok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hari",
+    "dusun": "ari",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kelapa",
+    "dusun": "nio",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kelapa muda",
+    "dusun": "dogon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "galah kayu",
+    "dusun": "mentaran",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bola",
+    "dusun": "bol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sepak bola",
+    "dusun": "bol kaki",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "buah",
+    "dusun": "buoh",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lempar",
+    "dusun": "centang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "bersembunyi",
+    "dusun": "bekurung",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kilogram",
+    "dusun": "kilu",
+    "contoh_id": "",
+    "contoh_dusun": "1 kilogram (sekilu)"
+  },
+  {
+    "indonesia": "ekor",
+    "dusun": "ekok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "apa saja (bertanya jenis barang)",
+    "dusun": "ape ape",
+    "contoh_id": "",
+    "contoh_dusun": "ada barang apa saja (ape-ape, ape bae)"
+  },
+  {
+    "indonesia": "asam jawa",
+    "dusun": "asam jawe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "celana formal",
+    "dusun": "sepan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "jualan",
+    "dusun": "juolon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "untuk",
+    "dusun": "ngijeke",
+    "contoh_id": "",
+    "contoh_dusun": "untuk suami saya (ngijeke lakiku)"
+  },
+  {
+    "indonesia": "terasi",
+    "dusun": "caluk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "makanan di pagi hari",
+    "dusun": "perlak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menggosip",
+    "dusun": "netahke",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "banyak",
+    "dusun": "banyok, betuluk",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "rumah",
+    "dusun": "umah",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lah ndok",
+    "dusun": "hampir",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "nongkrong",
+    "dusun": "berunggu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kekurangan tidur atau ngantuk banget",
+    "dusun": "rungau",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "di kerjakan",
+    "dusun": "di pelanke",
+    "contoh_id": "",
+    "contoh_dusun": "sudah di kerjakan (dipelanke)"
+  },
+  {
+    "indonesia": "peliharaan",
+    "dusun": "ingonan",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tuyul",
+    "dusun": "toyol",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kaki ayam yang di masak gulai",
+    "dusun": "kais ayam",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kandang",
+    "dusun": "kandong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "suara besar",
+    "dusun": "rengak",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "datang",
+    "dusun": "datong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "sering-sering",
+    "dusun": "neman-neman",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tercengang / ekspresi terpesona melihat sesuatu",
+    "dusun": "temanga",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "manggil",
+    "dusun": "pantau",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  }
+]
