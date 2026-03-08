@@ -237,7 +237,7 @@ nav {
 }
 
 .hero-content h1 {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 20px;
@@ -306,15 +306,15 @@ nav {
 
 .logo-container {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 480px;
+    height: 480px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .floating-logo {
-    width: 300px;
+    width: 400px;
     z-index: 2;
     animation: float 6s ease-in-out infinite;
     filter: drop-shadow(0 0 50px var(--emerald-glow));
