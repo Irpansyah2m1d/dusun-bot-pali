@@ -4,7 +4,7 @@
   "description": "API Open Source untuk chatbot Bahasa Dusun menggunakan RAG sederhana",
   "main": "api/chat.js",
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "scripts": {
     "start": "node api/chat.js",
