@@ -17,8 +17,8 @@ Project ini diinisiasi oleh **Irpansyah - Kampung Digital Air Itam** (@mpai_bela
 
 1. **Clone Repository**:
    ```bash
-   git clone https://github.com/username/dusun-ai.git
-   cd dusun-ai
+   git clone https://github.com/Irpansyah2m1d/dusun-bot-pali.git
+   cd dusun-bot-pali
    ```
 
 2. **Install Dependensi**:
@@ -26,7 +26,13 @@ Project ini diinisiasi oleh **Irpansyah - Kampung Digital Air Itam** (@mpai_bela
    npm install
    ```
 
-3. **Jalankan Lokal**:
+3. **Dapatkan API Key**:
+   Untuk menggunakan fitur Chat dan Translate, dengo butuh API Key dari salah satu provider berikut:
+   *   **Google Gemini** (Sangat Direkomendasikan): [Dapatkan di Google AI Studio](https://aistudio.google.com/app/apikey)
+   *   **Groq Cloud**: [Dapatkan di Groq Console](https://console.groq.com/keys)
+   *   **Z.ai**: [Dapatkan di Z.ai Platform](https://z.ai/)
+
+4. **Jalankan Lokal**:
    ```bash
    npm run dev
    ```
@@ -44,8 +50,8 @@ Endpoint untuk mengobrol santai dengan Dusun Bot.
     ```json
     {
       "prompt": "Halo dusun bot, lagi ngape serekak ikak?",
-      "provider": "gemini",
-      "userApiKey": "API_KEY_GEMINI_ANDA"
+      "provider": "gemini", // Pilihan: "gemini", "groq", atau "zai"
+      "userApiKey": "API_KEY_DENGIO"
     }
     ```
 
@@ -69,7 +75,7 @@ Endpoint untuk menejermahkan kalimat panjang secara akurat tanpa basa-basi.
       "text": "Besok saya ingin pergi ke pasar bersama ibu saya.",
       "direction": "id-to-dusun", // Pilihan: "id-to-dusun" atau "dusun-to-id"
       "provider": "gemini",
-      "userApiKey": "API_KEY_GEMINI_ANDA"
+      "userApiKey": "API_KEY_DENGIO"
     }
     ```
 
@@ -84,8 +90,10 @@ Saat ini kosa kata yang terdaftar masih sangat terbatas (sekitar **500+ data**).
 Kami sangat terbuka bagi siapa saja yang ingin berkontribusi menambah kosa kata atau memperbaiki dialek mesin ini. Jika Anda ingin membantu atau bertanya, silakan hubungi:
 
 📧 **Email**: [kampungdigitalairitam@gmail.com](mailto:kampungdigitalairitam@gmail.com)  
-📱 **WhatsApp**: [Kontak Irpansyah](https://wa.me/your-whatsapp-number) *(Silakan ganti URL dengan nomor Anda)*  
-📸 **Instagram**: [@mpai_belajo](https://instagram.com/mpai_belajo)
+📱 **WhatsApp**: [082281488763](https://wa.me/6282281488763)  
+📸 **Instagram**: [@mpai_belajo](https://instagram.com/mpai_belajo)  
+🌐 **Portfolio**: [irpansyah.vercel.app](https://irpansyah.vercel.app/)  
+🏢 **Komunitas**: [kdai.my.id](https://kdai.my.id)
 
 ---
 
