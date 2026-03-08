@@ -4,11 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dusun Bot PALI - Melestarikan Dialek, Menghubungkan Teknologi</title>
+    <meta name="description" content="Dusun Bot PALI: API Open Source dan Chatbot AI untuk melestarikan Bahasa Dusun PALI. Dokumentasi digital warisan budaya dengan teknologi RAG terkini.">
+    <meta name="keywords" content="Dusun Bot, PALI, Bahasa Dusun, Penukal Abab Lematang Ilir, AI, Chatbot, Sumatera Selatan, Melestarikan Dialek">
+    <meta name="author" content="Irpansyah">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dusun-bot-pali.vercel.app/">
+    <meta property="og:title" content="Dusun Bot PALI - Melestarikan Dialek, Menghubungkan Teknologi">
+    <meta property="og:description" content="API Open Source dan Chatbot AI cerdas untuk Bahasa Dusun PALI. Mari lestarikan dialek lokal dengan teknologi.">
+    <meta property="og:image" content="https://dusun-bot-pali.vercel.app/dusun-bot.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://dusun-bot-pali.vercel.app/">
+    <meta property="twitter:title" content="Dusun Bot PALI - Melestarikan Dialek, Menghubungkan Teknologi">
+    <meta property="twitter:description" content="API Open Source dan Chatbot AI cerdas untuk Bahasa Dusun PALI. Mari lestarikan dialek lokal dengan teknologi.">
+    <meta property="twitter:image" content="https://dusun-bot-pali.vercel.app/dusun-bot.png">
+
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="icon" type="image/png" href="/dusun-bot.png">
 </head>
 <body>
     <div class="glow-orb" id="orb1"></div>
@@ -17,7 +35,7 @@
     <header>
         <nav>
             <div class="logo-area" onclick="window.scrollTo(0, 0)">
-                <img src="/logo.png" alt="Dusun Bot Logo" class="nav-logo">
+                <img src="/dusun-bot.png" alt="Dusun Bot Logo" class="nav-logo">
                 <span>Dusun Bot <span class="accent">PALI</span></span>
             </div>
             <div class="nav-links" id="nav-links">
@@ -48,7 +66,7 @@
             </div>
             <div class="hero-visual fade-in delay-3">
                 <div class="logo-container">
-                    <img src="/logo.png" alt="Dusun Bot Hero Logo" class="floating-logo">
+                    <img src="/dusun-bot.png" alt="Dusun Bot Hero Logo" class="floating-logo">
                     <div class="pulse"></div>
                 </div>
             </div>
@@ -184,6 +202,18 @@
                     <summary>Bisakah Saya Berkontribusi Menambah Kata?</summary>
                     <div class="faq-content">
                         <p>Sangat bisa! Project ini adalah milik komunitas. Dengo bisa mengirimkan kosa kata baru melalui WhatsApp Pengembang atau langsung melakukan Pull Request di GitHub.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Bagaimana Keamanan API Key Saya?</summary>
+                    <div class="faq-content">
+                        <p>API Key Anda dikirimkan langsung dari client ke endpoint serverless kami dan hanya digunakan untuk autentikasi ke provider AI (Gemini/Groq). Kami tidak menyimpan API Key Anda di database kami.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Di mana Saya Bisa Menemukan Dokumentasi Lengkap?</summary>
+                    <div class="faq-content">
+                        <p>Dokumentasi teknis lengkap beserta contoh script dalam berbagai bahasa pemrograman dapat Anda temukan di repositori GitHub resmi kami.</p>
                     </div>
                 </details>
             </div>
