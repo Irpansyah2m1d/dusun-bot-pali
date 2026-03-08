@@ -12,9 +12,9 @@
     <link rel="icon" type="image/png" href="/dusun-bot.png">
     <style>
         .kamus-page {
-            padding: 120px 5% 60px;
-            min-height: 100vh;
-            max-width: 1000px;
+            padding: 80px 5% 60px;
+            min-height: 80vh;
+            max-width: 1200px;
             margin: 0 auto;
         }
         .kamus-header {
@@ -30,33 +30,26 @@
             color: var(--text-muted);
             font-size: 1.2rem;
         }
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--emerald-green);
-            text-decoration: none;
-            font-weight: 700;
-            margin-bottom: 30px;
-            transition: 0.3s;
-        }
-        .back-btn:hover {
-            transform: translateX(-5px);
-        }
         .full-search {
             background: var(--slate-gray);
-            padding: 40px;
-            border-radius: 30px;
+            padding: 50px 40px;
+            border-radius: 40px;
             border: 1px solid var(--border-glass);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
             margin-bottom: 40px;
         }
         .total-stats {
-            margin-top: 20px;
-            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-size: 1rem;
             color: var(--emerald-green);
-            font-weight: 600;
+            font-weight: 700;
             display: none;
+            text-align: left;
+            padding-left: 10px;
+        }
+        @media (max-width: 768px) {
+            .kamus-header h1 { font-size: 2.22rem; }
+            .full-search { padding: 30px 20px; }
         }
     </style>
 </head>
@@ -70,15 +63,21 @@
                 <img src="/dusun-bot.png" alt="Dusun Bot Logo" class="nav-logo">
                 <span>Dusun Bot <span class="accent">PALI</span></span>
             </div>
-            <div class="nav-links">
-                <a href="/" class="btn-secondary" style="padding: 10px 20px;">Beranda</a>
+            <div class="nav-links" id="nav-links">
+                <a href="/">Beranda</a>
+                <a href="/#features">Fitur</a>
+                <a href="/#docs">API</a>
+                <a href="https://github.com/Irpansyah2m1d/dusun-bot-pali" target="_blank" class="btn-github">GitHub</a>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </div>
         </nav>
     </header>
 
     <main class="kamus-page">
-        <a href="/" class="back-btn">← Kembali ke Beranda</a>
-        
         <div class="kamus-header fade-in">
             <h1>Kamus Digital <span class="accent">PALI</span></h1>
             <p>Telusuri ribuan kosa kata dan dialek warisan leluhur PALI.</p>
@@ -97,7 +96,7 @@
             
             <div id="total-stats" class="total-stats">Ditemukan 0 hasil</div>
 
-            <div id="kamus-result" class="kamus-result" style="margin-top: 30px;">
+            <div id="kamus-result" class="kamus-result">
                 <div class="placeholder-text">Ketik kata di atas untuk mulai mencari...</div>
             </div>
         </div>
@@ -105,11 +104,29 @@
 
     <footer>
         <div class="footer-content">
-            <p class="copyright">&copy; 2024 Dusun Bot PALI. Bagian dari <a href="https://kdai.my.id" target="_blank">Kampung Digital Air Itam</a>.</p>
+            <div class="footer-info">
+                <h3>Kampung Digital Air Itam</h3>
+                <p>Membangun Masa Depan Digital Berbasis Desa & Budaya.</p>
+                <div class="socials">
+                    <a href="https://irpansyah.vercel.app/" target="_blank">Portfolio</a>
+                    <a href="https://kdai.my.id" target="_blank">Komunitas</a>
+                    <a href="https://wa.me/6282281488763" target="_blank">WhatsApp</a>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2026 Crafted with ❤️ by <a href="https://irpansyah.vercel.app/">Irpansyah</a>. Merdeka dalam Berkarya.</p>
         </div>
     </footer>
 
     <script>
+        // Hamburger Menu Toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
         const kamusInput = document.getElementById('kamus-input');
         const kamusResult = document.getElementById('kamus-result');
         const totalStats = document.getElementById('total-stats');
@@ -144,7 +161,7 @@
                 const data = await response.json();
 
                 if (data.success && data.results.length > 0) {
-                    totalStats.innerText = `Ditemukan ${data.totalResults} hasil`;
+                    totalStats.innerText = `Ditemukan ${data.totalResults} hasil kosa kata`;
                     totalStats.style.display = 'block';
 
                     let html = '<div class="result-grid">';
