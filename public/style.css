@@ -223,7 +223,7 @@ nav {
 
 /* Hero */
 .hero {
-    padding: 60px 5% 80px;
+    padding: 30px 5% 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -804,7 +804,7 @@ footer {
     }
 
     .hero {
-        padding: 80px 5% 40px;
+        padding: 40px 5% 30px;
         text-align: center;
         justify-content: center;
     }
