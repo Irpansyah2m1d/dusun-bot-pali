@@ -1544,3 +1544,59 @@ textarea.form-input {
     padding: 4px 10px;
     border-radius: 20px;
 }
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--emerald-green);
+    color: var(--slate-black);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1.5rem;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s;
+    box-shadow: 0 10px 20px var(--emerald-glow);
+    border: none;
+    cursor: pointer;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px);
+    background: white;
+}
+
+/* Stats Animation Utils */
+.stat-val {
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .kamus-actions {
+        flex-direction: column !important;
+        flex-wrap: wrap !important;
+        overflow-x: visible !important;
+    }
+
+    .kamus-actions a,
+    .kamus-actions button {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+}

@@ -248,11 +248,11 @@
                 </div>
                 <div class="mission-stats">
                     <div class="stat-card">
-                        <span class="stat-val">2.8rb+</span>
+                        <span class="stat-val" data-target="2800">0</span><span class="stat-plus">+</span>
                         <span class="stat-label">Dataset Kata</span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-val">3+</span>
+                        <span class="stat-val" data-target="3">0</span><span class="stat-plus">+</span>
                         <span class="stat-label">Mesin AI</span>
                     </div>
                 </div>
@@ -399,6 +399,10 @@
                 </form>
             </div>
         </div>
+        </div>
+
+        <!-- Back to Top -->
+        <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
     </main>
 
     <footer role="contentinfo">
@@ -656,6 +660,53 @@
                 btnSubmit.disabled = false;
             }
         }
+
+        // --- Back to Top & Navbar Fixed ---
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // --- Stats Counter Animation ---
+        function animateStats() {
+            const stats = document.querySelectorAll('.stat-val');
+            const speed = 200;
+
+            stats.forEach(counter => {
+                const animate = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const increment = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(animate, 10);
+                    } else {
+                        counter.innerText = target === 2800 ? "2.8rb" : target;
+                    }
+                };
+                animate();
+            });
+        }
+
+        // Intersection Observer for Animation Trigger
+        const statsSection = document.querySelector('.mission-stats');
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                animateStats();
+                observer.unobserve(statsSection);
+            }
+        }, { threshold: 0.5 });
+
+        observer.observe(statsSection);
     </script>
 </body>
 </html>
