@@ -1012,14 +1012,17 @@ footer {
         width: 100%;
         flex-direction: row;
         overflow-x: auto;
-        padding-bottom: 10px;
+        padding-bottom: 20px;
         -webkit-overflow-scrolling: touch;
+        gap: 12px;
+        justify-content: flex-start;
     }
 
     .step-item {
         white-space: nowrap;
-        flex: 1;
-        min-width: 0;
+        flex: 0 0 auto;
+        padding: 16px 20px;
+        font-size: 0.85rem;
     }
 
     .hero-visual {
@@ -1442,8 +1445,25 @@ textarea.form-input {
 }
 
 @media (max-width: 600px) {
+    .modal-overlay {
+        align-items: flex-start;
+        padding-top: 40px;
+        overflow-y: auto;
+    }
+
     .modal {
         padding: 30px 20px;
+        border-radius: 20px;
+        max-height: none;
+        margin-bottom: 40px;
+    }
+
+    .modal h3 {
+        font-size: 1.5rem;
+    }
+
+    .modal p {
+        margin-bottom: 20px;
     }
 }
 
