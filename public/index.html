@@ -507,8 +507,17 @@
                 kamusResult.innerHTML = '<div class="placeholder-text">Mencari...</div>';
 
                 try {
+                    // Cek ulang apakah user sudah menghapus huruf
+                    if (kamusInput.value.trim().length < 2) {
+                        kamusResult.innerHTML = '<div class="placeholder-text">Coba cari satu kata di sini secara live...</div>';
+                        return;
+                    }
+
                     const response = await fetch(`/api/kamus?q=${encodeURIComponent(query)}`);
                     const data = await response.json();
+
+                    // Cek lagi setelah fetch selesai agar tidak memunculkan kata jika sudah keburu dihapus
+                    if (kamusInput.value.trim().length < 2) return;
 
                     if (data.success && data.results.length > 0) {
                         let html = '<div class="result-grid">';

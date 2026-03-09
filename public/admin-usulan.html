@@ -8,10 +8,36 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        body { padding: 40px 5%; background: var(--deep-blue); min-height: 100vh; }
-        .admin-container { max-width: 1000px; margin: 0 auto; }
-        .admin-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+        body { background: var(--deep-blue); min-height: 100vh; display: flex; flex-direction: column; }
+        .admin-wrapper { flex: 1; padding: 40px 5%; margin-top: 60px; }
+        .admin-container { max-width: 1200px; margin: 0 auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; }
         .admin-header h1 { font-size: 2.5rem; margin-bottom: 8px; }
+
+        /* Navbar */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-glass); z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 5%;
+        }
+        .nav-brand { color: white; font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
+        .nav-actions { display: flex; gap: 15px; align-items: center; }
+
+        /* Footer */
+        footer {
+            background: rgba(0,0,0,0.3); border-top: 1px solid var(--border-glass);
+            padding: 20px 5%; text-align: center; color: var(--text-muted); font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        /* Toggle Switch */
+        .toggle-btn {
+            background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass);
+            color: white; padding: 6px 16px; border-radius: 20px; cursor: pointer;
+            font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px;
+        }
+        .toggle-btn.supabase-active { background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.5); color: #8bb4f6; }
+        .toggle-btn.json-active { background: rgba(39, 201, 63, 0.2); border-color: rgba(39, 201, 63, 0.5); color: #80f68e; }
         
         .login-box {
             background: var(--slate-gray); padding: 40px; border-radius: 20px;
@@ -67,25 +93,37 @@
 </head>
 <body>
 
-    <!-- Login Area -->
-    <div id="login-area" class="login-box">
-        <h2 style="margin-bottom: 20px; color: white;">Admin Login</h2>
-        <div class="input-group">
-            <input type="password" id="admin-pass" class="form-input" placeholder="Masukkan Password Admin..." style="width: 100%; padding-right: 40px; text-align: center;">
-            <span class="eye-icon" onclick="togglePassword()">👁️</span>
+    <nav id="navbar" class="hidden">
+        <div class="nav-brand"><span>🛡️</span> Admin PALI</div>
+        <div class="nav-actions">
+            <button id="dataSourceBtn" onclick="toggleSource()" class="toggle-btn json-active">Source: JSON</button>
+            <button onclick="logout()" class="btn-sm btn-danger">Logout</button>
         </div>
-        <button onclick="login()" class="btn-primary" style="width: 100%; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold;">Masuk Dashboard</button>
-        <p id="login-error" style="color: #ff5f56; margin-top: 15px; font-size: 0.9rem; display: none;">Password salah!</p>
-    </div>
+    </nav>
 
-    <!-- Dashboard Area -->
-    <div id="dashboard-area" class="admin-container hidden">
+    <div class="admin-wrapper">
+        <!-- Login Area -->
+        <div id="login-area" class="login-box">
+            <h2 style="margin-bottom: 20px; color: white;">Admin Login</h2>
+            <div class="input-group">
+                <input type="password" id="admin-pass" class="form-input" placeholder="Masukkan Password Admin..." style="width: 100%; padding-right: 40px; text-align: center;">
+                <span class="eye-icon" onclick="togglePassword()">👁️</span>
+            </div>
+            <button onclick="login()" class="btn-primary" style="width: 100%; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold;">Masuk Dashboard</button>
+            <p id="login-error" style="color: #ff5f56; margin-top: 15px; font-size: 0.9rem; display: none;">Password salah!</p>
+        </div>
+
+        <!-- Dashboard Area -->
+        <div id="dashboard-area" class="admin-container hidden">
         <div class="admin-header">
             <div>
                 <h1>Data <span class="accent">Usulan</span></h1>
                 <p style="color: var(--text-muted);">Review kosakata yang dikirim oleh audiens sebelum dimasukkan ke "kamus.json".</p>
             </div>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end;">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; align-items: center;">
+                <label for="jsonUpload" class="btn-sm btn-edit" style="cursor: pointer;">📥 Import JSON</label>
+                <input type="file" id="jsonUpload" accept=".json" style="display: none;" onchange="handleFileUpload(event)">
+                
                 <button onclick="migrateKamus()" class="btn-sm btn-migrate">🚀 Migrasi kamus.json ke Supabase</button>
                 <button onclick="fetchData()" class="btn-sm btn-secondary" style="background: transparent; border-color: var(--text-muted); color: var(--text-muted);">Refresh Data</button>
                 <button onclick="generateJson()" class="btn-sm btn-copy">📋 Copy Formatted JSON</button>
@@ -113,32 +151,16 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div id="edit-modal" class="modal-overlay">
-        <div class="modal">
-            <h3>Edit Usulan Kosakata</h3>
-            <input type="hidden" id="edit-id">
-            <label>B. Indonesia</label>
-            <input type="text" id="edit-indo">
-            <label>B. PALI</label>
-            <input type="text" id="edit-dusun">
-            <label>Contoh ID</label>
-            <input type="text" id="edit-contoh-id">
-            <label>Contoh PALI</label>
-            <input type="text" id="edit-contoh-dusun">
-            
-            <div style="display: flex; gap: 12px; margin-top: 20px;">
-                <button onclick="saveEdit()" class="btn-sm btn-copy" style="flex: 1; padding: 12px;">Simpan Perubahan</button>
-                <button onclick="closeEditModal()" class="btn-sm btn-secondary" style="flex: 1; padding: 12px; background: transparent; border-color: var(--text-muted); color: var(--text-muted);">Batal</button>
-            </div>
-        </div>
-    </div>
+    <footer id="footer" class="hidden">
+        <p>&copy; 2026 Dusun Bot PALI - Admin Dashboard</p>
+    </footer>
 
     <div id="toast" class="toast">Sukses</div>
 
     <script>
         let adminPassword = '';
         let allData = [];
+        let currentSource = 'json';
 
         function showToast(msg, isError = false) {
             const toast = document.getElementById('toast');
@@ -182,21 +204,36 @@
 
         async function fetchData() {
             try {
+                // Fetch Settings (Source)
+                const resSetting = await fetch('/api/admin-usulan?type=settings', {
+                    method: 'GET',
+                    headers: { 'x-admin-password': adminPassword }
+                });
+
+                if (resSetting.status === 401) {
+                    document.getElementById('login-error').style.display = 'block';
+                    return;
+                }
+                
+                const jsonSetting = await resSetting.json();
+                if(jsonSetting.success) {
+                    currentSource = jsonSetting.source;
+                    updateSourceUI();
+                }
+
+                // Fetch Table Data
                 const res = await fetch('/api/admin-usulan', {
                     method: 'GET',
                     headers: { 'x-admin-password': adminPassword }
                 });
                 
                 const json = await res.json();
-                
-                if (res.status === 401) {
-                    document.getElementById('login-error').style.display = 'block';
-                    return;
-                }
 
                 if (json.success) {
                     document.getElementById('login-area').classList.add('hidden');
                     document.getElementById('dashboard-area').classList.remove('hidden');
+                    document.getElementById('navbar').classList.remove('hidden');
+                    document.getElementById('footer').classList.remove('hidden');
                     allData = json.data;
                     renderTable();
                 } else {
@@ -204,6 +241,47 @@
                 }
             } catch (err) {
                 showToast("Koneksi gagal", true);
+            }
+        }
+
+        function logout() {
+            if(!confirm("Anda yakin ingin logout?")) return;
+            adminPassword = '';
+            document.getElementById('admin-pass').value = '';
+            document.getElementById('dashboard-area').classList.add('hidden');
+            document.getElementById('navbar').classList.add('hidden');
+            document.getElementById('footer').classList.add('hidden');
+            document.getElementById('login-area').classList.remove('hidden');
+        }
+
+        function updateSourceUI() {
+            const btn = document.getElementById('dataSourceBtn');
+            if(currentSource === 'supabase') {
+                btn.className = 'toggle-btn supabase-active';
+                btn.innerHTML = '🗄️ Source: SUPABASE';
+            } else {
+                btn.className = 'toggle-btn json-active';
+                btn.innerHTML = '📄 Source: JSON';
+            }
+        }
+
+        async function toggleSource() {
+            const newSource = currentSource === 'json' ? 'supabase' : 'json';
+            const confirmMsg = `Ubah sumber data website publik menjadi ${newSource.toUpperCase()}?`;
+            if(!confirm(confirmMsg)) return;
+
+            showToast("Mengubah source...");
+            try {
+                const json = await postAction('TOGGLE_SOURCE', { source: newSource });
+                if(json.success) {
+                    currentSource = newSource;
+                    updateSourceUI();
+                    showToast(json.message);
+                } else {
+                    showToast(json.message, true);
+                }
+            } catch(e) {
+                showToast("Gagal mengubah source", true);
             }
         }
 
@@ -238,6 +316,31 @@
                 `;
             });
             tbody.innerHTML = html;
+        }
+
+        // --- Import JSON ---
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const parsedJson = JSON.parse(e.target.result);
+                    if(!confirm(`Yakin ingin mengimpor ${parsedJson.length} kosa kata ke Supabase?`)) {
+                        event.target.value = '';
+                        return;
+                    }
+                    showToast("Sedang mengimpor data...");
+                    const resJson = await postAction('IMPORT_JSON', { jsonData: parsedJson });
+                    if(resJson.success) showToast(resJson.message);
+                    else showToast(resJson.message, true);
+                    event.target.value = '';
+                } catch(err) {
+                    showToast("Format JSON tidak valid!", true);
+                }
+            };
+            reader.readAsText(file);
         }
 
         // --- Migrate Kamus ---

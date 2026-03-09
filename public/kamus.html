@@ -274,8 +274,16 @@
                 kamusResult.innerHTML = '<div class="placeholder-text">Mencari...</div>';
 
                 try {
+                    if (kamusInput.value.trim().length < 2) {
+                        kamusResult.innerHTML = '<div class="placeholder-text">Ketik kata di atas untuk mulai mencari...</div>';
+                        totalStats.style.display = 'none';
+                        return;
+                    }
+
                     const response = await fetch(`/api/kamus?q=${encodeURIComponent(query)}`);
                     const data = await response.json();
+
+                    if (kamusInput.value.trim().length < 2) return;
 
                     if (data.success && data.results.length > 0) {
                         totalStats.innerText = `Ditemukan ${data.totalResults} hasil kosa kata`;
