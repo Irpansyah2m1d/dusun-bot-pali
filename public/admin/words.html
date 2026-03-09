@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderasi Kosakata | Admin Dusun PALI</title>
+    <link rel="stylesheet" href="/admin/admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/admin/auth-check.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="stat-icon" style="margin-bottom: 0; padding:10px; width: 45px; height: 45px;">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h2><span>Dusun Bot</span></h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="/admin/index.html" class="nav-link"><i class="fas fa-gauge-high"></i> <span>Dashboard</span></a>
+            <a href="/admin/words.html" class="nav-link active"><i class="fas fa-language"></i> <span>Kosa Kata</span></a>
+            <a href="/admin/folklore.html" class="nav-link"><i class="fas fa-scroll"></i> <span>Cerita Rakyat</span></a>
+            <a href="/admin/settings.html" class="nav-link"><i class="fas fa-gear"></i> <span>Settings</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/" class="nav-link"><i class="fas fa-house"></i> <span>Ke Website</span></a>
+            <div class="nav-link" onclick="logout()" style="color: #ef4444;"><i class="fas fa-power-off"></i> <span>Logout</span></div>
+        </div>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="topbar">
+            <div class="page-title"><h1>Moderasi Kosakata</h1></div>
+            <div class="top-actions">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin+PALI&background=10b981&color=fff" alt="Avatar">
+                    <span style="font-weight: 700;">Admin PALI</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-area">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-language"></i> Daftar Usulan Menunggu Moderasi</h3>
+                </div>
+                <div id="wordsList" class="loading-state">Sedang memuat usulan...</div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const password = localStorage.getItem('admin_password');
+
+        async function loadWords() {
+            try {
+                const res = await fetch('/api/admin-usulan', { 
+                    headers: { 'x-admin-password': password } 
+                });
+                const result = await res.json();
+                
+                if(!result.success) return logout();
+                
+                const list = document.getElementById('wordsList');
+                if(result.data.length === 0) {
+                    list.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-dim);">
+                        <i class="fas fa-circle-check" style="font-size: 3rem; margin-bottom: 20px; color: var(--accent-green);"></i>
+                        <p>Bagus! Semua usulan sudah diproses.</p>
+                    </div>`;
+                    return;
+                }
+
+                const tableHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Kata (ID)</th>
+                                <th>Kata (Dusun)</th>
+                                <th>Kontributor</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${result.data.map(item => `
+                                <tr>
+                                    <td><strong>${item.indonesia}</strong></td>
+                                    <td><span style="color: var(--accent-green); font-weight: 700;">${item.dusun}</span></td>
+                                    <td>${item.nama || 'Anonim'}</td>
+                                    <td style="display: flex; gap: 8px;">
+                                        <button class="btn-dash btn-dash-primary" onclick='approveWord(${JSON.stringify(item)})'>Approve</button>
+                                        <button class="btn-dash btn-dash-delete" onclick="deleteWord(${item.id})">Hapus</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                list.innerHTML = tableHTML;
+            } catch (err) { console.error(err); }
+        }
+
+        async function approveWord(item) {
+            const res = await fetch('/api/admin-usulan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                body: JSON.stringify({ action: 'APPROVE_USULAN', payload: item })
+            });
+            const data = await res.json();
+            loadWords();
+        }
+
+        async function deleteWord(id) {
+            if(!confirm('Hapus usulan ini?')) return;
+            await fetch('/api/admin-usulan', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                body: JSON.stringify({ id })
+            });
+            loadWords();
+        }
+
+        window.onload = loadWords;
+    </script>
+</body>
+</html>

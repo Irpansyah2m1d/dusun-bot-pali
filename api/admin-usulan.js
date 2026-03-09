@@ -59,7 +59,7 @@ module.exports = async (req, res) => {
             return res.status(200).json({ success: true, message: 'Berhasil menghapus usulan.' });
 
         } else if (req.method === 'POST') {
-            const { action, payload } = req.body;
+            const { action, payload, key, value } = req.body;
 
             if (action === 'PURGE_ALL') {
                 const { error } = await supabase.from('usulan_kosakata').delete().neq('id', 0);
@@ -67,11 +67,16 @@ module.exports = async (req, res) => {
                 return res.status(200).json({ success: true, message: 'Semua usulan telah di-clear.' });
             }
 
-            if (action === 'TOGGLE_SOURCE') {
-                const { source } = payload;
-                const { error } = await supabase.from('app_settings').upsert({ key_name: 'data_source', key_value: source });
-                if (error) return res.status(500).json({ success: false, message: 'Gagal mengubah pengaturan sumber data! (Pastikan tabel app_settings sudah dibuat)' });
-                return res.status(200).json({ success: true, message: `Berhasil mengubah sumber data menjadi: ${source.toUpperCase()}` });
+            // Combined handler for source toggle / settings update
+            if (action === 'TOGGLE_SOURCE' || action === 'UPDATE_SETTING') {
+                const finalKey = key || 'data_source';
+                const finalValue = value || (payload ? payload.source : null);
+
+                if (!finalValue) return res.status(400).json({ success: false, message: 'Value diperlukan.' });
+
+                const { error } = await supabase.from('app_settings').upsert({ key_name: finalKey, key_value: finalValue });
+                if (error) return res.status(500).json({ success: false, message: 'Gagal mengubah pengaturan! Pastikan tabel app_settings sudah benar.' });
+                return res.status(200).json({ success: true, message: `Pengaturan ${finalKey} berhasil diperbarui.` });
             }
 
             if (action === 'MIGRATE_KAMUS') {
@@ -122,9 +127,11 @@ module.exports = async (req, res) => {
                 if (error) return res.status(500).json({ success: false, message: 'Gagal mengupdate usulan.' });
                 return res.status(200).json({ success: true, message: 'Berhasil update data usulan!' });
             }
+
+            return res.status(400).json({ success: false, message: `Action ${action} tidak dikenali.` });
         }
 
-        return res.status(405).json({ success: false, message: 'Method Not Allowed' });
+        return res.status(405).json({ success: false, message: `Method ${req.method} tidak diizinkan di endpoint ini.` });
 
     } catch (error) {
         console.error("Server Error (Admin):", error);

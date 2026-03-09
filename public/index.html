@@ -870,16 +870,22 @@
                 
                 if (data.success && data.results && data.results.length > 0) {
                     const daily = data.results[0];
-                    document.getElementById('popup-word').innerText = daily.dusun || daily.word;
-                    document.getElementById('popup-meaning').innerText = daily.indonesia || daily.meaning || daily.arti;
+                    const popupWord = document.getElementById('popup-word');
+                    const popupMeaning = document.getElementById('popup-meaning');
+                    const popupExample = document.getElementById('popup-example');
+                    
+                    if(popupWord) popupWord.innerText = daily.dusun || daily.word;
+                    if(popupMeaning) popupMeaning.innerText = daily.indonesia || daily.meaning || daily.arti;
+                    
                     const example = daily.contoh_dusun || daily.example;
-                    const exampleEl = document.getElementById('popup-example');
-                    if (example) { exampleEl.innerText = `"${example}"`; exampleEl.style.display = 'block'; }
-                    else { exampleEl.style.display = 'none'; }
+                    if (popupExample) {
+                        if (example) { popupExample.innerText = `"${example}"`; popupExample.style.display = 'block'; }
+                        else { popupExample.style.display = 'none'; }
+                    }
                     
                     setTimeout(() => {
-                        console.log("Showing WOTD Modal");
-                        document.getElementById('wotdModal').classList.add('active');
+                        const modal = document.getElementById('wotdModal');
+                        if(modal) modal.classList.add('active');
                     }, 1000);
                 }
             } catch (err) { console.error("WOTD Error:", err); }
@@ -1087,7 +1093,5 @@
     </div>
 
     <button class="btn-avatar-toggle" onclick="toggleAvatar()">🤖</button>
-
-    <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
 </body>
 </html>

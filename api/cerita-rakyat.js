@@ -30,33 +30,54 @@ module.exports = async (req, res) => {
 
         if (req.method === 'POST') {
             const { title, excerpt, content, image_url } = req.body;
+            if (!title || !content) return res.status(400).json({ success: false, message: 'Judul dan Isi wajib diisi.' });
+
             const { data, error } = await supabase
                 .from('cerita_rakyat')
-                .insert([{ title, excerpt, content, image_url, created_at: new Date() }]);
+                .insert([{
+                    title,
+                    excerpt,
+                    content,
+                    image_url,
+                    created_at: new Date().toISOString()
+                }]);
 
-            if (error) throw error;
+            if (error) {
+                console.error("Supabase Insert Error:", error);
+                return res.status(500).json({ success: false, message: `Gagal menyimpan: ${error.message}` });
+            }
             return res.status(200).json({ success: true, message: 'Berhasil menambah cerita rakyat.' });
         }
 
         if (req.method === 'PUT') {
             const { id, title, excerpt, content, image_url } = req.body;
+            if (!id) return res.status(400).json({ success: false, message: 'ID Cerita diperlukan untuk update.' });
+
             const { data, error } = await supabase
                 .from('cerita_rakyat')
                 .update({ title, excerpt, content, image_url })
                 .eq('id', id);
 
-            if (error) throw error;
+            if (error) {
+                console.error("Supabase Update Error:", error);
+                return res.status(500).json({ success: false, message: `Gagal memperbarui: ${error.message}` });
+            }
             return res.status(200).json({ success: true, message: 'Berhasil memperbarui cerita rakyat.' });
         }
 
         if (req.method === 'DELETE') {
             const { id } = req.body;
+            if (!id) return res.status(400).json({ success: false, message: 'ID diperlukan untuk menghapus.' });
+
             const { error } = await supabase
                 .from('cerita_rakyat')
                 .delete()
                 .eq('id', id);
 
-            if (error) throw error;
+            if (error) {
+                console.error("Supabase Delete Error:", error);
+                return res.status(500).json({ success: false, message: `Gagal menghapus: ${error.message}` });
+            }
             return res.status(200).json({ success: true, message: 'Berhasil menghapus cerita.' });
         }
 

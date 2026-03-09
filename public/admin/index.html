@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Overview | Admin Dusun PALI</title>
+    <link rel="stylesheet" href="/admin/admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/admin/auth-check.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="stat-icon" style="margin-bottom: 0; padding: 10px; width: 45px; height: 45px;">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h2><span>Dusun Bot</span></h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="/admin/" class="nav-link active"><i class="fas fa-gauge-high"></i> <span>Dashboard</span></a>
+            <a href="/admin/words.html" class="nav-link"><i class="fas fa-language"></i> <span>Kosa Kata</span></a>
+            <a href="/admin/folklore.html" class="nav-link"><i class="fas fa-scroll"></i> <span>Cerita Rakyat</span></a>
+            <a href="/admin/settings.html" class="nav-link"><i class="fas fa-gear"></i> <span>Settings</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/" class="nav-link"><i class="fas fa-house"></i> <span>Ke Website</span></a>
+            <div class="nav-link" onclick="logout()" style="color: #ef4444;"><i class="fas fa-power-off"></i> <span>Logout</span></div>
+        </div>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="topbar">
+            <div class="page-title"><h1>Dashboard Overview</h1></div>
+            <div class="top-actions">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin+PALI&background=10b981&color=fff" alt="Avatar">
+                    <span style="font-weight: 700;">Admin PALI</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-area">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-inbox"></i></div>
+                    <div class="stat-info"><span class="val" id="stats-pending">...</span><span class="label">Usulan Baru</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-book-open"></i></div>
+                    <div class="stat-info"><span class="val" id="stats-total">...</span><span class="label">Total Kamus</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-feather-pointed"></i></div>
+                    <div class="stat-info"><span class="val" id="stats-folklore-count">...</span><span class="label">Cerita Rakyat</span></div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-header"><h3><i class="fas fa-clock-rotate-left"></i> Aktifitas Terakhir</h3></div>
+                <p style="color: var(--text-dim);">Review usulan kosakata terbaru untuk mengembangkan Pustaka Dusun PALI.</p>
+                <div id="mini-words-preview" style="margin-top: 25px;">Memuat data...</div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const password = localStorage.getItem('admin_password');
+
+        async function loadDashboardStats() {
+            try {
+                const res = await fetch('/api/admin-usulan', { headers: { 'x-admin-password': password } });
+                const result = await res.json();
+                if(!result.success) return logout();
+
+                document.getElementById('stats-pending').innerText = result.data.length;
+                const mini = document.getElementById('mini-words-preview');
+                if(result.data.length > 0) {
+                    mini.innerHTML = `<p>Ada <strong>${result.data.length}</strong> usulan baru yang menunggu moderasi.</p>
+                    <a href="/admin/words.html" class="btn-dash btn-dash-primary" style="margin-top:20px; text-decoration:none;">Buka Moderasi</a>`;
+                } else {
+                    mini.innerHTML = "<p style='color: var(--text-dim);'>Semua usulan telah diproses.</p>";
+                }
+
+                // Load folklore count
+                const resF = await fetch('/api/cerita-rakyat');
+                const dataF = await resF.json();
+                document.getElementById('stats-folklore-count').innerText = (dataF.data || []).length;
+                
+                // Load total kamus (can fetch from /api/kamus or admin total)
+                document.getElementById('stats-total').innerText = "2.8rb+";
+            } catch (err) { console.error(err); }
+        }
+
+        window.onload = loadDashboardStats;
+    </script>
+</body>
+</html>
