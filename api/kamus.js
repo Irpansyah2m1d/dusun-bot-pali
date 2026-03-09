@@ -19,8 +19,16 @@ try {
 }
 
 module.exports = async (req, res) => {
-    // Ambil query dari req.query (GET) atau req.body (POST)
     const query = (req.query.q || req.body.query || "").toLowerCase().trim();
+    let source = 'json';
+    try {
+        const { data: settingData } = await supabase.from('app_settings').select('key_value').eq('key_name', 'data_source').single();
+        if (settingData && settingData.key_value) {
+            source = settingData.key_value;
+        }
+    } catch (err) {
+        console.error("Failed to load settings array, fallback to json", err);
+    }
 
     if (!query) {
         // Jika tidak ada query, kembalikan kata acak (bisa digunakan untuk WOTD)
@@ -51,16 +59,6 @@ module.exports = async (req, res) => {
             isWotd: true,
             results: dailyWord ? [dailyWord] : []
         });
-    }
-
-    let source = 'json';
-    try {
-        const { data: settingData } = await supabase.from('app_settings').select('key_value').eq('key_name', 'data_source').single();
-        if (settingData && settingData.key_value) {
-            source = settingData.key_value;
-        }
-    } catch (err) {
-        console.error("Failed to load settings array, fallback to json", err);
     }
 
     let results = [];

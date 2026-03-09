@@ -169,17 +169,15 @@
     <main>
         <section class="hero" aria-label="Hero Section">
             <div class="hero-content">
-                <span class="badge fade-in mb-2">V1.0.0 Alpha</span>
-                <h1 class="fade-in">Melestarikan Dialek,<br><span class="gradient-text">Hubungkan Teknologi.</span></h1>
+                <span class="badge fade-in" style="margin-bottom: 20px; display: inline-block;">V1.0.0 Alpha</span>
+
+                <h1 class="fade-in mt-2" style="line-height: 1.15;">
+                    Melestarikan Dialek,<br>
+                    <span class="gradient-text" style="display: inline-block; margin-top: 10px;">
+                        Hubungkan Teknologi.
+                    </span>
+                </h1>
                 <p class="fade-in delay-1">API Open Source cerdas untuk Bahasa Dusun PALI (Sumatera Selatan). Menggunakan teknologi RAG & Kecerdasan Buatan Terkini.</p>
-                <div class="wotd-card fade-in delay" id="wotd-card">
-                    <div class="wotd-header">🌟 Kata Hari Ini</div>
-                    <div id="wotd-card-content">
-                        <div class="wotd-word"></div>
-                        <div class="wotd-meaning"></div>
-                        <div class="wotd-example"></div>
-                    </div>
-                </div>
 
                 <div class="hero-btns fade-in delay-2">
                     <a href="#docs" class="btn-primary" aria-label="Mulai integrasi API">Mulai Integrasi</a>
@@ -843,6 +841,10 @@
 
 
 
+        function closeWotdModal() {
+            document.getElementById('wotdModal').classList.remove('active');
+        }
+
         async function initDusunWidgets() {
             // 1. Nasehat / Peribahasa (Random from local array)
             const randomProverb = proverbs[Math.floor(Math.random() * proverbs.length)];
@@ -851,37 +853,38 @@
             if(wisdomText) wisdomText.innerText = `"${randomProverb.text}"`;
             if(wisdomMeaning) wisdomMeaning.innerText = randomProverb.meaning;
 
-            // 2. Word of the Day (WOTD) - Fetch from Database/API
-            try {
-                const response = await fetch('/api/kamus'); // No query = random word
-                const data = await response.json();
-                
-                if (data.success && data.results && data.results.length > 0) {
-                    const daily = data.results[0];
-                    const wordEl = document.querySelector('.wotd-word');
-                    const meaningEl = document.querySelector('.wotd-meaning');
-                    const exampleEl = document.querySelector('.wotd-example');
+            // 2. Word of the Day (WOTD) Popup logic
+            const today = new Date().toDateString();
+            const hasSeenWotd = localStorage.getItem('wotd_seen_date') === today;
+
+            if (!hasSeenWotd) {
+                try {
+                    const response = await fetch('/api/kamus'); 
+                    const data = await response.json();
                     
-                    if(wordEl) wordEl.innerText = daily.dusun || daily.word;
-                    if(meaningEl) meaningEl.innerText = daily.indonesia || daily.meaning || daily.arti;
-                    if(exampleEl) {
+                    if (data.success && data.results && data.results.length > 0) {
+                        const daily = data.results[0];
+                        document.getElementById('popup-word').innerText = daily.dusun || daily.word;
+                        document.getElementById('popup-meaning').innerText = daily.indonesia || daily.meaning || daily.arti;
+                        
                         const example = daily.contoh_dusun || daily.example;
+                        const exampleEl = document.getElementById('popup-example');
                         if (example) {
                             exampleEl.innerText = `"${example}"`;
                             exampleEl.style.display = 'block';
                         } else {
                             exampleEl.style.display = 'none';
                         }
+                        
+                        // Show Modal
+                        setTimeout(() => {
+                            document.getElementById('wotdModal').classList.add('active');
+                            localStorage.setItem('wotd_seen_date', today);
+                        }, 1000);
                     }
-                    
-                    const card = document.getElementById('wotd-card');
-                    if(card) card.classList.add('loaded');
+                } catch (err) {
+                    console.error("Error loading WOTD popup:", err);
                 }
-            } catch (err) {
-                console.error("Error loading WOTD from database:", err);
-                // Simple Fallback if API fails
-                const card = document.getElementById('wotd-card');
-                if(card) card.style.display = 'none';
             }
         }
 
@@ -907,6 +910,16 @@
 
 
     </script>
+    <div class="wotd-modal" id="wotdModal">
+        <div class="wotd-modal-content">
+            <span class="wotd-badge">Kosa Kata Hari Ini</span>
+            <div class="wotd-popup-word" id="popup-word"></div>
+            <div class="wotd-popup-meaning" id="popup-meaning"></div>
+            <div class="wotd-popup-example" id="popup-example"></div>
+            <button class="btn-close-wotd" onclick="closeWotdModal()">Lanjut ke Beranda</button>
+        </div>
+    </div>
+
     <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
 </body>
 

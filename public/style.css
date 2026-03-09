@@ -1653,60 +1653,103 @@ textarea.form-input {
     border-radius: 20px;
 }
 
-/* Word of the Day Widget - Sleek Highlighted */
-.wotd-card {
-    display: flex;
-    flex-direction: column;
-    margin: 20px 0 35px;
-    max-width: fit-content;
-    padding: 16px 28px;
-    background: rgba(16, 185, 129, 0.06);
-    border-left: 4px solid var(--emerald-green);
-    border-radius: 4px 20px 20px 4px;
-    transition: all 0.4s ease;
-    backdrop-filter: blur(10px);
-}
-
-.wotd-card:hover {
-    background: rgba(16, 185, 129, 0.08);
-    transform: translateX(5px);
-}
-
-
-.wotd-header {
+/* Word of the Day Modal - Premium Popup */
+.wotd-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    z-index: 100000;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.7rem;
-    font-weight: 800;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wotd-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.wotd-modal-content {
+    background: linear-gradient(135deg, var(--slate-gray) 0%, #1a202c 100%);
+    border: 1px solid var(--border-glass);
+    border-radius: 40px;
+    padding: 60px 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    transform: scale(0.9) translateY(20px);
+    transition: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.wotd-modal.active .wotd-modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.wotd-badge {
     color: var(--emerald-green);
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 4px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    font-size: 0.85rem;
+    margin-bottom: 25px;
+    display: block;
 }
 
-
-.wotd-word {
-    font-size: 1.8rem;
+.wotd-popup-word {
+    font-size: 4rem;
     font-weight: 900;
     color: white;
-    margin-bottom: 2px;
+    margin-bottom: 15px;
+    background: linear-gradient(to bottom, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.wotd-meaning {
-    color: var(--text-muted);
-    font-size: 1.05rem;
-    line-height: 1.4;
+.wotd-popup-meaning {
+    font-size: 1.4rem;
+    color: var(--text-white);
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
-.wotd-example {
+.wotd-popup-example {
     font-style: italic;
     color: var(--emerald-green);
-    font-size: 0.95rem;
-    margin-top: 10px;
-    opacity: 0.8;
-    line-height: 1.4;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    opacity: 0.9;
 }
+
+.btn-close-wotd {
+    background: var(--emerald-green);
+    color: var(--slate-black);
+    width: 100%;
+    padding: 18px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 10px 25px var(--emerald-glow);
+}
+
+.btn-close-wotd:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px var(--emerald-glow);
+}
+
 
 
 
