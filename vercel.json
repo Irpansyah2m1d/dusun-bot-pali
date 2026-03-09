@@ -16,6 +16,10 @@
     {
       "source": "/api/usulan",
       "destination": "/api/usulan.js"
+    },
+    {
+      "source": "/api/admin-usulan",
+      "destination": "/api/admin-usulan.js"
     }
   ],
   "headers": [

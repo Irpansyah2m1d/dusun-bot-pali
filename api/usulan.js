@@ -1,9 +1,14 @@
+const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
 
-// Setup file paths
+// URL dan API Key Supabase
+const supabaseUrl = 'https://attspecehfhixbdfnnvn.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0dHNwZWNlaGZoaXhiZGZubnZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjIxMzQsImV4cCI6MjA4ODU5ODEzNH0.o3HQjQaE69i9_BnOKjOgefstaFOchZJNZkwOd2JAroA';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Path ke kamus (untuk validasi awal agar tidak double)
 const kamusPath = path.join(process.cwd(), 'data', 'kamus.json');
-const usulanPath = path.join(process.cwd(), 'data', 'usulan_kosakata.json');
 
 module.exports = async (req, res) => {
     // Hanya menerima POST
@@ -24,10 +29,14 @@ module.exports = async (req, res) => {
         const queryIndo = indonesia.toLowerCase().trim();
         const queryDusun = dusun.toLowerCase().trim();
 
-        // 1. Cek apakah kata sudah ada di kamus.json
+        // 1. Cek apakah kata sudah ada di kamus.json utama
         let kamusData = [];
         if (fs.existsSync(kamusPath)) {
-            kamusData = JSON.parse(fs.readFileSync(kamusPath, 'utf-8'));
+            try {
+                kamusData = JSON.parse(fs.readFileSync(kamusPath, 'utf-8'));
+            } catch (e) {
+                // Ignore error if kamus doesn't exist
+            }
         }
 
         const alreadyExists = kamusData.some(item =>
@@ -42,52 +51,47 @@ module.exports = async (req, res) => {
             });
         }
 
-        // 2. Baca file usulan_kosakata.json
-        let usulanData = [];
-        if (fs.existsSync(usulanPath)) {
-            try {
-                usulanData = JSON.parse(fs.readFileSync(usulanPath, 'utf-8'));
-            } catch (e) {
-                usulanData = [];
-            }
-        }
+        // 2. Cek apakah kata sudah pernah diusulkan di database Supabase
+        const { data: existingData, error: dbQueryError } = await supabase
+            .from('usulan_kosakata')
+            .select('id')
+            .or(`indonesia.ilike.${queryIndo},dusun.ilike.${queryDusun}`);
 
-        // 3. Masukkan data dengan format pengelompokan berdasarkan "nama"
-        const newKata = {
-            indonesia: indonesia.trim(),
-            dusun: dusun.trim(),
-            contoh_id: (contoh_id || "").trim(),
-            contoh_dusun: (contoh_dusun || "").trim()
-        };
-
-        const userIndex = usulanData.findIndex(item => item.nama.toLowerCase() === nama.toLowerCase().trim());
-
-        if (userIndex !== -1) {
-            // Cek apakah sudah ada di usulan
-            const alreadyInUsulan = usulanData[userIndex].kosakata.some(item =>
-                item.indonesia.toLowerCase() === queryIndo ||
-                item.dusun.toLowerCase() === queryDusun
-            );
-
-            if (alreadyInUsulan) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'Kosakata ini sudah pernah Anda atau orang lain usulkan.'
-                });
-            }
-
-            // Tambahkan ke array kosakata milik user tersebut
-            usulanData[userIndex].kosakata.push(newKata);
-        } else {
-            // Buat entri baru untuk user ini
-            usulanData.push({
-                nama: nama.trim(),
-                kosakata: [newKata]
+        if (dbQueryError) {
+            console.error('Error querying Supabase:', dbQueryError);
+            return res.status(500).json({
+                success: false,
+                message: 'Database tidak merespon saat verifikasi usulan lama.'
             });
         }
 
-        // 4. Simpan kembali ke file usulan_kosakata.json
-        fs.writeFileSync(usulanPath, JSON.stringify(usulanData, null, 2));
+        if (existingData && existingData.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Kosakata ini sudah pernah Anda atau orang lain usulkan sebelumnya.'
+            });
+        }
+
+        // 3. Masukkan data ke Database Supabase
+        const { error: insertError } = await supabase
+            .from('usulan_kosakata')
+            .insert([
+                {
+                    nama: nama.trim(),
+                    indonesia: indonesia.trim(),
+                    dusun: dusun.trim(),
+                    contoh_id: (contoh_id || "").trim(),
+                    contoh_dusun: (contoh_dusun || "").trim()
+                }
+            ]);
+
+        if (insertError) {
+            console.error('Error inserting to Supabase:', insertError);
+            return res.status(500).json({
+                success: false,
+                message: 'Gagal menyimpan kosakata ke database.'
+            });
+        }
 
         return res.status(200).json({
             success: true,
@@ -95,7 +99,7 @@ module.exports = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Local Server Error (Usulan):", error);
+        console.error("Server Error (Usulan):", error);
         return res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Usulan Kosakata Dusun Bot</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { padding: 40px 5%; background: var(--deep-blue); min-height: 100vh; }
+        .admin-container { max-width: 1000px; margin: 0 auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+        .admin-header h1 { font-size: 2.5rem; margin-bottom: 8px; }
+        
+        .login-box {
+            background: var(--slate-gray); padding: 40px; border-radius: 20px;
+            max-width: 400px; margin: 100px auto; text-align: center;
+            border: 1px solid var(--border-glass);
+        }
+        .table-responsive { width: 100%; overflow-x: auto; background: var(--slate-gray); border-radius: 16px; border: 1px solid var(--border-glass); }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 16px; border-bottom: 1px solid var(--border-glass); color: white; }
+        th { background: rgba(0,0,0,0.3); font-weight: 700; color: var(--emerald-green); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: rgba(255,255,255,0.02); }
+        
+        .btn-sm { padding: 8px 12px; font-size: 0.8rem; border-radius: 8px; cursor: pointer; border: none; font-weight: 600; font-family: inherit; }
+        .btn-danger { background: rgba(255, 95, 86, 0.1); color: #ff5f56; border: 1px solid rgba(255, 95, 86, 0.3); }
+        .btn-danger:hover { background: #ff5f56; color: white; }
+        
+        .btn-copy { background: rgba(16, 185, 129, 0.1); color: var(--emerald-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .btn-copy:hover { background: var(--emerald-green); color: white; }
+
+        .hidden { display: none !important; }
+        
+        .toast {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--emerald-green); color: white;
+            padding: 12px 24px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(100px); opacity: 0;
+            transition: 0.3s; font-weight: 600; z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <!-- Login Area -->
+    <div id="login-area" class="login-box">
+        <h2 style="margin-bottom: 20px;">Admin Login</h2>
+        <input type="password" id="admin-pass" class="form-input" placeholder="Masukkan Password Admin..." style="margin-bottom: 20px; text-align: center;">
+        <button onclick="login()" class="btn-primary" style="width: 100%; border: none; cursor: pointer;">Masuk Dashboard</button>
+        <p id="login-error" style="color: #ff5f56; margin-top: 10px; font-size: 0.9rem; display: none;">Password salah!</p>
+    </div>
+
+    <!-- Dashboard Area -->
+    <div id="dashboard-area" class="admin-container hidden">
+        <div class="admin-header">
+            <div>
+                <h1>Data <span class="accent">Usulan</span></h1>
+                <p style="color: var(--text-muted);">Review kosakata yang dikirim oleh audiens sebelum dimasukkan ke "kamus.json".</p>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button onclick="fetchData()" class="btn-sm btn-secondary" style="background: transparent; border-color: var(--text-muted); color: var(--text-muted);">Refresh Data</button>
+                <button onclick="generateJson()" class="btn-sm btn-copy">📋 Copy Formatted JSON</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="5%">ID</th>
+                        <th width="15%">Pengusul</th>
+                        <th width="15%">B. Indonesia</th>
+                        <th width="15%">B. PALI</th>
+                        <th width="40%">Contoh Kalimat (ID & PALI)</th>
+                        <th width="10%">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px; color: var(--text-muted);">Menunggu data / Sedang memuat...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Sukses</div>
+
+    <script>
+        let adminPassword = '';
+        let allData = [];
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.background = isError ? '#ff5f56' : 'var(--emerald-green)';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        async function login() {
+            const pass = document.getElementById('admin-pass').value;
+            adminPassword = pass; // Simpan di memori sementara
+            
+            const btn = document.querySelector('.btn-primary');
+            btn.textContent = "Mengecek...";
+            
+            await fetchData();
+            btn.textContent = "Masuk Dashboard";
+        }
+
+        async function fetchData() {
+            try {
+                const res = await fetch('/api/admin-usulan', {
+                    method: 'GET',
+                    headers: { 'x-admin-password': adminPassword }
+                });
+                
+                const json = await res.json();
+                
+                if (res.status === 401) {
+                    document.getElementById('login-error').style.display = 'block';
+                    return;
+                }
+
+                if (json.success) {
+                    document.getElementById('login-area').classList.add('hidden');
+                    document.getElementById('dashboard-area').classList.remove('hidden');
+                    allData = json.data;
+                    renderTable();
+                } else {
+                    showToast(json.message, true);
+                }
+            } catch (err) {
+                showToast("Koneksi gagal", true);
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            
+            if (allData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">Belum ada usulan kosakata baru.</td></tr>';
+                return;
+            }
+
+            let html = '';
+            allData.forEach(item => {
+                let examplesHTML = '';
+                if(item.contoh_id) examplesHTML += `<div style="font-size:0.85rem; margin-bottom:4px"><b>ID:</b> ${item.contoh_id}</div>`;
+                if(item.contoh_dusun) examplesHTML += `<div style="font-size:0.85rem;"><b>PALI:</b> ${item.contoh_dusun}</div>`;
+                if(!examplesHTML) examplesHTML = '<span style="color:var(--text-muted); font-size:0.85rem; font-style:italic;">-- Tidak ada contoh --</span>';
+
+                html += `
+                    <tr>
+                        <td style="color: var(--text-muted)">#${item.id}</td>
+                        <td style="font-weight: 600;">${item.nama}</td>
+                        <td>${item.indonesia}</td>
+                        <td><span style="color: var(--emerald-green); font-weight: 700;">${item.dusun}</span></td>
+                        <td>${examplesHTML}</td>
+                        <td>
+                            <button onclick="deleteRow(${item.id})" class="btn-sm btn-danger">🗑 Hapus</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        async function deleteRow(id) {
+            if(!confirm("Yakin ingin menghapus usulan ini? Jika ini typo/spam silakan hapus.")) return;
+
+            try {
+                const res = await fetch('/api/admin-usulan', {
+                    method: 'DELETE',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-admin-password': adminPassword
+                    },
+                    body: JSON.stringify({ id })
+                });
+                const json = await res.json();
+                
+                if (json.success) {
+                    showToast("Berhasil dihapus!");
+                    allData = allData.filter(item => item.id !== id);
+                    renderTable();
+                } else {
+                    showToast(json.message, true);
+                }
+            } catch (err) {
+                showToast("Gagal menghapus", true);
+            }
+        }
+
+        function generateJson() {
+            if(allData.length === 0) {
+                showToast("Data masih kosong!", true);
+                return;
+            }
+
+            // Map untuk menyesuaikan structure kamus.json (tanpa ID/Nama)
+            const cleanData = allData.map(item => {
+                return {
+                    indonesia: item.indonesia,
+                    dusun: item.dusun,
+                    contoh_id: item.contoh_id || "",
+                    contoh_dusun: item.contoh_dusun || ""
+                };
+            });
+
+            // Parse jadi text + buat indentasi rapi
+            const jsonText = JSON.stringify(cleanData, null, 2);
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(jsonText).then(() => {
+                showToast("JSON berhasil di-copy! Silakan paste ke kamus.json");
+            }).catch(() => {
+                showToast("Gagal copy ke clipboard", true);
+            });
+        }
+    </script>
+</body>
+</html>
