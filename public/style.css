@@ -68,6 +68,23 @@ body {
     }
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+
 .glow-orb {
     position: fixed;
     width: 600px;
@@ -92,21 +109,24 @@ body {
 }
 
 header {
-    padding: 1.5rem 5%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(12, 14, 18, 0.85);
-    backdrop-filter: blur(16px);
-    z-index: 1000;
-    border-bottom: 1px solid var(--border-glass);
+    padding: 0.8rem 5% !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: rgba(12, 14, 18, 0.9) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    z-index: 99999 !important;
+    border-bottom: 1px solid var(--border-glass) !important;
+    transform: translateZ(0);
 }
 
+
 body {
-    padding-top: 100px;
-    /* Offset for fixed header */
+    padding-top: 90px !important;
 }
+
 
 nav {
     display: flex;
@@ -441,29 +461,41 @@ nav {
     align-items: center;
 }
 
-.badge {
+.mission-text .badge {
     grid-area: badge;
+    justify-self: start;
+    width: fit-content;
+    margin-bottom: 24px;
 }
 
 .mission-text h2 {
     grid-area: title;
+    margin-bottom: 20px;
 }
 
 .mission-text p {
     grid-area: desc;
+    margin-bottom: 32px;
 }
 
-.mission-stats {
+.mission-text .mission-stats {
     grid-area: stats;
 }
 
-.mission-list {
+.mission-text .mission-list {
     grid-area: list;
+    justify-self: start;
+    margin-bottom: 32px;
 }
 
 .mission-text a {
     grid-area: btn;
+    justify-self: start;
+    width: fit-content !important;
+    display: inline-flex !important;
 }
+
+
 
 
 .badge {
@@ -499,16 +531,19 @@ nav {
 
 .mission-list li {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    align-items: flex-start;
+    gap: 16px;
     font-size: 1.1rem;
     font-weight: 500;
+    line-height: 1.4;
 }
+
 
 .mission-list li i {
     font-style: normal;
     color: var(--emerald-green);
     font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
 .mission-stats {
@@ -1097,11 +1132,34 @@ footer {
         display: flex;
         flex-direction: column;
         text-align: center;
+        align-items: center;
+        margin-top: 60px;
     }
 
-    .mission-text h2 {
-        font-size: 2rem;
+    .mission-text .badge {
+        margin-bottom: 20px;
     }
+
+    .mission-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto 30px;
+    }
+
+    .mission-list li {
+        text-align: left;
+        font-size: 0.95rem;
+    }
+
+    .mission-text a {
+        width: fit-content !important;
+        margin: 0 auto;
+    }
+
 
     .mission-stats {
         margin: 20px 0 30px;
