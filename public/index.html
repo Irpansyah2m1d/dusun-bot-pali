@@ -172,12 +172,12 @@
                 <span class="badge fade-in">V1.0.0 Alpha</span>
                 <h1 class="fade-in">Melestarikan Dialek,<br><span class="gradient-text">Hubungkan Teknologi.</span></h1>
                 <p class="fade-in delay-1">API Open Source cerdas untuk Bahasa Dusun PALI (Sumatera Selatan). Menggunakan teknologi RAG & Kecerdasan Buatan Terkini.</p>
-                <div class="wotd-card fade-in delay-2">
+                <div class="wotd-card fade-in delay-2" id="wotd-card">
                     <div class="wotd-header">🌟 Kata Hari Ini</div>
                     <div id="wotd-card-content">
-                        <div class="wotd-word">Memuat...</div>
-                        <div class="wotd-meaning">--</div>
-                        <div class="wotd-example">--</div>
+                        <div class="wotd-word"></div>
+                        <div class="wotd-meaning"></div>
+                        <div class="wotd-example"></div>
                     </div>
                 </div>
 
@@ -219,8 +219,8 @@
             <div class="wisdom-container">
                 <span class="wisdom-label">Nasehat Dusun PALI</span>
                 <div class="wisdom-icon">“</div>
-                <div class="wisdom-text" id="wisdom-text">"Memuat nasehat bijak..."</div>
-                <div class="wisdom-meaning" id="wisdom-meaning">--</div>
+                <div class="wisdom-text" id="wisdom-text"></div>
+                <div class="wisdom-meaning" id="wisdom-meaning"></div>
             </div>
         </section>
 
@@ -834,7 +834,12 @@
                             exampleEl.style.display = 'none';
                         }
                     }
+                    
+                    // Show the card once data is ready
+                    const card = document.getElementById('wotd-card');
+                    if(card) card.classList.add('loaded');
                 })
+
                 .catch(err => console.error("Error loading WOTD:", err));
         }
 

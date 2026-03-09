@@ -1648,96 +1648,94 @@ textarea.form-input {
     border-radius: 20px;
 }
 
-/* Word of the Day Widget */
+/* Word of the Day Widget - Sleek & Integrated */
 .wotd-card {
-    background: rgba(16, 185, 129, 0.05);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    border-radius: 20px;
-    padding: 20px;
-    margin: 30px 0;
-    max-width: 450px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    backdrop-filter: blur(5px);
+    margin: 20px 0 35px;
+    max-width: 500px;
     transition: 0.3s;
+    opacity: 0;
+    /* Hidden initially */
 }
 
-.wotd-card:hover {
-    border-color: var(--emerald-green);
-    transform: translateY(-4px);
+.wotd-card.loaded {
+    opacity: 1;
 }
 
 .wotd-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.8rem;
-    font-weight: 700;
+    font-size: 0.75rem;
+    font-weight: 800;
     color: var(--emerald-green);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
 }
 
 .wotd-word {
     font-size: 1.8rem;
     font-weight: 900;
     color: white;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .wotd-meaning {
     color: var(--text-muted);
-    font-size: 1rem;
+    font-size: 1.05rem;
 }
 
 .wotd-example {
     font-style: italic;
     color: var(--emerald-green);
-    font-size: 0.9rem;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+    margin-top: 10px;
+    opacity: 0.8;
 }
 
-/* Wisdom Section (Peribahasa) */
+
+/* Wisdom Section (Peribahasa) - Clean & Direct */
 .wisdom-section {
-    padding: 80px 5%;
-    background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+    padding: 60px 5%;
+    background: transparent;
     text-align: center;
 }
 
 .wisdom-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     position: relative;
-    padding: 60px 40px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-glass);
-    border-radius: 40px;
+    padding: 0;
+    background: none;
+    border: none;
 }
 
 .wisdom-icon {
-    font-size: 3rem;
-    margin-bottom: 24px;
-    opacity: 0.5;
+    font-size: 4rem;
+    margin-bottom: 15px;
+    color: var(--emerald-green);
+    opacity: 0.2;
+    line-height: 1;
 }
 
 .wisdom-text {
-    font-size: 2.2rem;
-    font-weight: 800;
-    line-height: 1.3;
-    margin-bottom: 24px;
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 15px;
     color: white;
     font-style: italic;
+    letter-spacing: -1px;
 }
 
 .wisdom-meaning {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--text-muted);
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 .wisdom-label {
@@ -1749,6 +1747,7 @@ textarea.form-input {
     margin-bottom: 12px;
     display: block;
 }
+
 
 @media (max-width: 768px) {
     .wisdom-text {
