@@ -17,6 +17,7 @@
             background: var(--slate-gray); padding: 40px; border-radius: 20px;
             max-width: 400px; margin: 100px auto; text-align: center;
             border: 1px solid var(--border-glass);
+            position: relative;
         }
         .table-responsive { width: 100%; overflow-x: auto; background: var(--slate-gray); border-radius: 16px; border: 1px solid var(--border-glass); }
         table { width: 100%; border-collapse: collapse; text-align: left; }
@@ -32,6 +33,25 @@
         .btn-copy { background: rgba(16, 185, 129, 0.1); color: var(--emerald-green); border: 1px solid rgba(16, 185, 129, 0.3); }
         .btn-copy:hover { background: var(--emerald-green); color: white; }
 
+        .btn-approve { background: rgba(39, 201, 63, 0.1); color: #27c93f; border: 1px solid rgba(39, 201, 63, 0.3); }
+        .btn-approve:hover { background: #27c93f; color: white; }
+
+        .btn-edit { background: rgba(255, 184, 0, 0.1); color: #ffb800; border: 1px solid rgba(255, 184, 0, 0.3); }
+        .btn-edit:hover { background: #ffb800; color: white; }
+
+        .btn-migrate { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .btn-migrate:hover { background: #3b82f6; color: white; }
+
+        .input-group { position: relative; margin-bottom: 20px; }
+        .eye-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 1.2rem; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; padding: 20px; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal { background: var(--slate-gray); width: 100%; max-width: 500px; padding: 30px; border-radius: 20px; border: 1px solid var(--border-glass); }
+        .modal h3 { color: white; margin-bottom: 20px; }
+        .modal label { display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; font-weight: 600; }
+        .modal input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); padding: 12px; border-radius: 8px; color: white; margin-bottom: 16px; font-family: inherit; }
+        
         .hidden { display: none !important; }
         
         .toast {
@@ -49,10 +69,13 @@
 
     <!-- Login Area -->
     <div id="login-area" class="login-box">
-        <h2 style="margin-bottom: 20px;">Admin Login</h2>
-        <input type="password" id="admin-pass" class="form-input" placeholder="Masukkan Password Admin..." style="margin-bottom: 20px; text-align: center;">
-        <button onclick="login()" class="btn-primary" style="width: 100%; border: none; cursor: pointer;">Masuk Dashboard</button>
-        <p id="login-error" style="color: #ff5f56; margin-top: 10px; font-size: 0.9rem; display: none;">Password salah!</p>
+        <h2 style="margin-bottom: 20px; color: white;">Admin Login</h2>
+        <div class="input-group">
+            <input type="password" id="admin-pass" class="form-input" placeholder="Masukkan Password Admin..." style="width: 100%; padding-right: 40px; text-align: center;">
+            <span class="eye-icon" onclick="togglePassword()">👁️</span>
+        </div>
+        <button onclick="login()" class="btn-primary" style="width: 100%; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-weight: bold;">Masuk Dashboard</button>
+        <p id="login-error" style="color: #ff5f56; margin-top: 15px; font-size: 0.9rem; display: none;">Password salah!</p>
     </div>
 
     <!-- Dashboard Area -->
@@ -62,7 +85,8 @@
                 <h1>Data <span class="accent">Usulan</span></h1>
                 <p style="color: var(--text-muted);">Review kosakata yang dikirim oleh audiens sebelum dimasukkan ke "kamus.json".</p>
             </div>
-            <div style="display: flex; gap: 12px;">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end;">
+                <button onclick="migrateKamus()" class="btn-sm btn-migrate">🚀 Migrasi kamus.json ke Supabase</button>
                 <button onclick="fetchData()" class="btn-sm btn-secondary" style="background: transparent; border-color: var(--text-muted); color: var(--text-muted);">Refresh Data</button>
                 <button onclick="generateJson()" class="btn-sm btn-copy">📋 Copy Formatted JSON</button>
             </div>
@@ -76,8 +100,8 @@
                         <th width="15%">Pengusul</th>
                         <th width="15%">B. Indonesia</th>
                         <th width="15%">B. PALI</th>
-                        <th width="40%">Contoh Kalimat (ID & PALI)</th>
-                        <th width="10%">Aksi</th>
+                        <th width="30%">Contoh Kalimat</th>
+                        <th width="20%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -86,6 +110,27 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal">
+            <h3>Edit Usulan Kosakata</h3>
+            <input type="hidden" id="edit-id">
+            <label>B. Indonesia</label>
+            <input type="text" id="edit-indo">
+            <label>B. PALI</label>
+            <input type="text" id="edit-dusun">
+            <label>Contoh ID</label>
+            <input type="text" id="edit-contoh-id">
+            <label>Contoh PALI</label>
+            <input type="text" id="edit-contoh-dusun">
+            
+            <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <button onclick="saveEdit()" class="btn-sm btn-copy" style="flex: 1; padding: 12px;">Simpan Perubahan</button>
+                <button onclick="closeEditModal()" class="btn-sm btn-secondary" style="flex: 1; padding: 12px; background: transparent; border-color: var(--text-muted); color: var(--text-muted);">Batal</button>
+            </div>
         </div>
     </div>
 
@@ -103,15 +148,36 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
+        function togglePassword() {
+            const input = document.getElementById('admin-pass');
+            if (input.type === 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
+        }
+
         async function login() {
             const pass = document.getElementById('admin-pass').value;
-            adminPassword = pass; // Simpan di memori sementara
+            adminPassword = pass; 
             
             const btn = document.querySelector('.btn-primary');
             btn.textContent = "Mengecek...";
             
             await fetchData();
             btn.textContent = "Masuk Dashboard";
+        }
+
+        async function postAction(action, payload = {}) {
+            const res = await fetch('/api/admin-usulan', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'x-admin-password': adminPassword
+                },
+                body: JSON.stringify({ action, payload })
+            });
+            return await res.json();
         }
 
         async function fetchData() {
@@ -163,13 +229,86 @@
                         <td>${item.indonesia}</td>
                         <td><span style="color: var(--emerald-green); font-weight: 700;">${item.dusun}</span></td>
                         <td>${examplesHTML}</td>
-                        <td>
+                        <td style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <button onclick='openEditModal(${JSON.stringify(item)})' class="btn-sm btn-edit">✏️ Edit</button>
+                            <button onclick="approveRow(${item.id})" class="btn-sm btn-approve">✅ Approve</button>
                             <button onclick="deleteRow(${item.id})" class="btn-sm btn-danger">🗑 Hapus</button>
                         </td>
                     </tr>
                 `;
             });
             tbody.innerHTML = html;
+        }
+
+        // --- Migrate Kamus ---
+        async function migrateKamus() {
+            if(!confirm("Yakin ingin migrasi semua data kamus.json ke tabel kamus_utama Supabase sekarang?")) return;
+            showToast("Memproses migrasi...");
+            try {
+                const json = await postAction('MIGRATE_KAMUS');
+                if(json.success) showToast(json.message);
+                else showToast(json.message, true);
+            } catch (err) {
+                showToast("Gagal melakukan migrasi", true);
+            }
+        }
+
+        // --- Edit Modal Logic ---
+        function openEditModal(item) {
+            document.getElementById('edit-modal').classList.add('active');
+            document.getElementById('edit-id').value = item.id;
+            document.getElementById('edit-indo').value = item.indonesia;
+            document.getElementById('edit-dusun').value = item.dusun;
+            document.getElementById('edit-contoh-id').value = item.contoh_id || '';
+            document.getElementById('edit-contoh-dusun').value = item.contoh_dusun || '';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+        }
+
+        async function saveEdit() {
+            const payload = {
+                id: document.getElementById('edit-id').value,
+                indonesia: document.getElementById('edit-indo').value,
+                dusun: document.getElementById('edit-dusun').value,
+                contoh_id: document.getElementById('edit-contoh-id').value,
+                contoh_dusun: document.getElementById('edit-contoh-dusun').value
+            };
+
+            showToast("Menyimpan...");
+            try {
+                const json = await postAction('EDIT_USULAN', payload);
+                if (json.success) {
+                    showToast(json.message);
+                    closeEditModal();
+                    fetchData();
+                } else {
+                    showToast(json.message, true);
+                }
+            } catch (err) {
+                showToast("Gagal mengupdate", true);
+            }
+        }
+
+        // --- Approve Logic ---
+        async function approveRow(id) {
+            if(!confirm("Approve usulan ini? (Akan dimasukkan ke Supabase 'kamus_utama' dan dihapus dari sini)")) return;
+            
+            const item = allData.find(i => i.id === id);
+            
+            showToast("Sedang Approve...");
+            try {
+                const json = await postAction('APPROVE_USULAN', item);
+                if (json.success) {
+                    showToast(json.message);
+                    fetchData();
+                } else {
+                    showToast(json.message, true);
+                }
+            } catch (err) {
+                showToast("Gagal approve", true);
+            }
         }
 
         async function deleteRow(id) {
