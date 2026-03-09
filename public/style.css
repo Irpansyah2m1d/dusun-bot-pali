@@ -1446,3 +1446,81 @@ textarea.form-input {
         padding: 30px 20px;
     }
 }
+
+/* Contributors Section */
+.contributors-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background: rgba(16, 185, 129, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(16, 185, 129, 0.1);
+    cursor: pointer;
+    transition: 0.3s;
+    justify-content: center;
+}
+
+.contributors-bar:hover {
+    background: rgba(16, 185, 129, 0.1);
+    transform: translateY(-2px);
+}
+
+.collab-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--emerald-green);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.collab-names {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.collab-more {
+    font-size: 0.8rem;
+    background: var(--emerald-green);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    font-weight: 700;
+}
+
+/* Modal Contributors */
+.modal-contributors .modal {
+    max-width: 400px;
+    text-align: center;
+}
+
+.contributor-list {
+    margin-top: 20px;
+}
+
+.contributor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    border: 1px solid var(--border-glass);
+}
+
+.contributor-name {
+    font-weight: 600;
+    color: white;
+}
+
+.contributor-count {
+    font-size: 0.85rem;
+    color: var(--emerald-green);
+    font-weight: 700;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 4px 10px;
+    border-radius: 20px;
+}

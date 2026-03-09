@@ -153,6 +153,14 @@
             <h1>Kamus Digital <span class="accent">PALI</span></h1>
             <p style="margin-bottom: 24px;">Telusuri ribuan kosa kata dan dialek warisan leluhur PALI.</p>
             <button onclick="openUsulanModal()" class="btn-primary" style="margin: 0 auto; padding: 12px 24px; font-size: 0.95rem; border: none; cursor: pointer; display: inline-flex;">+ Tambah Kosakata Baru</button>
+            
+            <div class="contributors-bar" onclick="openContributorsModal()">
+                <span class="collab-label">Collaborators:</span>
+                <div class="collab-list" id="collab-preview">
+                    <!-- Loaded via JS -->
+                    <span class="collab-names">Memuat kontributor...</span>
+                </div>
+            </div>
         </div>
 
         <div class="full-search fade-in">
@@ -210,6 +218,17 @@
                         <button type="button" onclick="resetFormUsulan()" class="btn-secondary" style="width: 100%; cursor: pointer;">+ Tambah Kata Lainnya</button>
                     </div>
                 </form>
+            </div>
+        </div>
+        <!-- Modal Contributors -->
+        <div id="contributors-modal" class="modal-overlay modal-contributors">
+            <div class="modal">
+                <button class="modal-close" onclick="closeContributorsModal()" aria-label="Tutup">&times;</button>
+                <h3>Daftar Kontributor</h3>
+                <p>Terima kasih kepada para pahlawan yang telah berkontribusi melestarikan Bahasa Dusun PALI.</p>
+                <div id="contributor-list" class="contributor-list">
+                    <!-- Loaded via JS -->
+                </div>
             </div>
         </div>
     </main>
@@ -426,6 +445,50 @@
                 btnSubmit.disabled = false;
             }
         }
+
+        // --- Contributors Logic ---
+        async function loadContributors() {
+            try {
+                const res = await fetch('/api/contributors');
+                const json = await res.json();
+                if (json.success) {
+                    renderContributorsPreview(json.data);
+                    renderContributorsFull(json.data);
+                }
+            } catch (e) {
+                console.error("Gagal memuat kontributor");
+            }
+        }
+
+        function renderContributorsPreview(data) {
+            const preview = document.getElementById('collab-preview');
+            // Ambil 3 pertama
+            const top3 = data.slice(0, 3).map(c => c.name).join(", ");
+            const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
+            
+            preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
+        }
+
+        function renderContributorsFull(data) {
+            const list = document.getElementById('contributor-list');
+            list.innerHTML = data.map(c => `
+                <div class="contributor-item">
+                    <span class="contributor-name">${c.name}</span>
+                    <span class="contributor-count">${c.count} Kata</span>
+                </div>
+            `).join('');
+        }
+
+        function openContributorsModal() {
+            document.getElementById('contributors-modal').classList.add('active');
+        }
+
+        function closeContributorsModal() {
+            document.getElementById('contributors-modal').classList.remove('active');
+        }
+
+        // Load awal
+        loadContributors();
     </script>
 </body>
 </html>

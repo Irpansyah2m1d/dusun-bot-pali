@@ -20,6 +20,10 @@
     {
       "source": "/api/admin-usulan",
       "destination": "/api/admin-usulan.js"
+    },
+    {
+      "source": "/api/contributors",
+      "destination": "/api/contributors.js"
     }
   ],
   "headers": [
