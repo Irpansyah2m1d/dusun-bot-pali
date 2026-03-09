@@ -34,6 +34,8 @@
     <meta name="twitter:image:alt" content="Dusun Bot PALI Logo">
 
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -328,6 +330,13 @@
             </div>
         </section>
 
+        <!-- Cerita Rakyat Digital -->
+        <section class="folklore-section">
+            <h2 class="section-title">Pustaka Rakyat PALI</h2>
+            <div class="folklore-grid" id="folklore-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 0 5%;">
+                <!-- Data from API -->
+            </div>
+        </section>
 
         <section class="tech-stack">
             <h2 class="section-title">Teknologi Modern</h2>
@@ -846,47 +855,139 @@
         }
 
         async function initDusunWidgets() {
-            // 1. Nasehat / Peribahasa (Random from local array)
             const randomProverb = proverbs[Math.floor(Math.random() * proverbs.length)];
             const wisdomText = document.getElementById('wisdom-text');
             const wisdomMeaning = document.getElementById('wisdom-meaning');
             if(wisdomText) wisdomText.innerText = `"${randomProverb.text}"`;
             if(wisdomMeaning) wisdomMeaning.innerText = randomProverb.meaning;
 
-            // 2. Word of the Day (WOTD) Popup logic
-            const today = new Date().toDateString();
-            const hasSeenWotd = localStorage.getItem('wotd_seen_date') === today;
-
+            const hasSeenWotd = sessionStorage.getItem('wotd_seen');
             if (!hasSeenWotd) {
                 try {
                     const response = await fetch('/api/kamus'); 
                     const data = await response.json();
-                    
                     if (data.success && data.results && data.results.length > 0) {
                         const daily = data.results[0];
                         document.getElementById('popup-word').innerText = daily.dusun || daily.word;
                         document.getElementById('popup-meaning').innerText = daily.indonesia || daily.meaning || daily.arti;
-                        
                         const example = daily.contoh_dusun || daily.example;
                         const exampleEl = document.getElementById('popup-example');
-                        if (example) {
-                            exampleEl.innerText = `"${example}"`;
-                            exampleEl.style.display = 'block';
-                        } else {
-                            exampleEl.style.display = 'none';
-                        }
-                        
-                        // Show Modal
+                        if (example) { exampleEl.innerText = `"${example}"`; exampleEl.style.display = 'block'; }
+                        else { exampleEl.style.display = 'none'; }
                         setTimeout(() => {
                             document.getElementById('wotdModal').classList.add('active');
-                            localStorage.setItem('wotd_seen_date', today);
+                            sessionStorage.setItem('wotd_seen', 'true');
                         }, 1000);
                     }
-                } catch (err) {
-                    console.error("Error loading WOTD popup:", err);
-                }
+                } catch (err) { console.error(err); }
+            }
+            loadFolklore();
+        }
+
+        async function loadFolklore() {
+            const res = await fetch('/api/cerita-rakyat');
+            const result = await res.json();
+            const grid = document.getElementById('folklore-grid');
+            if(!grid) return;
+            if(!result.data || result.data.length === 0) {
+                grid.innerHTML = "<p style='color: #94a3b8; grid-column: 1/-1; text-align: center; padding: 40px;'>Pustaka sedang dalam proses digitalisasi...</p>";
+                return;
+            }
+            grid.innerHTML = result.data.map(item => `
+                <article class="folklore-card" onclick="openCerita(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                    <img src="${item.image_url || 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800'}" class="folklore-img" alt="${item.title}">
+                    <div class="folklore-content">
+                        <h3>${item.title}</h3>
+                        <p>${item.excerpt}</p>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function openCerita(item) {
+            alert(item.title + "\n\n" + item.content);
+        }
+
+        let avatarActive = false;
+        let scene, camera, renderer, avatar;
+        function toggleAvatar() {
+            const container = document.getElementById('avatar-container');
+            avatarActive = !avatarActive;
+            container.style.display = avatarActive ? 'flex' : 'none';
+            if(avatarActive && !scene) initAvatar();
+        }
+
+        function initAvatar() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, 350 / 300, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('avatar-canvas'), antialias: true, alpha: true });
+            renderer.setSize(350, 300);
+            scene.add(new THREE.AmbientLight(0xffffff, 2));
+            camera.position.set(0, 1.4, 2.5);
+            const loader = new THREE.GLTFLoader();
+            loader.load('https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxAnimated/glTF/BoxAnimated.gltf', (gltf) => {
+                avatar = gltf.scene;
+                avatar.scale.set(0.5, 0.5, 0.5);
+                avatar.position.y = 0.5;
+                scene.add(avatar);
+                animate();
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if(avatar) avatar.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'id-ID';
+        function startListening() {
+            recognition.start();
+            document.querySelector('.mic-btn').classList.add('active');
+        }
+        recognition.onresult = (event) => {
+            const text = event.results[0][0].transcript;
+            document.querySelector('.mic-btn').classList.remove('active');
+            chatWithAvatar(text);
+        };
+
+        async function chatWithAvatar(text) {
+            const responseEl = document.getElementById('avatar-response');
+            responseEl.innerText = "...";
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await res.json();
+                responseEl.innerText = data.reply;
+                speak(data.reply);
+            } catch (err) { responseEl.innerText = "Error!"; }
+        }
+
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'id-ID';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        async function loadContributors() {
+            const res = await fetch('/api/contributors');
+            const data = await res.json();
+            const preview = document.getElementById('contributor-preview');
+            if(preview) {
+                const top3 = data.slice(0, 3).map(c => c.name).join(", ");
+                const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
+                preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
             }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContributors();
+            initDusunWidgets();
+        });
 
 
         // Back to Top Logic
@@ -919,6 +1020,20 @@
             <button class="btn-close-wotd" onclick="closeWotdModal()">Lanjut ke Beranda</button>
         </div>
     </div>
+
+    <!-- Avatar Chat Container -->
+    <div id="avatar-container">
+        <canvas id="avatar-canvas"></canvas>
+        <div class="avatar-chat">
+            <div id="avatar-response">Halo! Saya asisten digital PALI. Ada yang bisa saya bantu?</div>
+            <div class="avatar-input-area">
+                <button class="btn-primary mic-btn" onclick="startListening()">🎤 Bicara</button>
+                <button class="btn-secondary" onclick="toggleAvatar()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-avatar-toggle" onclick="toggleAvatar()">🤖</button>
 
     <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
 </body>
