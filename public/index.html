@@ -861,28 +861,32 @@
             if(wisdomText) wisdomText.innerText = `"${randomProverb.text}"`;
             if(wisdomMeaning) wisdomMeaning.innerText = randomProverb.meaning;
 
-            const hasSeenWotd = sessionStorage.getItem('wotd_seen');
-            if (!hasSeenWotd) {
-                try {
-                    const response = await fetch('/api/kamus'); 
-                    const data = await response.json();
-                    if (data.success && data.results && data.results.length > 0) {
-                        const daily = data.results[0];
-                        document.getElementById('popup-word').innerText = daily.dusun || daily.word;
-                        document.getElementById('popup-meaning').innerText = daily.indonesia || daily.meaning || daily.arti;
-                        const example = daily.contoh_dusun || daily.example;
-                        const exampleEl = document.getElementById('popup-example');
-                        if (example) { exampleEl.innerText = `"${example}"`; exampleEl.style.display = 'block'; }
-                        else { exampleEl.style.display = 'none'; }
-                        setTimeout(() => {
-                            document.getElementById('wotdModal').classList.add('active');
-                            sessionStorage.setItem('wotd_seen', 'true');
-                        }, 1000);
-                    }
-                } catch (err) { console.error(err); }
-            }
+            // Force show for testing/debugging as per user feedback
+            try {
+                console.log("Fetching WOTD...");
+                const response = await fetch('/api/kamus'); 
+                const data = await response.json();
+                console.log("WOTD Data:", data);
+                
+                if (data.success && data.results && data.results.length > 0) {
+                    const daily = data.results[0];
+                    document.getElementById('popup-word').innerText = daily.dusun || daily.word;
+                    document.getElementById('popup-meaning').innerText = daily.indonesia || daily.meaning || daily.arti;
+                    const example = daily.contoh_dusun || daily.example;
+                    const exampleEl = document.getElementById('popup-example');
+                    if (example) { exampleEl.innerText = `"${example}"`; exampleEl.style.display = 'block'; }
+                    else { exampleEl.style.display = 'none'; }
+                    
+                    setTimeout(() => {
+                        console.log("Showing WOTD Modal");
+                        document.getElementById('wotdModal').classList.add('active');
+                    }, 1000);
+                }
+            } catch (err) { console.error("WOTD Error:", err); }
+            
             loadFolklore();
         }
+
 
         async function loadFolklore() {
             const res = await fetch('/api/cerita-rakyat');
@@ -974,43 +978,37 @@
         }
 
         async function loadContributors() {
-            const res = await fetch('/api/contributors');
-            const data = await res.json();
-            const preview = document.getElementById('contributor-preview');
-            if(preview) {
-                const top3 = data.slice(0, 3).map(c => c.name).join(", ");
-                const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
-                preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
-            }
+            try {
+                const res = await fetch('/api/contributors');
+                const data = await res.json();
+                const preview = document.getElementById('contributor-preview');
+                if(preview) {
+                    const top3 = data.slice(0, 3).map(c => c.name).join(", ");
+                    const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
+                    preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
+                }
+            } catch (err) { console.error("Contributors Error:", err); }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            console.log("Dusun Bot Page Loaded");
             loadContributors();
             initDusunWidgets();
-        });
 
-
-        // Back to Top Logic
-        const backToTop = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
+            // Back to Top Logic
+            const backToTop = document.getElementById('backToTop');
+            if(backToTop) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 500) backToTop.classList.add('visible');
+                    else backToTop.classList.remove('visible');
+                });
+                backToTop.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
             }
         });
-
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadContributors();
-            initDusunWidgets();
-        });
-
-
     </script>
+
     <div class="wotd-modal" id="wotdModal">
         <div class="wotd-modal-content">
             <span class="wotd-badge">Kosa Kata Hari Ini</span>
@@ -1027,8 +1025,8 @@
         <div class="avatar-chat">
             <div id="avatar-response">Halo! Saya asisten digital PALI. Ada yang bisa saya bantu?</div>
             <div class="avatar-input-area">
-                <button class="btn-primary mic-btn" onclick="startListening()">🎤 Bicara</button>
-                <button class="btn-secondary" onclick="toggleAvatar()">Tutup</button>
+                <button class="btn-primary mic-btn" style="background: var(--emerald-green); color: #0f172a; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer;" onclick="startListening()">🎤 Bicara</button>
+                <button class="btn-secondary" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer;" onclick="toggleAvatar()">Tutup</button>
             </div>
         </div>
     </div>
@@ -1037,5 +1035,4 @@
 
     <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
 </body>
-
 </html>

@@ -1918,6 +1918,129 @@ textarea.form-input {
     .kamus-actions button {
         width: 100% !important;
         text-align: center !important;
-        justify-content: center !important;
     }
-}$css
+}
+
+/* Folklore Section - Pustaka Dusun */
+.folklore-section {
+    padding: 80px 5%;
+    background: #0f172a;
+}
+
+.folklore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.folklore-card {
+    background: #1e293b;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.folklore-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--emerald-green);
+}
+
+.folklore-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #0f172a;
+}
+
+.folklore-content {
+    padding: 25px;
+}
+
+.folklore-card h3 {
+    margin-bottom: 12px;
+    color: white;
+}
+
+.folklore-card p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Avatar UI Overlay */
+#avatar-container {
+    position: fixed;
+    bottom: 110px;
+    right: 30px;
+    width: 350px;
+    height: 520px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(25px);
+    border-radius: 35px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+}
+
+#avatar-canvas {
+    width: 100%;
+    height: 55%;
+    background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+}
+
+.avatar-chat {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#avatar-response {
+    flex: 1;
+    color: white;
+    font-size: 0.9rem;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px;
+    line-height: 1.4;
+}
+
+.avatar-input-area {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-avatar-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    background: var(--emerald-green);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    z-index: 10000;
+    box-shadow: 0 10px 30px var(--emerald-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.4s;
+    font-size: 1.8rem;
+}
+
+.btn-avatar-toggle:hover {
+    transform: scale(1.1);
+}
+
+.mic-btn.active {
+    background: #ef4444 !important;
+}
