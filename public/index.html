@@ -150,10 +150,9 @@
             </div>
             <div class="nav-links" id="nav-links">
                 <a href="/">Beranda</a>
-                <a href="#features">Fitur</a>
-                <a href="#mission">Misi</a>
+                <a href="/kamus.html">Kamus</a>
+                <a href="/sejarah.html">Sejarah</a>
                 <a href="#docs">API</a>
-                <a href="#partners">Partner</a>
                 <a href="https://github.com/Irpansyah2m1d/dusun-bot-pali" target="_blank" class="btn-github">GitHub</a>
             </div>
             <div class="menu-toggle" id="mobile-menu">
@@ -209,7 +208,15 @@
                 <div class="kamus-info">
                     <span class="badge">Akses Digital</span>
                     <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Kamus Digital PALI</h2>
-                    <p class="kamus-desc">Telusuri lebih dari 2.800+ kosa kata dialek PALI. Mesin kami menggunakan database terstruktur untuk memberikan hasil yang cepat dan akurat untuk melestarikan bahasa daerah.</p>
+                    <p class="kamus-desc">Telusuri lebih dari 2.800+ kosa kata dialek PALI. Mesin kami menggunakan database terstruktur untuk memberikan hasil yang cepat dan akurat untuk melestarikan bahasa daerah. <b>Kontributor yang menyumbang >20 kosa kata akan ditampilkan di daftar apresiasi.</b></p>
+                    
+                    <div class="contributors-bar" onclick="openContributorsModal()" style="margin-bottom: 30px;">
+                        <span class="collab-label">Collaborators:</span>
+                        <div class="collab-list" id="collab-preview">
+                            <span class="collab-names">Memuat kontributor...</span>
+                        </div>
+                    </div>
+
                     <div class="kamus-actions" style="display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;">
                         <a href="/kamus.html" class="btn-secondary" style="border-color: var(--emerald-green); color: var(--emerald-green); flex-shrink: 0; white-space: nowrap;">Buka Kamus Lengkap ↗</a>
                         <button onclick="openUsulanModal()" class="btn-primary" style="padding: 14px 24px; font-size: 0.95rem; border: none; cursor: pointer; flex-shrink: 0; white-space: nowrap;">+ Tambah Kosakata</button>
@@ -240,11 +247,12 @@
                     <span class="badge">Misi Pelestarian</span>
                     <h2>Menghidupkan Akar Budaya dalam Barisan Kode</h2>
                     <p>Dusun Bot lahir di <b>Air Itam, PALI</b> sebagai respons atas kekhawatiran memudarnya dialek lokal di era digital. Kami membangun jembatan antara warisan nenek moyang dan teknologi masa depan.</p>
-                    <ul class="mission-list">
+                    <ul class="mission-list" style="margin-bottom: 30px;">
                         <li><i>✅</i> Dokumentasi Digital Dialek PALI</li>
                         <li><i>✅</i> Jembatan Komunikasi Lintas Generasi</li>
                         <li><i>✅</i> Inovasi Digital Berbasis Budaya Lokal</li>
                     </ul>
+                    <a href="/sejarah.html" class="btn-secondary" style="display: inline-flex; border-color: var(--emerald-green); color: var(--emerald-green); font-size: 0.9rem;">Pelajari Sejarah Bahasa ↗</a>
                 </div>
                 <div class="mission-stats">
                     <div class="stat-card">
@@ -403,6 +411,17 @@
 
         <!-- Back to Top -->
         <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
+        <!-- Modal Contributors -->
+        <div id="contributors-modal" class="modal-overlay modal-contributors">
+            <div class="modal">
+                <button class="modal-close" onclick="closeContributorsModal()" aria-label="Tutup">&times;</button>
+                <h3>Daftar Kontributor</h3>
+                <p>Terima kasih kepada para pahlawan yang telah berkontribusi melestarikan Bahasa Dusun PALI. <b>(Minimal >20 Kosakata)</b></p>
+                <div id="contributor-list" class="contributor-list">
+                    <!-- Loaded via JS -->
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer role="contentinfo">
@@ -707,6 +726,51 @@
         }, { threshold: 0.5 });
 
         observer.observe(statsSection);
+
+        // --- Contributors Logic ---
+        async function loadContributors() {
+            try {
+                const res = await fetch('/api/contributors');
+                const json = await res.json();
+                if (json.success) {
+                    renderContributorsPreview(json.data);
+                    renderContributorsFull(json.data);
+                }
+            } catch (e) {
+                console.error("Gagal memuat kontributor");
+            }
+        }
+
+        function renderContributorsPreview(data) {
+            const preview = document.getElementById('collab-preview');
+            if(!preview) return;
+            // Ambil 3 pertama
+            const top3 = data.slice(0, 3).map(c => c.name).join(", ");
+            const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
+            
+            preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
+        }
+
+        function renderContributorsFull(data) {
+            const list = document.getElementById('contributor-list');
+            if(!list) return;
+            list.innerHTML = data.map(c => `
+                <div class="contributor-item">
+                    <span class="contributor-name">${c.name}</span>
+                    <span class="contributor-count">${c.count} Kata</span>
+                </div>
+            `).join('');
+        }
+
+        function openContributorsModal() {
+            document.getElementById('contributors-modal').classList.add('active');
+        }
+
+        function closeContributorsModal() {
+            document.getElementById('contributors-modal').classList.remove('active');
+        }
+
+        loadContributors();
     </script>
 </body>
 </html>

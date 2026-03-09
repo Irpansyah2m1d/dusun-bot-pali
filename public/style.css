@@ -93,12 +93,19 @@ body {
 
 header {
     padding: 1.5rem 5%;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     background: rgba(12, 14, 18, 0.85);
     backdrop-filter: blur(16px);
     z-index: 1000;
     border-bottom: 1px solid var(--border-glass);
+}
+
+body {
+    padding-top: 80px;
+    /* Offset for fixed header */
 }
 
 nav {
@@ -1471,24 +1478,23 @@ textarea.form-input {
 .contributors-bar {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 20px;
-    padding: 10px 15px;
-    background: rgba(16, 185, 129, 0.05);
-    border-radius: 12px;
-    border: 1px solid rgba(16, 185, 129, 0.1);
+    gap: 10px;
+    margin-top: 15px;
+    padding: 0;
+    background: none;
+    border: none;
     cursor: pointer;
     transition: 0.3s;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .contributors-bar:hover {
-    background: rgba(16, 185, 129, 0.1);
-    transform: translateY(-2px);
+    transform: translateX(4px);
+    opacity: 0.8;
 }
 
 .collab-label {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: var(--emerald-green);
     text-transform: uppercase;
@@ -1496,7 +1502,7 @@ textarea.form-input {
 }
 
 .collab-names {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
 }
 
