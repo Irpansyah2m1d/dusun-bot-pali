@@ -428,8 +428,43 @@ nav {
 }
 
 .mission-text {
-    flex: 1.5;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-areas:
+        "badge stats"
+        "title stats"
+        "desc stats"
+        "list stats"
+        "btn stats";
+    gap: 0 80px;
+    align-items: center;
 }
+
+.badge {
+    grid-area: badge;
+}
+
+.mission-text h2 {
+    grid-area: title;
+}
+
+.mission-text p {
+    grid-area: desc;
+}
+
+.mission-stats {
+    grid-area: stats;
+}
+
+.mission-list {
+    grid-area: list;
+}
+
+.mission-text a {
+    grid-area: btn;
+}
+
 
 .badge {
     padding: 6px 14px;
@@ -1058,14 +1093,18 @@ footer {
         margin-bottom: 30px;
     }
 
-    .mission-container {
+    .mission-text {
+        display: flex;
         flex-direction: column;
         text-align: center;
-        gap: 30px;
     }
 
     .mission-text h2 {
         font-size: 2rem;
+    }
+
+    .mission-stats {
+        margin: 20px 0 30px;
     }
 
     .mission-stats {
