@@ -169,10 +169,10 @@
     <main>
         <section class="hero" aria-label="Hero Section">
             <div class="hero-content">
-                <span class="badge fade-in">V1.0.0 Alpha</span>
+                <span class="badge fade-in mb-2">V1.0.0 Alpha</span>
                 <h1 class="fade-in">Melestarikan Dialek,<br><span class="gradient-text">Hubungkan Teknologi.</span></h1>
                 <p class="fade-in delay-1">API Open Source cerdas untuk Bahasa Dusun PALI (Sumatera Selatan). Menggunakan teknologi RAG & Kecerdasan Buatan Terkini.</p>
-                <div class="wotd-card fade-in delay-2" id="wotd-card">
+                <div class="wotd-card fade-in delay" id="wotd-card">
                     <div class="wotd-header">🌟 Kata Hari Ini</div>
                     <div id="wotd-card-content">
                         <div class="wotd-word"></div>
@@ -194,27 +194,7 @@
             </div>
         </section>
 
-        <section id="features" class="features" aria-label="Fitur Unggulan Dusun Bot PALI">
-            <h2 class="section-title">Fitur Unggulan</h2>
-            <div class="feature-grid">
-                <article class="feature-card">
-                    <div class="icon" aria-hidden="true">💬</div>
-                    <h3>Chatbot AI Bahasa Dusun</h3>
-                    <p>Percakapan natural dengan dialek PALI kental. Didukung Gemini, Groq, dan Z.ai (GLM).</p>
-                </article>
-                <article class="feature-card">
-                    <div class="icon" aria-hidden="true">📖</div>
-                    <h3>Pencarian Kamus Bahasa Dusun PALI</h3>
-                    <p>Akses database 2.8k+ kosa kata bolak-balik (Indonesia ↔ PALI) secara instan tanpa API Key.</p>
-                </article>
-                <article class="feature-card">
-                    <div class="icon" aria-hidden="true">🌐</div>
-                    <h3>Penerjemah Kalimat Bahasa Dusun</h3>
-                    <p>Mesin terjemah khusus kalimat panjang dengan akurasi dialek PALI yang tajam dan akurat.</p>
-                </article>
-            </div>
-        </section>
-
+        <!-- Wisdom Section (Nasehat) - Moved here -->
         <section class="wisdom-section fade-in">
             <div class="wisdom-container">
                 <span class="wisdom-label">Nasehat Dusun PALI</span>
@@ -223,6 +203,11 @@
                 <div class="wisdom-meaning" id="wisdom-meaning"></div>
             </div>
         </section>
+
+
+
+
+
 
         <section id="kamus-live" class="live-kamus">
             <div class="kamus-container fade-in">
@@ -262,6 +247,29 @@
             </div>
         </section>
 
+        <!-- Features - Moved here -->
+        <section id="features" class="features" aria-label="Fitur Unggulan Dusun Bot PALI">
+            <h2 class="section-title">Fitur Unggulan</h2>
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <div class="icon" aria-hidden="true">💬</div>
+                    <h3>Chatbot AI Bahasa Dusun</h3>
+                    <p>Percakapan natural dengan dialek PALI kental. Didukung Gemini, Groq, dan Z.ai (GLM).</p>
+                </article>
+                <article class="feature-card">
+                    <div class="icon" aria-hidden="true">📖</div>
+                    <h3>Pencarian Kamus Bahasa Dusun PALI</h3>
+                    <p>Akses database 2.8k+ kosa kata bolak-balik (Indonesia ↔ PALI) secara instan tanpa API Key.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="icon" aria-hidden="true">🌐</div>
+                    <h3>Penerjemah Kalimat Bahasa Dusun</h3>
+                    <p>Mesin terjemah khusus kalimat panjang dengan akurasi dialek PALI yang tajam dan akurat.</p>
+                </article>
+            </div>
+        </section>
+
+
         <section id="mission" class="mission">
             <div class="mission-container">
                 <div class="mission-text">
@@ -289,6 +297,39 @@
                 </div>
             </div>
         </section>
+
+        <!-- Gallery Budaya PALI -->
+        <section class="gallery-section">
+            <h2 class="section-title">Pesona Budaya PALI</h2>
+            <div class="gallery-track">
+                <div class="gallery-item">
+                    <img src="/gallery/heritage.png" alt="Rumah Limas PALI">
+                    <div class="gallery-overlay">Rumah Limas Tradisional</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="/gallery/river.png" alt="Sungai Lematang">
+                    <div class="gallery-overlay">Aliran Sungai Lematang</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="/gallery/rubber.png" alt="Perkebunan Karet PALI">
+                    <div class="gallery-overlay">Potensi Alam PALI</div>
+                </div>
+                <!-- Duplicate for seamless scroll -->
+                <div class="gallery-item">
+                    <img src="/gallery/heritage.png" alt="Rumah Limas PALI">
+                    <div class="gallery-overlay">Rumah Limas Tradisional</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="/gallery/river.png" alt="Sungai Lematang">
+                    <div class="gallery-overlay">Aliran Sungai Lematang</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="/gallery/rubber.png" alt="Perkebunan Karet PALI">
+                    <div class="gallery-overlay">Potensi Alam PALI</div>
+                </div>
+            </div>
+        </section>
+
 
         <section class="tech-stack">
             <h2 class="section-title">Teknologi Modern</h2>
@@ -796,7 +837,16 @@
         const proverbs = [
             { text: "Ayer Tenang, Terus Menghanyutkan", meaning: "Jangan meremehkan orang yang pendiam, karena mereka biasanya memiliki pengetahuan atau kekuatan yang besar." },
             { text: "Kecik-kecik Cabai Rawit", meaning: "Seseorang yang kecil badannya tetapi memiliki keberanian atau kemampuan yang luar biasa." },
-            { text: "Payo kito beguyur bae", meaning: "Ajakan untuk mengerjakan sesuatu secara perlahan namun pasti hingga selesai." }
+            { text: "Payo kito beguyur bae", meaning: "Ajakan untuk mengerjakan sesuatu secara perlahan namun pasti hingga selesai." },
+            { text: "Lumpak-lumpak Tupai, Jatuh jugo", meaning: "Sepandai-pandainya orang menyimpan rahasia atau berbuat salah, suatu saat pasti akan ketahuan juga." }
+        ];
+
+        const wotdPool = [
+            { word: "Dengo", meaning: "Kamu / Anda (Sopan)", example: "Dengo nak kemane, Kak?" },
+            { word: "Kabah", meaning: "Kamu / Kau (Akrab/Kasar)", example: "Kabah liat dak?" },
+            { word: "Nga", meaning: "Nama / Siapa", example: "Nga namo adek?" },
+            { word: "Payo", meaning: "Ayo / Mari", example: "Payo kito balek!" },
+            { word: "Kacak", meaning: "Ganteng / Keren", example: "Budak itu kacak nian." }
         ];
 
         function initDusunWidgets() {
@@ -806,45 +856,54 @@
             if(wisdomText) wisdomText.innerText = `"${randomProverb.text}"`;
             if(wisdomMeaning) wisdomMeaning.innerText = randomProverb.meaning;
 
-            fetch('/api/kamus')
-                .then(res => res.json())
-                .then(data => {
-                    const keys = Object.keys(data).filter(k => data[k].arti);
-                    const today = new Date().toDateString();
-                    let hash = 0;
-                    for (let i = 0; i < today.length; i++) {
-                        hash = (hash << 5) - hash + today.charCodeAt(i);
-                        hash |= 0;
-                    }
-                    const index = Math.abs(hash) % keys.length;
-                    const dailyWord = keys[index];
-                    const dailyData = data[dailyWord];
+            // Logic for Word of the Day (WOTD)
+            const today = new Date().toDateString();
+            let hash = 0;
+            for (let i = 0; i < today.length; i++) {
+                hash = (hash << 5) - hash + today.charCodeAt(i);
+                hash |= 0;
+            }
+            const index = Math.abs(hash) % wotdPool.length;
+            const daily = wotdPool[index];
 
-                    const wordEl = document.querySelector('.wotd-word');
-                    const meaningEl = document.querySelector('.wotd-meaning');
-                    const exampleEl = document.querySelector('.wotd-example');
-                    
-                    if(wordEl) wordEl.innerText = dailyWord.charAt(0).toUpperCase() + dailyWord.slice(1);
-                    if(meaningEl) meaningEl.innerText = dailyData.arti;
-                    if(exampleEl) {
-                        if (dailyData.contoh_dusun) {
-                            exampleEl.innerText = `"${dailyData.contoh_dusun}"`;
-                            exampleEl.style.display = 'block';
-                        } else {
-                            exampleEl.style.display = 'none';
-                        }
-                    }
-                    
-                    // Show the card once data is ready
-                    const card = document.getElementById('wotd-card');
-                    if(card) card.classList.add('loaded');
-                })
-
-                .catch(err => console.error("Error loading WOTD:", err));
+            const wordEl = document.querySelector('.wotd-word');
+            const meaningEl = document.querySelector('.wotd-meaning');
+            const exampleEl = document.querySelector('.wotd-example');
+            
+            if(wordEl) wordEl.innerText = daily.word;
+            if(meaningEl) meaningEl.innerText = daily.meaning;
+            if(exampleEl) {
+                exampleEl.innerText = `"${daily.example}"`;
+                exampleEl.style.display = 'block';
+            }
+            
+            const card = document.getElementById('wotd-card');
+            if(card) card.classList.add('loaded');
         }
 
-        loadContributors();
-        initDusunWidgets();
+
+        // Back to Top Logic
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContributors();
+            initDusunWidgets();
+        });
+
+
     </script>
+    <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
 </body>
+
 </html>
