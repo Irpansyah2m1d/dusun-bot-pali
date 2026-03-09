@@ -2,26 +2,26 @@
   {
     "indonesia": "Makan",
     "dusun": "makan",
-    "contoh_id": "",
-    "contoh_dusun": "makan"
+    "contoh_id": "kamu mau makan apa?",
+    "contoh_dusun": "dengo/nga ndok makan tope?"
   },
   {
     "indonesia": "mau",
     "dusun": "endok / ndok",
-    "contoh_id": "",
-    "contoh_dusun": "aku ndak makan, ndok minum"
+    "contoh_id": "kamu mau apa",
+    "contoh_dusun": "dengo/nga ndok tope"
   },
   {
-    "indonesia": "apa kabar",
-    "dusun": "tope kabor",
-    "contoh_id": "",
-    "contoh_dusun": "tope kabor, mane lague"
+    "indonesia": "kabar",
+    "dusun": "kabor",
+    "contoh_id": "apa kabar",
+    "contoh_dusun": "tope kabor / mane lague"
   },
   {
     "indonesia": "kamu",
     "dusun": "dengo, nga",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu lagi dimana",
+    "contoh_dusun": "dengo/nga lagi di mene"
   },
   {
     "indonesia": "orang",

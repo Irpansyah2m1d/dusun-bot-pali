@@ -4,8 +4,9 @@
 
 ---
 
-## 🌐 Live Demo & Landing Page
-Akses fitur dan dokumentasi UI di: **[https://dusun-bot-pali.vercel.app](https://dusun-bot-pali.vercel.app)**
+## 🌐 Official Website
+Kunjungi website resmi Dusun Bot untuk mencoba fitur secara langsung dan melihat dokumentasi interaktif:
+👉 **[https://dusun-bot-pali.vercel.app](https://dusun-bot-pali.vercel.app)**
 
 ---
 
