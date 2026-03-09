@@ -889,23 +889,68 @@
 
 
         async function loadFolklore() {
-            const res = await fetch('/api/cerita-rakyat');
-            const result = await res.json();
             const grid = document.getElementById('folklore-grid');
             if(!grid) return;
-            if(!result.data || result.data.length === 0) {
-                grid.innerHTML = "<p style='color: #94a3b8; grid-column: 1/-1; text-align: center; padding: 40px;'>Pustaka sedang dalam proses digitalisasi...</p>";
-                return;
+            
+            try {
+                const res = await fetch('/api/cerita-rakyat');
+                const result = await res.json();
+                
+                let stories = result.data || [];
+                
+                // Fallback data if database is empty for initial demo
+                if (stories.length === 0) {
+                    stories = [
+                        {
+                            title: "Legenda Candi Bumi Ayu",
+                            excerpt: "Kisah kemasyhuran candi termegah di tepian sungai Lematang.",
+                            content: "Candi Bumi Ayu merupakan peninggalan Hindu di Desa Bumi Ayu yang dahulunya...",
+                            image_url: "/gallery/heritage.png"
+                        },
+                        {
+                            title: "Sungai Lematang & Puyang",
+                            excerpt: "Cerita tentang urat nadi kehidupan masyarakat Penukal.",
+                            content: "Sungai Lematang bukan sekadar sungai, tapi saksi bisu sejarah...",
+                            image_url: "/gallery/river.png"
+                        }
+                    ];
+                }
+
+                grid.innerHTML = stories.map(item => `
+                    <article class="folklore-card" onclick="openCerita(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                        <img src="${item.image_url || 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800'}" class="folklore-img" alt="${item.title}">
+                        <div class="folklore-content">
+                            <h3>${item.title}</h3>
+                            <p>${item.excerpt}</p>
+                        </div>
+                    </article>
+                `).join('');
+            } catch (err) {
+                console.error("Folklore Error:", err);
+                const fallback = [
+                    {
+                        title: "Legenda Candi Bumi Ayu",
+                        excerpt: "Kisah kemasyhuran candi termegah di tepian sungai Lematang.",
+                        content: "Candi Bumi Ayu merupakan peninggalan Hindu di Desa Bumi Ayu yang dahulunya...",
+                        image_url: "/gallery/heritage.png"
+                    },
+                    {
+                        title: "Sungai Lematang & Puyang",
+                        excerpt: "Cerita tentang urat nadi kehidupan masyarakat Penukal.",
+                        content: "Sungai Lematang bukan sekadar sungai, tapi saksi bisu sejarah...",
+                        image_url: "/gallery/river.png"
+                    }
+                ];
+                grid.innerHTML = fallback.map(item => `
+                    <article class="folklore-card" onclick="openCerita(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                        <img src="${item.image_url}" class="folklore-img" alt="${item.title}">
+                        <div class="folklore-content">
+                            <h3>${item.title}</h3>
+                            <p>${item.excerpt}</p>
+                        </div>
+                    </article>
+                `).join('');
             }
-            grid.innerHTML = result.data.map(item => `
-                <article class="folklore-card" onclick="openCerita(${JSON.stringify(item).replace(/"/g, '&quot;')})">
-                    <img src="${item.image_url || 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800'}" class="folklore-img" alt="${item.title}">
-                    <div class="folklore-content">
-                        <h3>${item.title}</h3>
-                        <p>${item.excerpt}</p>
-                    </div>
-                </article>
-            `).join('');
         }
 
         function openCerita(item) {
@@ -963,12 +1008,22 @@
                 const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
+                    body: JSON.stringify({ 
+                        prompt: text,
+                        provider: 'groq' 
+                    })
                 });
                 const data = await res.json();
-                responseEl.innerText = data.reply;
-                speak(data.reply);
-            } catch (err) { responseEl.innerText = "Error!"; }
+                if (data.answer) {
+                    responseEl.innerText = data.answer;
+                    speak(data.answer);
+                } else if (data.reply) {
+                    responseEl.innerText = data.reply;
+                    speak(data.reply);
+                } else {
+                    responseEl.innerText = data.error || "Maaf, saya sedang tidak enak badan.";
+                }
+            } catch (err) { responseEl.innerText = "Error menghubungkan ke AI!"; }
         }
 
         function speak(text) {

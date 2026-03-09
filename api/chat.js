@@ -73,11 +73,23 @@ try {
 
 module.exports = async (req, res) => {
     // Hanya menerima metode POST
-    const { prompt, userApiKey, provider = "gemini", modelName } = req.body;
+    // 0. Resolve API Key & Provider from Body or Env
+    const { prompt, provider = "gemini", modelName } = req.body;
+
+    // Resolve Key (Body takes precedence, then Env)
+    let userApiKey = req.body.userApiKey;
+    if (!userApiKey) {
+        if (provider === 'groq') userApiKey = process.env.GROQ_API_KEY;
+        else if (provider === 'zai') userApiKey = process.env.ZAI_API_KEY;
+        else userApiKey = process.env.GEMINI_API_KEY;
+    }
 
     // Validasi input
-    if (!prompt || !userApiKey) {
-        return res.status(400).json({ error: "Prompt dan userApiKey harus diisi." });
+    if (!prompt) {
+        return res.status(400).json({ error: "Prompt harus diisi." });
+    }
+    if (!userApiKey) {
+        return res.status(400).json({ error: `API Key untuk ${provider.toUpperCase()} belum dikonfigurasi di server.` });
     }
 
     try {

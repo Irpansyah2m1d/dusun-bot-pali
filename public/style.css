@@ -1870,7 +1870,7 @@ textarea.form-input {
 .back-to-top {
     position: fixed;
     bottom: 30px;
-    right: 30px;
+    right: 110px;
     width: 50px;
     height: 50px;
     background: var(--emerald-green);
@@ -2028,7 +2028,8 @@ textarea.form-input {
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    z-index: 10000;
+    z-index: 10001;
+    /* Above everything */
     box-shadow: 0 10px 30px var(--emerald-glow);
     display: flex;
     align-items: center;

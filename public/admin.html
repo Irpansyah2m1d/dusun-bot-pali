@@ -164,7 +164,8 @@
             <p style="color: #94a3b8; margin-bottom: 40px;">Kelola koleksi dongeng dan sejarah PALI.</p>
 
             <div class="card">
-                <h3>Tambah Cerita Baru</h3>
+                <h3 id="folklore-form-title">Tambah/Edit Cerita</h3>
+                <input type="hidden" id="folklore-id">
                 <div class="form-group">
                     <label>Judul Cerita</label>
                     <input type="text" id="folklore-title" placeholder="Contoh: Legenda Candi Bumi Ayu">
@@ -181,7 +182,10 @@
                     <label>URL Gambar (Link Foto Budaya)</label>
                     <input type="text" id="folklore-image" placeholder="https://example.com/foto.jpg">
                 </div>
-                <button class="btn-primary" onclick="addFolklore()">Simpan Cerita</button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-primary" id="btn-save-folklore" onclick="saveFolklore()">Simpan Cerita</button>
+                    <button class="btn-secondary hidden" id="btn-cancel-folklore" onclick="resetFolkloreForm()">Batal</button>
+                </div>
             </div>
 
             <div class="card">
@@ -206,6 +210,7 @@
 
     <script>
         let password = "";
+        let editingFolkloreId = null;
 
         function login() {
             password = document.getElementById('adminPass').value;
@@ -221,7 +226,12 @@
             document.getElementById(tab + 'Tab').classList.remove('hidden');
             
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
+            // Find the nav item that matches the tab and add active class
+            document.querySelectorAll('.nav-item').forEach(el => {
+                if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(tab)) {
+                    el.classList.add('active');
+                }
+            });
         }
 
         async function loadWords() {
@@ -291,7 +301,7 @@
             const res = await fetch('/api/cerita-rakyat');
             const result = await res.json();
             const list = document.getElementById('folkloreList');
-            if(result.data.length === 0) {
+            if(!result.data || result.data.length === 0) {
                 list.innerHTML = "<p>Belum ada cerita.</p>";
                 return;
             }
@@ -307,7 +317,10 @@
                         ${result.data.map(item => `
                             <tr>
                                 <td>${item.title}</td>
-                                <td><button class="btn-action btn-delete" onclick="deleteFolklore(${item.id})">Hapus</button></td>
+                                <td style="display: flex; gap: 8px;">
+                                    <button class="btn-action btn-approve" onclick='editFolklore(${JSON.stringify(item).replace(/'/g, "\\'")})'>Edit</button>
+                                    <button class="btn-action btn-delete" onclick="deleteFolklore(${item.id})">Hapus</button>
+                                </td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -315,29 +328,79 @@
             `;
         }
 
-        async function addFolklore() {
-            const payload = {
-                title: document.getElementById('folklore-title').value,
-                excerpt: document.getElementById('folklore-excerpt').value,
-                content: document.getElementById('folklore-content').value,
-                image_url: document.getElementById('folklore-image').value
-            };
-            const res = await fetch('/api/cerita-rakyat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
-                body: JSON.stringify(payload)
-            });
-            alert('Berhasil menambah cerita!');
-            loadFolklore();
+        function editFolklore(item) {
+            editingFolkloreId = item.id;
+            document.getElementById('folklore-form-title').innerText = "Edit Cerita: " + item.title;
+            document.getElementById('folklore-title').value = item.title;
+            document.getElementById('folklore-excerpt').value = item.excerpt || "";
+            document.getElementById('folklore-content').value = item.content;
+            document.getElementById('folklore-image').value = item.image_url || "";
+            
+            document.getElementById('btn-save-folklore').innerText = "Update Cerita";
+            document.getElementById('btn-cancel-folklore').classList.remove('hidden');
+            
+            // Scroll to form
+            document.getElementById('folklore-form-title').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetFolkloreForm() {
+            editingFolkloreId = null;
+            document.getElementById('folklore-form-title').innerText = "Tambah Cerita Baru";
+            document.getElementById('folklore-title').value = "";
+            document.getElementById('folklore-excerpt').value = "";
+            document.getElementById('folklore-content').value = "";
+            document.getElementById('folklore-image').value = "";
+            
+            document.getElementById('btn-save-folklore').innerText = "Simpan Cerita";
+            document.getElementById('btn-cancel-folklore').classList.add('hidden');
+        }
+
+        async function saveFolklore() {
+            const title = document.getElementById('folklore-title').value;
+            const excerpt = document.getElementById('folklore-excerpt').value;
+            const content = document.getElementById('folklore-content').value;
+            const image_url = document.getElementById('folklore-image').value;
+
+            if(!title || !content) {
+                alert("Judul dan Isi Cerita wajib diisi!");
+                return;
+            }
+
+            const payload = { title, excerpt, content, image_url };
+            const method = editingFolkloreId ? 'PUT' : 'POST';
+            if (editingFolkloreId) payload.id = editingFolkloreId;
+
+            try {
+                const res = await fetch('/api/cerita-rakyat', {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert(editingFolkloreId ? 'Berhasil memperbarui cerita!' : 'Berhasil menambah cerita!');
+                    resetFolkloreForm();
+                    loadFolklore();
+                } else {
+                    alert("Error: " + data.message);
+                }
+            } catch (err) {
+                alert("Gagal menyimpan data.");
+            }
         }
 
         async function deleteFolklore(id) {
-            await fetch('/api/cerita-rakyat', {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
-                body: JSON.stringify({ id })
-            });
-            loadFolklore();
+            if(!confirm('Yakin ingin menghapus cerita ini?')) return;
+            try {
+                const res = await fetch('/api/cerita-rakyat', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                    body: JSON.stringify({ id })
+                });
+                loadFolklore();
+            } catch (err) {
+                alert("Gagal menghapus.");
+            }
         }
 
         async function loadSettings() {

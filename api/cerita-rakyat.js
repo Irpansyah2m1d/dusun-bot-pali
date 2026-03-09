@@ -38,6 +38,17 @@ module.exports = async (req, res) => {
             return res.status(200).json({ success: true, message: 'Berhasil menambah cerita rakyat.' });
         }
 
+        if (req.method === 'PUT') {
+            const { id, title, excerpt, content, image_url } = req.body;
+            const { data, error } = await supabase
+                .from('cerita_rakyat')
+                .update({ title, excerpt, content, image_url })
+                .eq('id', id);
+
+            if (error) throw error;
+            return res.status(200).json({ success: true, message: 'Berhasil memperbarui cerita rakyat.' });
+        }
+
         if (req.method === 'DELETE') {
             const { id } = req.body;
             const { error } = await supabase
