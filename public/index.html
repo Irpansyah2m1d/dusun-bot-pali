@@ -172,6 +172,15 @@
                 <span class="badge fade-in">V1.0.0 Alpha</span>
                 <h1 class="fade-in">Melestarikan Dialek,<br><span class="gradient-text">Hubungkan Teknologi.</span></h1>
                 <p class="fade-in delay-1">API Open Source cerdas untuk Bahasa Dusun PALI (Sumatera Selatan). Menggunakan teknologi RAG & Kecerdasan Buatan Terkini.</p>
+                <div class="wotd-card fade-in delay-2">
+                    <div class="wotd-header">🌟 Kata Hari Ini</div>
+                    <div id="wotd-card-content">
+                        <div class="wotd-word">Memuat...</div>
+                        <div class="wotd-meaning">--</div>
+                        <div class="wotd-example">--</div>
+                    </div>
+                </div>
+
                 <div class="hero-btns fade-in delay-2">
                     <a href="#docs" class="btn-primary" aria-label="Mulai integrasi API">Mulai Integrasi</a>
                     <a href="https://wa.me/6282281488763" target="_blank" rel="noopener noreferrer" class="btn-secondary" aria-label="Hubungi pengembang via WhatsApp">Hubungi Pengembang</a>
@@ -203,6 +212,15 @@
                     <h3>Penerjemah Kalimat Bahasa Dusun</h3>
                     <p>Mesin terjemah khusus kalimat panjang dengan akurasi dialek PALI yang tajam dan akurat.</p>
                 </article>
+            </div>
+        </section>
+
+        <section class="wisdom-section fade-in">
+            <div class="wisdom-container">
+                <span class="wisdom-label">Nasehat Dusun PALI</span>
+                <div class="wisdom-icon">“</div>
+                <div class="wisdom-text" id="wisdom-text">"Memuat nasehat bijak..."</div>
+                <div class="wisdom-meaning" id="wisdom-meaning">--</div>
             </div>
         </section>
 
@@ -775,7 +793,53 @@
             document.getElementById('contributors-modal').classList.remove('active');
         }
 
+        const proverbs = [
+            { text: "Ayer Tenang, Terus Menghanyutkan", meaning: "Jangan meremehkan orang yang pendiam, karena mereka biasanya memiliki pengetahuan atau kekuatan yang besar." },
+            { text: "Kecik-kecik Cabai Rawit", meaning: "Seseorang yang kecil badannya tetapi memiliki keberanian atau kemampuan yang luar biasa." },
+            { text: "Payo kito beguyur bae", meaning: "Ajakan untuk mengerjakan sesuatu secara perlahan namun pasti hingga selesai." }
+        ];
+
+        function initDusunWidgets() {
+            const randomProverb = proverbs[Math.floor(Math.random() * proverbs.length)];
+            const wisdomText = document.getElementById('wisdom-text');
+            const wisdomMeaning = document.getElementById('wisdom-meaning');
+            if(wisdomText) wisdomText.innerText = `"${randomProverb.text}"`;
+            if(wisdomMeaning) wisdomMeaning.innerText = randomProverb.meaning;
+
+            fetch('/api/kamus')
+                .then(res => res.json())
+                .then(data => {
+                    const keys = Object.keys(data).filter(k => data[k].arti);
+                    const today = new Date().toDateString();
+                    let hash = 0;
+                    for (let i = 0; i < today.length; i++) {
+                        hash = (hash << 5) - hash + today.charCodeAt(i);
+                        hash |= 0;
+                    }
+                    const index = Math.abs(hash) % keys.length;
+                    const dailyWord = keys[index];
+                    const dailyData = data[dailyWord];
+
+                    const wordEl = document.querySelector('.wotd-word');
+                    const meaningEl = document.querySelector('.wotd-meaning');
+                    const exampleEl = document.querySelector('.wotd-example');
+                    
+                    if(wordEl) wordEl.innerText = dailyWord.charAt(0).toUpperCase() + dailyWord.slice(1);
+                    if(meaningEl) meaningEl.innerText = dailyData.arti;
+                    if(exampleEl) {
+                        if (dailyData.contoh_dusun) {
+                            exampleEl.innerText = `"${dailyData.contoh_dusun}"`;
+                            exampleEl.style.display = 'block';
+                        } else {
+                            exampleEl.style.display = 'none';
+                        }
+                    }
+                })
+                .catch(err => console.error("Error loading WOTD:", err));
+        }
+
         loadContributors();
+        initDusunWidgets();
     </script>
 </body>
 </html>
