@@ -276,10 +276,11 @@ nav {
 .hero-content h1 {
     font-size: 3.5rem;
     font-weight: 950;
-    line-height: 1.15;
+    line-height: 1.1;
     margin-bottom: 24px;
     letter-spacing: -1.5px;
 }
+
 
 
 
@@ -1652,14 +1653,19 @@ textarea.form-input {
     border-radius: 20px;
 }
 
-/* Word of the Day Widget - Sleek & Integrated */
+/* Word of the Day Widget - Sleek Highlighted */
 .wotd-card {
     display: flex;
     flex-direction: column;
-    margin: 10px 0 25px;
-    max-width: 500px;
+    margin: 15px 0 35px;
+    max-width: fit-content;
+    padding: 16px 24px;
+    background: rgba(16, 185, 129, 0.04);
+    border-left: 3px solid var(--emerald-green);
+    border-radius: 4px 16px 16px 4px;
     transition: all 0.5s ease;
 }
+
 
 .wotd-header {
     display: flex;
@@ -1684,6 +1690,7 @@ textarea.form-input {
 .wotd-meaning {
     color: var(--text-muted);
     font-size: 1.05rem;
+    line-height: 1.4;
 }
 
 .wotd-example {
@@ -1692,7 +1699,9 @@ textarea.form-input {
     font-size: 0.95rem;
     margin-top: 10px;
     opacity: 0.8;
+    line-height: 1.4;
 }
+
 
 
 /* Wisdom Section (Peribahasa) - Clean & Direct */
