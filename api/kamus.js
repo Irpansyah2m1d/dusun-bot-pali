@@ -23,9 +23,33 @@ module.exports = async (req, res) => {
     const query = (req.query.q || req.body.query || "").toLowerCase().trim();
 
     if (!query) {
-        return res.status(400).json({
-            success: false,
-            message: "Parameter 'q' (GET) atau 'query' (POST) wajib diisi."
+        // Jika tidak ada query, kembalikan kata acak (bisa digunakan untuk WOTD)
+        let dailyWord = null;
+        if (source === 'supabase') {
+            try {
+                const { data: dbData, error } = await supabase
+                    .from('kamus_utama')
+                    .select('*')
+                    .limit(1)
+                    .order('dusun', { ascending: Math.random() > 0.5 }); // Simple pseudo-random
+
+                if (!error && dbData && dbData.length > 0) {
+                    dailyWord = dbData[0];
+                }
+            } catch (err) {
+                console.error("Supabase daily word error:", err);
+            }
+        }
+
+        // Fallback or JSON source
+        if (!dailyWord && kamusDataJSON.length > 0) {
+            dailyWord = kamusDataJSON[Math.floor(Math.random() * kamusDataJSON.length)];
+        }
+
+        return res.status(200).json({
+            success: true,
+            isWotd: true,
+            results: dailyWord ? [dailyWord] : []
         });
     }
 

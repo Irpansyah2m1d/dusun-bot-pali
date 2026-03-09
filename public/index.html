@@ -841,44 +841,48 @@
             { text: "Lumpak-lumpak Tupai, Jatuh jugo", meaning: "Sepandai-pandainya orang menyimpan rahasia atau berbuat salah, suatu saat pasti akan ketahuan juga." }
         ];
 
-        const wotdPool = [
-            { word: "Dengo", meaning: "Kamu / Anda (Sopan)", example: "Dengo nak kemane, Kak?" },
-            { word: "Kabah", meaning: "Kamu / Kau (Akrab/Kasar)", example: "Kabah liat dak?" },
-            { word: "Nga", meaning: "Nama / Siapa", example: "Nga namo adek?" },
-            { word: "Payo", meaning: "Ayo / Mari", example: "Payo kito balek!" },
-            { word: "Kacak", meaning: "Ganteng / Keren", example: "Budak itu kacak nian." }
-        ];
 
-        function initDusunWidgets() {
+
+        async function initDusunWidgets() {
+            // 1. Nasehat / Peribahasa (Random from local array)
             const randomProverb = proverbs[Math.floor(Math.random() * proverbs.length)];
             const wisdomText = document.getElementById('wisdom-text');
             const wisdomMeaning = document.getElementById('wisdom-meaning');
             if(wisdomText) wisdomText.innerText = `"${randomProverb.text}"`;
             if(wisdomMeaning) wisdomMeaning.innerText = randomProverb.meaning;
 
-            // Logic for Word of the Day (WOTD)
-            const today = new Date().toDateString();
-            let hash = 0;
-            for (let i = 0; i < today.length; i++) {
-                hash = (hash << 5) - hash + today.charCodeAt(i);
-                hash |= 0;
+            // 2. Word of the Day (WOTD) - Fetch from Database/API
+            try {
+                const response = await fetch('/api/kamus'); // No query = random word
+                const data = await response.json();
+                
+                if (data.success && data.results && data.results.length > 0) {
+                    const daily = data.results[0];
+                    const wordEl = document.querySelector('.wotd-word');
+                    const meaningEl = document.querySelector('.wotd-meaning');
+                    const exampleEl = document.querySelector('.wotd-example');
+                    
+                    if(wordEl) wordEl.innerText = daily.dusun || daily.word;
+                    if(meaningEl) meaningEl.innerText = daily.indonesia || daily.meaning || daily.arti;
+                    if(exampleEl) {
+                        const example = daily.contoh_dusun || daily.example;
+                        if (example) {
+                            exampleEl.innerText = `"${example}"`;
+                            exampleEl.style.display = 'block';
+                        } else {
+                            exampleEl.style.display = 'none';
+                        }
+                    }
+                    
+                    const card = document.getElementById('wotd-card');
+                    if(card) card.classList.add('loaded');
+                }
+            } catch (err) {
+                console.error("Error loading WOTD from database:", err);
+                // Simple Fallback if API fails
+                const card = document.getElementById('wotd-card');
+                if(card) card.style.display = 'none';
             }
-            const index = Math.abs(hash) % wotdPool.length;
-            const daily = wotdPool[index];
-
-            const wordEl = document.querySelector('.wotd-word');
-            const meaningEl = document.querySelector('.wotd-meaning');
-            const exampleEl = document.querySelector('.wotd-example');
-            
-            if(wordEl) wordEl.innerText = daily.word;
-            if(meaningEl) meaningEl.innerText = daily.meaning;
-            if(exampleEl) {
-                exampleEl.innerText = `"${daily.example}"`;
-                exampleEl.style.display = 'block';
-            }
-            
-            const card = document.getElementById('wotd-card');
-            if(card) card.classList.add('loaded');
         }
 
 
