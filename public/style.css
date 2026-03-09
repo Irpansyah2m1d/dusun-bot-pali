@@ -908,29 +908,11 @@ pre {
 
 .result-examples-dual {
     width: 100%;
-    padding-top: 8px;
+    padding-top: 12px;
     border-top: 1px solid var(--border-glass);
     display: flex;
     flex-direction: column;
     gap: 4px;
-}
-
-.ex-pair {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-}
-
-.ex-pair b {
-    color: var(--emerald-green);
-    font-size: 0.7rem;
-    margin-right: 6px;
-}
-
-.result-example {
-    width: 100%;
-    padding-top: 10px;
-    border-top: 1px solid var(--border-glass);
 }
 
 .ex-label {
@@ -940,15 +922,24 @@ pre {
     font-weight: 700;
     letter-spacing: 1px;
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .ex-text {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
     font-style: italic;
     line-height: 1.6;
 }
+
+.ex-text b {
+    color: var(--emerald-green);
+    font-size: 0.75rem;
+    margin-right: 6px;
+    font-style: normal;
+    text-transform: uppercase;
+}
+
 
 .placeholder-text,
 .no-result {

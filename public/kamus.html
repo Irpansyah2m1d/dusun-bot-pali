@@ -257,8 +257,9 @@
                                         </div>
                                     </div>
                                     <div class="result-examples-dual">
-                                        ${res.contoh_id ? `<span class="ex-pair"><b>ID:</b> ${res.contoh_id}</span>` : ''}
-                                        ${res.contoh_dusun ? `<span class="ex-pair"><b>PALI:</b> ${res.contoh_dusun}</span>` : ''}
+                                        ${(res.contoh_id || res.contoh_dusun) ? `<span class="ex-label">Contoh dalam Kalimat:</span>` : ''}
+                                        ${res.contoh_id ? `<span class="ex-text"><b>ID:</b> ${res.contoh_id}</span>` : ''}
+                                        ${res.contoh_dusun ? `<span class="ex-text"><b>PALI:</b> ${res.contoh_dusun}</span>` : ''}
                                     </div>
                                 </div>
                             `;
