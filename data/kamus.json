@@ -26,344 +26,350 @@
   {
     "indonesia": "orang",
     "dusun": "wang",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu orang mana?",
+    "contoh_dusun": "dengo/nga wang mane? "
   },
   {
     "indonesia": "mana",
     "dusun": "mane",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "mana makanannya",
+    "contoh_dusun": "mane makanannye"
   },
   {
     "indonesia": "kalian",
     "dusun": "menengo",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kalian mau pergi kemana",
+    "contoh_dusun": "menengo ndok pegi kemane"
   },
   {
     "indonesia": "kenapa",
     "dusun": "ngape",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kenapa kamu tidak datang",
+    "contoh_dusun": "ngape dengo/nga idok datong"
   },
   {
     "indonesia": "ayo",
     "dusun": "payo",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "ayo kita belajar bahasa inggris",
+    "contoh_dusun": "payo kitek belajo base inggris"
   },
   {
     "indonesia": "tidak",
-    "dusun": "dok",
-    "contoh_id": "",
+    "dusun": "dok / idok",
+    "contoh_id": "aku tidak tau",
     "contoh_dusun": "aku dok tau"
   },
   {
     "indonesia": "tanya",
-    "dusun": "tanye",
-    "contoh_id": "",
+    "dusun": "tanye / nanye",
+    "contoh_id": "aku nih mau bertanya",
     "contoh_dusun": "aku nih ndok betanye"
   },
   {
     "indonesia": "nama",
     "dusun": "name",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "siapa nama kamu?",
+    "contoh_dusun": "sape name dengo/nga?"
   },
   {
     "indonesia": "mereka",
     "dusun": "mensitu",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "mereka sedang apa?",
+    "contoh_dusun": "mensitu lagi ngape?"
   },
   {
     "indonesia": "meskipun",
     "dusun": "lajun",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "meskipun hujan saya tetap pergi",
+    "contoh_dusun": "lajun ujan aku tetap pegi"
   },
   {
     "indonesia": "ganteng",
     "dusun": "rengke, alap, belagak",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu ganteng sekali",
+    "contoh_dusun": "dengo/nga rengke nian"
   },
   {
     "indonesia": "cantik",
     "dusun": "rengke, alap, belagak",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu cantik sekali",
+    "contoh_dusun": "dengo/nga rengke nian"
   },
   {
     "indonesia": "beres-beres",
     "dusun": "besemiok",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "saya mau beres-beres",
+    "contoh_dusun": "aku ndok besemiok"
   },
   {
     "indonesia": "robek",
     "dusun": "pedo, cerek, koyak",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "bajuku robek",
+    "contoh_dusun": "bajuku pedo/cerek/koyak"
   },
   {
     "indonesia": "belajar",
     "dusun": "belajo",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "ayo belajar",
+    "contoh_dusun": "payo belajo"
   },
   {
-    "indonesia": "bahasa ",
+    "indonesia": "bahasa",
     "dusun": "base",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "saya bisa bahasa dusun",
+    "contoh_dusun": "aku pacak base dusun"
   },
   {
-    "indonesia": "bagaiamana",
+    "indonesia": "bagaimana",
     "dusun": "cakmane, makmane",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "bagaimana kabarmu",
+    "contoh_dusun": "cakmane/makmane kabor dengo/nga"
   },
   {
     "indonesia": "siapa",
     "dusun": "sape",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "siapa nama kamu?",
+    "contoh_dusun": "sape name dengo/nga?"
   },
   {
     "indonesia": "waktu itu",
-    "dusun": "nimpou",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "dusun": "nimpou pas/pas itu",
+    "contoh_id": "waktu itu saya masih kecil",
+    "contoh_dusun": "nimpou pas aku masih kecik"
   },
   {
     "indonesia": "tidak mungkin",
-    "dusun": "kade",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "dusun": "kade kalu",
+    "contoh_id": "tidak mungkin kamu bisa",
+    "contoh_dusun": "kade kalu dengo/nga pacak"
   },
   {
     "indonesia": "kalau",
     "dusun": "kalu",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kalau kamu mau, saya akan pergi",
+    "contoh_dusun": "kalu dengo/nga ndok, aku pegi"
   },
   {
     "indonesia": "lapar",
     "dusun": "lapo",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "aku lapar sekali",
+    "contoh_dusun": "aku lapo nian"
   },
   {
     "indonesia": "sangat",
     "dusun": "nian, tekate",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu sangat cantik",
+    "contoh_dusun": "dengo/nga rengke nian"
   },
   {
     "indonesia": "hari ini",
     "dusun": "serekak",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "hari ini saya mau pergi",
+    "contoh_dusun": "serekak aku ndok pegi"
   },
   {
     "indonesia": "tidur",
     "dusun": "tedok",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "saya mau tidur",
+    "contoh_dusun": "aku ndok tedok"
   },
   {
     "indonesia": "minum",
     "dusun": "minom",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "saya mau minum",
+    "contoh_dusun": "aku ndok minom"
   },
   {
     "indonesia": "pulang",
     "dusun": "balek",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "saya mau pulang",
+    "contoh_dusun": "aku ndok balek"
   },
   {
     "indonesia": "tolong",
     "dusun": "tolong",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "tolong bantu saya",
+    "contoh_dusun": "tolong bantu aku"
   },
   {
     "indonesia": "sekarang",
     "dusun": "menggari",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "sekarang saya mau pergi",
+    "contoh_dusun": "menggari aku ndok pegi"
   },
   {
     "indonesia": "minta",
     "dusun": "mintek",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "minta tolong",
+    "contoh_dusun": "mintek tolong"
   },
   {
     "indonesia": "bagus",
     "dusun": "rengke",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu canti sekali, kalo menggunakan baju hitam",
+    "contoh_dusun": "dengo/nga rengke nian, kalu pakai baju itam"
   },
   {
     "indonesia": "jelek",
     "dusun": "jot, ejot",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "bajumu jelek sekali",
+    "contoh_dusun": "baju dengo/nga jot nian"
   },
   {
     "indonesia": "terima kasih",
     "dusun": "makaseh",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "terima kasih banyak",
+    "contoh_dusun": "makaseh nian"
   },
   {
     "indonesia": "iya",
     "dusun": "yex",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu mau menikah ya?",
+    "contoh_dusun": "dengo/nga ndok bebini yex?"
   },
   {
     "indonesia": "suka",
     "dusun": "ribong",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "aku suka kamu",
+    "contoh_dusun": "aku ribong di dengo/nga"
   },
   {
     "indonesia": "lihat",
     "dusun": "keleke, kelek",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "coba lihat ini",
+    "contoh_dusun": "cuka keleke tekak"
   },
   {
     "indonesia": "melihat",
-    "dusun": "ngeleke",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "dusun": "ngeleke/keleke",
+    "contoh_id": "coba lihat dia",
+    "contoh_dusun": "cuka keleke wang itu"
   },
   {
     "indonesia": "bicara",
     "dusun": "becawo, begesoh",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "jangan bicara keras-keras",
+    "contoh_dusun": "jangon becawo rengak nian"
   },
   {
     "indonesia": "bercanda",
     "dusun": "belore",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "jangan becanda",
+    "contoh_dusun": "jangon belore"
   },
   {
     "indonesia": "tulis",
     "dusun": "noles, toles",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "coba tulis nama saya",
+    "contoh_dusun": "cuka toleske name ku"
   },
   {
     "indonesia": "senang",
     "dusun": "lados",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "saya senang bertemu dengan kamu",
+    "contoh_dusun": "aku lados nn popok ngan dengo"
+  },
+  {
+    "indonesia": "dengan/sama",
+    "dusun": "ngan",
+    "contoh_id": "aku suka dengan hasil kerja kamu",
+    "contoh_dusun": "aku ribong ngan hasil begawe dengo/nga"
   },
   {
     "indonesia": "haus",
     "dusun": "ranang",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "aku haus sekali",
+    "contoh_dusun": "aku ranang nian"
   },
   {
     "indonesia": "capek",
     "dusun": "keret",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "aku capek sekali",
+    "contoh_dusun": "aku keret nian"
   },
   {
     "indonesia": "sakit",
     "dusun": "saket",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kepalaku sakit",
+    "contoh_dusun": "kepale ku saket"
   },
   {
     "indonesia": "besar",
     "dusun": "beso'",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "rumah itu besar",
+    "contoh_dusun": "rumah itu beso'"
   },
   {
     "indonesia": "kecil",
     "dusun": "kecik",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "rumah itu kecil",
+    "contoh_dusun": "rumah itu kecik"
   },
   {
     "indonesia": "panas",
     "dusun": "angat",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "hari ini panas sekali",
+    "contoh_dusun": "serekak angat nian"
   },
   {
     "indonesia": "dingin",
     "dusun": "dengen",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "airnya dingin sekali",
+    "contoh_dusun": "ayik eg dengen nian"
   },
   {
     "indonesia": "kemarin",
     "dusun": "kemari",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kemarin saya pergi sama nisa",
+    "contoh_dusun": "kemari aku pegi kanca nisa"
   },
   {
     "indonesia": "sering",
     "dusun": "neman",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu sering datang ke sini",
+    "contoh_dusun": "dengo/nga neman nian datong kesikak"
   },
   {
     "indonesia": "jarang",
     "dusun": "jarong",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu jarang datang ke sini",
+    "contoh_dusun": "dengo/nga jarong nian datong kesikak"
   },
   {
     "indonesia": "cepat ",
     "dusun": "gacong",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "ayo cepat nanti keburu maghrib",
+    "contoh_dusun": "payo gacong kagik maghrib ari"
   },
   {
     "indonesia": "lambat",
     "dusun": "lelet, olek",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu lambat sekali",
+    "contoh_dusun": "dengo/nga lelet/olek nian"
   },
   {
     "indonesia": "pergi",
     "dusun": "pegi",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu mau pergi ke mana?",
+    "contoh_dusun": "dengo/nga ndok pegi kemane?"
   },
   {
     "indonesia": "kerja",
     "dusun": "begawe",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu mau kerja di mana?",
+    "contoh_dusun": "dengo/nga ndok begawe di mane?"
   },
   {
-    "indonesia": "masak",
+    "indonesia": "memasak",
     "dusun": "bemasok",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "dia sedang memasak",
+    "contoh_dusun": "nye lagi bemasok"
   },
   {
     "indonesia": "mencuci, cuci",
     "dusun": "nyabon, masuh",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "saya sedang mencuci baju",
+    "contoh_dusun": "aku lagi nyabon baju"
   },
   {
     "indonesia": "jawab",

@@ -12,6 +12,10 @@
     {
       "source": "/api/translate",
       "destination": "/api/translate.js"
+    },
+    {
+      "source": "/api/usulan",
+      "destination": "/api/usulan.js"
     }
   ],
   "headers": [

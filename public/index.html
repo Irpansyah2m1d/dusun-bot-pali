@@ -210,7 +210,10 @@
                     <span class="badge">Akses Digital</span>
                     <h2 class="section-title" style="text-align: left; margin-bottom: 20px;">Kamus Digital PALI</h2>
                     <p class="kamus-desc">Telusuri lebih dari 2.800+ kosa kata dialek PALI. Mesin kami menggunakan database terstruktur untuk memberikan hasil yang cepat dan akurat untuk melestarikan bahasa daerah.</p>
-                    <a href="/kamus.html" class="btn-secondary" style="display: inline-flex; margin-bottom: 40px; border-color: var(--emerald-green); color: var(--emerald-green);">Buka Kamus Lengkap ↗</a>
+                    <div class="kamus-actions" style="display: flex; gap: 16px; margin-bottom: 40px; flex-wrap: wrap;">
+                        <a href="/kamus.html" class="btn-secondary" style="border-color: var(--emerald-green); color: var(--emerald-green);">Buka Kamus Lengkap ↗</a>
+                        <button onclick="openUsulanModal()" class="btn-primary" style="padding: 14px 24px; font-size: 0.95rem; border: none; cursor: pointer;">+ Tambah Kosakata</button>
+                    </div>
                 </div>
 
                 <div class="kamus-preview-box">
@@ -356,6 +359,46 @@
                 </details>
             </div>
         </section>
+
+        <!-- Modal Usulan -->
+        <div id="usulan-modal" class="modal-overlay">
+            <div class="modal">
+                <button class="modal-close" onclick="closeUsulanModal()" aria-label="Tutup">&times;</button>
+                <h3>Usulkan Kosakata Baru</h3>
+                <p>Bantu perbanyak dan lestarikan kamus kosa kata Bahasa Dusun PALI.</p>
+                <form id="usulan-form" onsubmit="submitUsulan(event)">
+                    <div class="form-group" id="group-nama">
+                        <label>Nama Anda (hanya diminta 1x)</label>
+                        <input type="text" id="u-nama" class="form-input" placeholder="Cth: Irpansyah" required>
+                    </div>
+                    <div style="display: flex; gap: 16px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label>B. Indonesia</label>
+                            <input type="text" id="u-indo" class="form-input" placeholder="Cth: Makan" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>B. Dusun PALI</label>
+                            <input type="text" id="u-dusun" class="form-input" placeholder="Cth: Makan" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Contoh Kalimat (B. Indonesia) - Opsional</label>
+                        <input type="text" id="u-contoh-indo" class="form-input" placeholder="Cth: Kamu mau makan apa?">
+                    </div>
+                    <div class="form-group">
+                        <label>Contoh Kalimat (B. Dusun PALI) - Opsional</label>
+                        <input type="text" id="u-contoh-dusun" class="form-input" placeholder="Cth: Dengo/nga ndok makan tope?">
+                    </div>
+                    <div id="msg-box"></div>
+                    <div class="form-actions">
+                        <button type="submit" id="btn-submit-usulan" class="btn-primary" style="width: 100%; justify-content: center; border: none;">Kirim & Simpan</button>
+                    </div>
+                    <div id="btn-create-another" style="display: none; margin-top: 16px;">
+                        <button type="button" onclick="resetFormUsulan()" class="btn-secondary" style="width: 100%; cursor: pointer;">+ Tambah Kata Lainnya</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
     <footer role="contentinfo">
@@ -496,13 +539,114 @@
                         html += '</div>';
                         kamusResult.innerHTML = html;
                     } else {
-                        kamusResult.innerHTML = '<div class="no-result">Kata tidak ditemukan dalam kamus.</div>';
+                        kamusResult.innerHTML = `
+                            <div class="no-result" style="margin-bottom: 20px;">Kata tidak ditemukan dalam kamus.</div>
+                            <button onclick="openUsulanModal('${query.replace(/'/g, "\\'")}')" class="btn-secondary" style="background: transparent; cursor: pointer; border-color: var(--emerald-green); color: var(--emerald-green); padding: 10px 20px; font-size: 0.9rem;">+ Usulkan "${query}" ke Kamus</button>
+                        `;
                     }
                 } catch (err) {
                     kamusResult.innerHTML = '<div class="no-result">Terjadi kesalahan saat mencari.</div>';
                 }
             }, 500); // 500ms delay
         });
+
+        // --- Modal Logics ---
+        const modal = document.getElementById('usulan-modal');
+        const form = document.getElementById('usulan-form');
+        const msgBox = document.getElementById('msg-box');
+        const btnSubmit = document.getElementById('btn-submit-usulan');
+        const btnAnother = document.getElementById('btn-create-another');
+        const inputNama = document.getElementById('u-nama');
+        
+        function openUsulanModal(prefilledWord = '') {
+            modal.classList.add('active');
+            msgBox.className = '';
+            msgBox.innerText = '';
+            
+            // Auto fill nama dari localStorage
+            const savedName = localStorage.getItem('kontributor_nama');
+            if (savedName) {
+                inputNama.value = savedName;
+                document.getElementById('group-nama').style.display = 'none'; // Sembunyikan field nama jika sudah ada
+            } else {
+                document.getElementById('group-nama').style.display = 'block';
+            }
+
+            // Jika diklik dari pencarian gagal
+            if (prefilledWord) {
+                if (currentDir === 'id-to-dusun') {
+                    document.getElementById('u-indo').value = prefilledWord;
+                    document.getElementById('u-dusun').value = '';
+                } else {
+                    document.getElementById('u-dusun').value = prefilledWord;
+                    document.getElementById('u-indo').value = '';
+                }
+            }
+        }
+
+        function closeUsulanModal() {
+            modal.classList.remove('active');
+            // reset sedikit ketika tutup
+            setTimeout(() => {
+                btnSubmit.style.display = 'flex';
+                btnAnother.style.display = 'none';
+                msgBox.style.display = 'none';
+            }, 300);
+        }
+
+        function resetFormUsulan() {
+            document.getElementById('u-indo').value = '';
+            document.getElementById('u-dusun').value = '';
+            document.getElementById('u-contoh-indo').value = '';
+            document.getElementById('u-contoh-dusun').value = '';
+            
+            msgBox.style.display = 'none';
+            btnSubmit.style.display = 'flex';
+            btnAnother.style.display = 'none';
+            document.getElementById('u-indo').focus();
+        }
+
+        async function submitUsulan(e) {
+            e.preventDefault();
+            const nama = inputNama.value.trim();
+            const indonesia = document.getElementById('u-indo').value.trim();
+            const dusun = document.getElementById('u-dusun').value.trim();
+            const contoh_id = document.getElementById('u-contoh-indo').value.trim();
+            const contoh_dusun = document.getElementById('u-contoh-dusun').value.trim();
+
+            msgBox.className = '';
+            msgBox.innerText = 'Mengirim...';
+            msgBox.style.display = 'block';
+            msgBox.style.color = 'white';
+            btnSubmit.disabled = true;
+
+            try {
+                const res = await fetch('/api/usulan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama, indonesia, dusun, contoh_id, contoh_dusun })
+                });
+                
+                const data = await res.json();
+
+                if (data.success) {
+                    msgBox.className = 'success';
+                    msgBox.innerText = data.message;
+                    localStorage.setItem('kontributor_nama', nama);
+                    
+                    btnSubmit.style.display = 'none';
+                    btnAnother.style.display = 'block';
+                } else {
+                    msgBox.className = 'error';
+                    msgBox.innerText = data.message;
+                }
+            } catch (err) {
+                msgBox.className = 'error';
+                msgBox.innerText = 'Terjadi kesalahan jaringan.';
+            } finally {
+                btnSubmit.disabled = false;
+            }
+        }
     </script>
 </body>
 </html>

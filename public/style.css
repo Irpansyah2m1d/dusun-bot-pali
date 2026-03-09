@@ -1297,3 +1297,152 @@ footer {
         border-radius: 16px;
     }
 }
+
+/* Modal Usulan Kosakata */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal {
+    background: var(--slate-gray);
+    width: 100%;
+    max-width: 500px;
+    border-radius: 24px;
+    border: 1px solid var(--border-glass);
+    padding: 40px;
+    transform: translateY(20px);
+    transition: 0.3s;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+}
+
+.modal-overlay.active .modal {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.modal-close:hover {
+    color: white;
+}
+
+.modal h3 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    color: white;
+    font-weight: 800;
+}
+
+.modal p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.form-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: 0.3s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--emerald-green);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+textarea.form-input {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.form-actions button {
+    flex: 1;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#msg-box {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+}
+
+#msg-box.error {
+    background: rgba(255, 95, 86, 0.1);
+    color: #ff5f56;
+    border: 1px solid rgba(255, 95, 86, 0.2);
+    display: block;
+}
+
+#msg-box.success {
+    background: rgba(39, 201, 63, 0.1);
+    color: #27c93f;
+    border: 1px solid rgba(39, 201, 63, 0.2);
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .modal {
+        padding: 30px 20px;
+    }
+}
