@@ -2710,8 +2710,8 @@ textarea.form-input {
 
 .tour-speech-bubble {
     position: fixed;
-    bottom: 450px;
-    /* Di atas mascot yang berukuran 350px */
+    bottom: 360px;
+    /* Di atas mascot yang berukuran lebih kecil */
     left: 40px;
     background: white;
     color: #01014e;
@@ -2734,8 +2734,8 @@ textarea.form-input {
     content: '';
     position: absolute;
     bottom: -18px;
-    left: 80px;
-    /* Geser agar tidak menabrak / terlihat pas di atas kepala */
+    left: 60px;
+    /* Disesuaikan dengan posisi kepala mascot */
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
     border-top: 18px solid var(--emerald-green);
@@ -2776,8 +2776,8 @@ textarea.form-input {
     left: 30px !important;
     right: unset !important;
     top: unset !important;
-    width: 350px !important;
-    height: 450px !important;
+    width: 250px !important;
+    height: 350px !important;
     transform: scale(1) !important;
     transition: all 1s cubic-bezier(0.19, 1, 0.22, 1) !important;
     background: transparent !important;
@@ -2807,14 +2807,14 @@ textarea.form-input {
 }
 
 #avatar-container.tour-mode .avatar-glow-ring {
-    width: 350px !important;
-    height: 350px !important;
+    width: 250px !important;
+    height: 250px !important;
     background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
 }
 
 #avatar-container.tour-mode .avatar-2d-img {
-    width: 300px !important;
-    /* Pas banget, tidak terlalu kecil/besar */
+    width: 220px !important;
+    /* Diperkecil agar lebih proposional dan tidak terpotong */
     height: auto !important;
     object-fit: contain !important;
     filter: drop-shadow(0 0 35px rgba(16, 185, 129, 0.35));
