@@ -2171,8 +2171,8 @@ textarea.form-input {
 /* ---- Mouth overlay ---- */
 .avatar-mouth-el {
     position: absolute;
-    bottom: 52.8%;
-    left: 49.8%;
+    bottom: 54.2%;
+    left: 49.5%;
     transform: translateX(-50%);
     background: linear-gradient(to bottom, #110502 0%, #2a0a05 100%);
     border-radius: 50%;
@@ -2184,8 +2184,8 @@ textarea.form-input {
 
 /* Mouth shapes */
 .avatar-mouth-el.shape-close {
-    width: 28px;
-    height: 14px;
+    width: 24px;
+    height: 12px;
     border-radius: 10% 10% 50% 50%;
     opacity: 0.9;
 }
@@ -2260,10 +2260,10 @@ textarea.form-input {
 }
 
 .avatar-eye.eye-left {
-    width: 15px;
-    height: 16px;
-    bottom: 61.2%;
-    left: 38.2%;
+    width: 11px;
+    height: 12px;
+    bottom: 61.8%;
+    left: 46.5%;
     animation: eyeBlink 5s ease-in-out infinite;
     background: radial-gradient(circle at 35% 35%, #2a1a1a 0%, #110808 70%);
     box-shadow: inset -1px -1px 3px rgba(255, 255, 255, 0.15), 0 0 5px rgba(0, 0, 0, 0.3);
@@ -2271,10 +2271,10 @@ textarea.form-input {
 }
 
 .avatar-eye.eye-right {
-    width: 15px;
-    height: 16px;
-    bottom: 61.2%;
-    right: 36.8%;
+    width: 11px;
+    height: 12px;
+    bottom: 61.8%;
+    right: 45.2%;
     animation: eyeBlink 5s ease-in-out infinite 0.15s;
     background: radial-gradient(circle at 35% 35%, #2a1a1a 0%, #110808 70%);
     box-shadow: inset -1px -1px 3px rgba(255, 255, 255, 0.15), 0 0 5px rgba(0, 0, 0, 0.3);

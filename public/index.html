@@ -846,6 +846,7 @@
 
         function closeWotdModal() {
             document.getElementById('wotdModal').classList.remove('active');
+            window.speechSynthesis.cancel();
         }
 
         async function initDusunWidgets() {
@@ -996,6 +997,11 @@
                 document.getElementById('avatar-response').innerText = welcomeMsg;
                 speak(welcomeMsg);
                 animateMouthFromText(welcomeMsg);
+            } else {
+                window.speechSynthesis.cancel();
+                clearInterval(mouthInterval);
+                const mouth = document.getElementById('avatar-mouth');
+                if (mouth) mouth.className = 'avatar-mouth-el shape-close';
             }
         }
 
