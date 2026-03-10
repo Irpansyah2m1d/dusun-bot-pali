@@ -884,13 +884,19 @@
                         const popupMeaning = document.getElementById('popup-meaning');
                         const popupExample = document.getElementById('popup-example');
                         
-                        if(popupWord) popupWord.innerText = daily.dusun || daily.word || daily.indonesia;
-                        if(popupMeaning) popupMeaning.innerText = daily.indonesia || daily.meaning || daily.arti || "";
+                        if(popupWord) {
+                            const dsnText = daily.dusun || daily.word || "";
+                            popupWord.innerHTML = `<span style="font-size: 0.35em; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-green); display: block; margin-bottom: 5px;">PALI/DSN</span>${dsnText}`;
+                            popupWord.style.fontSize = "3rem"; 
+                            popupWord.style.lineHeight = "1.2";
+                        }
+                        if(popupMeaning) {
+                            const idText = daily.indonesia || daily.meaning || daily.arti || "";
+                            popupMeaning.innerHTML = `<span style="font-size: 0.6em; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); display: block; margin-bottom: 5px; margin-top: 15px;">ID</span>${idText}`;
+                        }
                         
-                        const example = daily.contoh_dusun || daily.example;
                         if (popupExample) {
-                            if (example) { popupExample.innerText = `"${example}"`; popupExample.style.display = 'block'; }
-                            else { popupExample.style.display = 'none'; }
+                            popupExample.style.display = 'none'; // Sesuai permintaan: contohnya nggk usah
                         }
                         
                         setTimeout(() => {

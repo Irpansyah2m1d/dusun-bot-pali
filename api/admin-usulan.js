@@ -99,7 +99,7 @@ module.exports = async (req, res) => {
                 const kamusData = JSON.parse(fs.readFileSync(kamusPath, 'utf8'));
 
                 // Clear old kamus_utama first
-                await supabase.from('kamus_utama').delete().neq('id', 0);
+                await supabase.from('kamus_utama').delete().not('id', 'is', null);
 
                 const { error } = await supabase.from('kamus_utama').insert(kamusData).select();
                 if (error) {
