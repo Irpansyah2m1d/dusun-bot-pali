@@ -67,6 +67,12 @@
                 <p style="color: var(--text-dim);">Review usulan kosakata terbaru untuk mengembangkan Pustaka Dusun PALI.</p>
                 <div id="mini-words-preview" style="margin-top: 25px;">Memuat data...</div>
             </div>
+
+            <div class="dashboard-card" style="border: 1px solid rgba(245,158,11,0.2);">
+                <div class="card-header"><h3 style="color: #f59e0b;"><i class="fas fa-graduation-cap"></i> Riwayat Belajar AI dari User</h3></div>
+                <p style="color: var(--text-dim);">Pengetahuan baru yang dipelajari Sagarurung Bot dari percakapan pengguna.</p>
+                <div id="ai-learned-feed" style="margin-top: 20px;">Memuat...</div>
+            </div>
         </main>
     </div>
 
@@ -96,10 +102,33 @@
                 // Load total kamus (can fetch from /api/kamus or admin total)
                 document.getElementById('stats-total').innerText = "2.8rb+";
 
-                // Load AI Learned count
+                // Load AI Learned count + feed
                 const resL = await fetch('/api/ai-learned');
                 const dataL = await resL.json();
-                document.getElementById('stats-learned').innerText = (dataL.data || []).length;
+                const learnedItems = dataL.data || [];
+                document.getElementById('stats-learned').innerText = learnedItems.length;
+
+                // Render AI learned feed
+                const feed = document.getElementById('ai-learned-feed');
+                if (learnedItems.length === 0) {
+                    feed.innerHTML = '<p style="color: var(--text-dim);">Belum ada pengetahuan yang dipelajari dari user.</p>';
+                } else {
+                    // Sort by updated_at descending (terbaru di atas)
+                    const sorted = [...learnedItems].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)).slice(0, 5);
+                    feed.innerHTML = sorted.map(item => `
+                        <div style="background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.15); border-radius: 12px; padding: 15px; margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; text-transform: uppercase;">🎓 Hasil Belajar</span>
+                                <span style="color: rgba(255,255,255,0.3); font-size: 0.75rem;">${new Date(item.updated_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <strong style="color: #f59e0b;">${item.topic}</strong>
+                            <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 5px; line-height: 1.5;">${item.content.length > 120 ? item.content.substring(0, 120) + '...' : item.content}</p>
+                        </div>
+                    `).join('');
+                    if (learnedItems.length > 5) {
+                        feed.innerHTML += `<a href="/admin/ai-learned.html" style="color: #f59e0b; font-weight: 600; text-decoration: none;">Lihat semua (${learnedItems.length}) →</a>`;
+                    }
+                }
             } catch (err) { console.error(err); }
         }
 

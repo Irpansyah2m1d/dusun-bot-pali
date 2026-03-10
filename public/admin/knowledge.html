@@ -34,6 +34,59 @@
             color: var(--text-dim);
             line-height: 1.6;
         }
+        .k-content-preview {
+            color: var(--text-dim);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            line-clamp: 3;
+            overflow: hidden;
+        }
+        .k-content-full {
+            color: var(--text-dim);
+            line-height: 1.6;
+            display: none;
+            white-space: pre-line;
+        }
+        .k-content-full.active {
+            display: block;
+        }
+        .btn-detail {
+            background: rgba(16,185,129,0.1);
+            color: var(--emerald-green);
+            border: 1px solid rgba(16,185,129,0.3);
+            padding: 5px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-detail:hover {
+            background: rgba(16,185,129,0.2);
+        }
+        .badge-source {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 50px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .badge-manual {
+            background: rgba(16,185,129,0.15);
+            color: #10b981;
+            border: 1px solid rgba(16,185,129,0.3);
+        }
+        .badge-user {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+        }
         .add-box {
             background: rgba(16, 185, 129, 0.05);
             border: 2px dashed rgba(16, 185, 129, 0.3);
@@ -83,6 +136,7 @@
             <a href="/admin/folklore.html" class="nav-link"><i class="fas fa-scroll"></i> <span>Cerita Rakyat</span></a>
             <a href="/admin/nasehat.html" class="nav-link"><i class="fas fa-comment-dots"></i> <span>Nasehat</span></a>
             <a href="/admin/knowledge.html" class="nav-link active"><i class="fas fa-brain"></i> <span>Pengetahuan AI</span></a>
+            <a href="/admin/ai-learned.html" class="nav-link"><i class="fas fa-graduation-cap"></i> <span>Hasil Belajar AI</span></a>
             <a href="/admin/settings.html" class="nav-link"><i class="fas fa-gear"></i> <span>Settings</span></a>
         </nav>
         <div class="sidebar-footer">
@@ -144,6 +198,7 @@
     <script>
         const password = localStorage.getItem('admin_password');
         let allKnowledge = [];
+        let aiLearnedData = [];
         let editIndex = -1;
 
         async function handlePdfUpload(event) {
@@ -185,34 +240,104 @@
 
         async function loadKnowledge() {
             try {
+                // Load manual knowledge
                 const res = await fetch('/api/admin-knowledge', {
                     headers: { 'x-admin-password': password }
                 });
                 const result = await res.json();
                 if(!result.success) return logout();
-                
                 allKnowledge = result.data;
+
+                // Load AI learned
+                const res2 = await fetch('/api/ai-learned');
+                const result2 = await res2.json();
+                aiLearnedData = result2.success ? (result2.data || []) : [];
+
                 renderKnowledge();
             } catch (err) { console.error(err); }
         }
 
+        function truncateText(text, maxSentences = 2) {
+            if (!text) return { preview: "", isTruncated: false };
+            // Regex untuk membagi berdasarkan titik, tanda tanya, atau seru yang diikuti spasi
+            const sentences = text.match(/[^\.!\?]+[\.!\?]+/g) || [text];
+            if (sentences.length <= maxSentences) return { preview: text, isTruncated: false };
+            return { preview: sentences.slice(0, maxSentences).join(' ').trim(), isTruncated: true };
+        }
+
+        function toggleDetail(id) {
+            const full = document.getElementById(`full-${id}`);
+            const preview = document.getElementById(`preview-${id}`);
+            const btn = document.getElementById(`btn-${id}`);
+            if (full.classList.contains('active')) {
+                full.classList.remove('active');
+                preview.style.display = '-webkit-box';
+                btn.innerHTML = '<i class="fas fa-eye"></i> Lihat Detail';
+            } else {
+                full.classList.add('active');
+                preview.style.display = 'none';
+                btn.innerHTML = '<i class="fas fa-eye-slash"></i> Sembunyikan';
+            }
+        }
+
         function renderKnowledge() {
             const list = document.getElementById('knowledge-list');
-            if (allKnowledge.length === 0) {
+            
+            // Gabungkan pengetahuan manual + AI learned
+            const combinedItems = [];
+
+            // Manual knowledge (dari knowledge.json)
+            allKnowledge.forEach((k, index) => {
+                combinedItems.push({
+                    ...k,
+                    _type: 'manual',
+                    _index: index
+                });
+            });
+
+            // AI learned (dari ai-learned.json)
+            aiLearnedData.forEach(k => {
+                combinedItems.push({
+                    ...k,
+                    _type: 'ai-learned'
+                });
+            });
+
+            if (combinedItems.length === 0) {
                 list.innerHTML = '<p style="text-align: center; color: var(--text-dim);">Belum ada pengetahuan yang ditanamkan.</p>';
                 return;
             }
 
-            list.innerHTML = allKnowledge.map((k, index) => `
-                <div class="knowledge-item">
-                    <div class="actions">
-                        <button class="btn-dash btn-dash-secondary" onclick="editKnowledge(${index})" style="padding: 8px 12px;"><i class="fas fa-edit"></i></button>
-                        <button class="btn-dash btn-dash-secondary" onclick="deleteKnowledge(${index})" style="padding: 8px 12px; color: #ef4444;"><i class="fas fa-trash"></i></button>
+            list.innerHTML = combinedItems.map((k, i) => {
+                const uid = k._type === 'ai-learned' ? `ai-${k.id}` : `m-${k._index}`;
+                const { preview, isTruncated } = truncateText(k.content);
+                const badgeHtml = k._type === 'ai-learned'
+                    ? `<span class="badge-source badge-user"><i class="fas fa-graduation-cap"></i> DARI USER</span>`
+                    : `<span class="badge-source badge-manual"><i class="fas fa-database"></i> MANUAL</span>`;
+                const borderColor = k._type === 'ai-learned' ? 'rgba(245,158,11,0.3)' : 'rgba(255,255,255,0.1)';
+                const topicColor = k._type === 'ai-learned' ? '#f59e0b' : 'var(--emerald-green)';
+                const actionButtons = k._type === 'ai-learned'
+                    ? `<a href="/admin/ai-learned.html" class="btn-dash btn-dash-secondary" style="padding: 8px 12px; text-decoration: none; font-size: 0.8rem;"><i class="fas fa-external-link-alt"></i> Kelola</a>`
+                    : `<button class="btn-dash btn-dash-secondary" onclick="editKnowledge(${k._index})" style="padding: 8px 12px;"><i class="fas fa-edit"></i></button>
+                       <button class="btn-dash btn-dash-secondary" onclick="deleteKnowledge(${k._index})" style="padding: 8px 12px; color: #ef4444;"><i class="fas fa-trash"></i></button>`;
+
+                return `
+                    <div class="knowledge-item" style="border-color: ${borderColor};">
+                        <div class="actions">${actionButtons}</div>
+                        ${badgeHtml}
+                        <span class="k-topic" style="color: ${topicColor};">${escapeHtml(k.topic)}</span>
+                        <p class="k-content-preview" id="preview-${uid}">${escapeHtml(preview)}</p>
+                        <div class="k-content-full" id="full-${uid}">${escapeHtml(k.content).replace(/\n/g, '<br>')}</div>
+                        ${isTruncated ? `<button class="btn-detail" id="btn-${uid}" onclick="toggleDetail('${uid}')"><i class="fas fa-eye"></i> Lihat Detail</button>` : ''}
                     </div>
-                    <span class="k-topic">${k.topic}</span>
-                    <p class="k-content">${k.content.replace(/\n/g, '<br>')}</p>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.innerText = text || '';
+            return div.innerHTML;
         }
 
         function openModal() {
