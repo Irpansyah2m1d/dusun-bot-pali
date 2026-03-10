@@ -3024,24 +3024,24 @@ textarea.form-input {
     /* ---- Jendela Chat Avatar di Mobile ---- */
     #avatar-container {
         width: calc(100vw - 40px) !important;
-        max-width: 320px !important;
-        height: 440px !important;
+        max-width: 340px !important;
+        height: 480px !important;
         bottom: 80px !important;
         right: 20px !important;
         border-radius: 28px !important;
     }
 
     .avatar-scene {
-        height: 150px !important;
+        height: 170px !important;
     }
 
     .avatar-2d-img {
-        width: 100px !important;
+        width: 115px !important;
     }
 
     .avatar-glow-ring {
-        width: 100px !important;
-        height: 100px !important;
+        width: 115px !important;
+        height: 115px !important;
     }
 
     .avatar-chat {
