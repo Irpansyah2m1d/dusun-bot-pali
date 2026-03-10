@@ -22,6 +22,7 @@
             <a href="/admin/folklore.html" class="nav-link"><i class="fas fa-scroll"></i> <span>Cerita Rakyat</span></a>
             <a href="/admin/nasehat.html" class="nav-link"><i class="fas fa-comment-dots"></i> <span>Nasehat</span></a>
             <a href="/admin/knowledge.html" class="nav-link"><i class="fas fa-brain"></i> <span>Pengetahuan AI</span></a>
+            <a href="/admin/ai-learned.html" class="nav-link"><i class="fas fa-graduation-cap"></i> <span>Hasil Belajar AI</span></a>
             <a href="/admin/settings.html" class="nav-link"><i class="fas fa-gear"></i> <span>Settings</span></a>
         </nav>
         <div class="sidebar-footer">
@@ -54,6 +55,10 @@
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-feather-pointed"></i></div>
                     <div class="stat-info"><span class="val" id="stats-folklore-count">...</span><span class="label">Cerita Rakyat</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="stat-info"><span class="val" id="stats-learned">...</span><span class="label">Hasil Belajar AI</span></div>
                 </div>
             </div>
 
@@ -90,6 +95,11 @@
                 
                 // Load total kamus (can fetch from /api/kamus or admin total)
                 document.getElementById('stats-total').innerText = "2.8rb+";
+
+                // Load AI Learned count
+                const resL = await fetch('/api/ai-learned');
+                const dataL = await resL.json();
+                document.getElementById('stats-learned').innerText = (dataL.data || []).length;
             } catch (err) { console.error(err); }
         }
 

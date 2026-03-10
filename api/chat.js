@@ -111,9 +111,24 @@ module.exports = async (req, res) => {
             } catch (e) { }
         }
 
+        // 2b. Load AI Learned Knowledge (pengetahuan hasil belajar dari user)
+        const learnedPath = path.join(process.cwd(), "data", "ai-learned.json");
+        let learnedKnowledge = "";
+        if (fs.existsSync(learnedPath)) {
+            try {
+                const lData = JSON.parse(fs.readFileSync(learnedPath, "utf-8"));
+                if (lData.length > 0) {
+                    learnedKnowledge = "\n\nPengetahuan tambahan dari percakapan sebelumnya:\n" +
+                        lData.map(l => `T: ${l.topic}\nI: ${l.content}`).join("\n\n");
+                }
+            } catch (e) { }
+        }
+
+        const allKnowledge = baseKnowledge + learnedKnowledge;
+
         const systemInstruction = mode === 'id'
-            ? `Kamu Sagarurung BOT, asisten PALI. Jawab dlm Bhs Indonesia ramah & singkat. Ref: ${baseKnowledge}`
-            : `Kamu ahli PALI. Jawab HANYA dlm dialek PALI kental. Ref: ${baseKnowledge} Kamus: ${dictionaryContext}`;
+            ? `Kamu Sagarurung BOT, asisten PALI. Jawab dlm Bhs Indonesia ramah & singkat. Ref: ${allKnowledge}\n\nATURAN PENTING: Jika kamu TIDAK TAHU atau TIDAK YAKIN tentang suatu topik/istilah/kata yang ditanyakan user, JANGAN mengatakan 'saya tidak menemukan informasi'. Sebagai gantinya, jawab dengan ramah bahwa kamu belum tahu tentang hal tersebut, lalu TANYAKAN ke user apakah mereka bisa menjelaskan maknanya. Sertakan tag [BELUM_TAHU:istilah_yang_ditanya] di akhir jawaban. Contoh: 'Hmm, istilah itu belum ada di pengetahuanku nih. Boleh jelaskan apa artinya supaya aku bisa belajar dan mengingatnya? [BELUM_TAHU:senjang]'`
+            : `Kamu ahli PALI. Jawab HANYA dlm dialek PALI kental. Ref: ${allKnowledge} Kamus: ${dictionaryContext}`;
 
         let aiAnswer = "";
 

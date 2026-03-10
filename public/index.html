@@ -1332,9 +1332,24 @@
                     let finalAnswer = data.answer || data.reply;
                     // Clean markdown code blocks if AI accidentally returns them
                     finalAnswer = finalAnswer.replace(/```[a-z]*\n?/gi, '').replace(/```/g, '').trim();
-                    responseEl.innerText = finalAnswer;
-                    speak(finalAnswer);
-                    animateMouthFromText(finalAnswer);
+                    
+                    // Deteksi tag [BELUM_TAHU:xxx] 
+                    const belumTahuMatch = finalAnswer.match(/\[BELUM_TAHU:([^\]]+)\]/);
+                    if (belumTahuMatch) {
+                        const unknownTerm = belumTahuMatch[1].trim();
+                        // Hapus tag dari teks yang ditampilkan
+                        const cleanAnswer = finalAnswer.replace(/\[BELUM_TAHU:[^\]]+\]/, '').trim();
+                        responseEl.innerText = cleanAnswer;
+                        speak(cleanAnswer);
+                        animateMouthFromText(cleanAnswer);
+                        
+                        // Tandai bahwa kita sedang menunggu penjelasan dari user
+                        window._awaitingExplanation = unknownTerm;
+                    } else {
+                        responseEl.innerText = finalAnswer;
+                        speak(finalAnswer);
+                        animateMouthFromText(finalAnswer);
+                    }
                 } else {
                     const errMsg = data.error || "Maaf, ada gangguan di sistem. Coba lagi sebentar ya!";
                     responseEl.innerText = "⚠️ " + errMsg;
@@ -1382,8 +1397,46 @@
             if (!text) return;
             
             input.value = '';
-            document.getElementById('avatar-response').innerText = "Berpikir...";
+            const responseEl = document.getElementById('avatar-response');
             
+            // Cek apakah AI sedang menunggu penjelasan dari user
+            if (window._awaitingExplanation) {
+                const term = window._awaitingExplanation;
+                window._awaitingExplanation = null; // Reset flag
+                
+                responseEl.innerText = "Menyimpan pengetahuan baru...";
+                
+                try {
+                    const saveRes = await fetch('/api/ai-learned', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            topic: term,
+                            content: text,
+                            source: "user-chat"
+                        })
+                    });
+                    const saveData = await saveRes.json();
+                    
+                    if (saveData.success) {
+                        const thankMsg = `Terima kasih sudah mengajari aku! Sekarang aku sudah tahu tentang "${term}". Pengetahuan ini akan aku ingat untuk percakapan selanjutnya. 🧠✨`;
+                        responseEl.innerText = thankMsg;
+                        speak(thankMsg);
+                        animateMouthFromText(thankMsg);
+                    } else {
+                        const errMsg = "Hmm, ada kendala saat menyimpan. Tapi terima kasih sudah berbagi ya!";
+                        responseEl.innerText = errMsg;
+                        speak(errMsg);
+                    }
+                } catch (err) {
+                    const errMsg = "Ada masalah koneksi saat menyimpan, tapi aku tetap berterima kasih atas penjelasannya!";
+                    responseEl.innerText = errMsg;
+                    speak(errMsg);
+                }
+                return;
+            }
+            
+            responseEl.innerText = "Berpikir...";
             await chatWithAvatar(text);
         }
 

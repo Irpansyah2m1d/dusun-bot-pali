@@ -24,6 +24,10 @@
     {
       "source": "/api/contributors",
       "destination": "/api/contributors.js"
+    },
+    {
+      "source": "/api/ai-learned",
+      "destination": "/api/ai-learned.js"
     }
   ],
   "headers": [
