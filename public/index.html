@@ -1029,8 +1029,40 @@
             chatWithAvatar(text);
         };
 
+        let chatMode = 'id'; 
+        let dusunChatCount = 0;
+        const DUSUN_CHAT_LIMIT = 5;
+
+        function toggleChatMode() {
+            const toggleBg = document.getElementById('chat-toggle-bg');
+            const toggleKnob = document.getElementById('chat-toggle-knob');
+            const modeText = document.getElementById('chat-mode-text');
+            
+            if (chatMode === 'id') {
+                chatMode = 'dusun';
+                toggleKnob.style.transform = 'translateX(20px)';
+                toggleBg.style.background = 'var(--emerald-green)';
+                toggleKnob.style.background = '#0f172a';
+                modeText.innerText = `Mode: Dusun PALI (${dusunChatCount}/${DUSUN_CHAT_LIMIT})`;
+            } else {
+                chatMode = 'id';
+                toggleKnob.style.transform = 'translateX(0)';
+                toggleBg.style.background = 'rgba(255,255,255,0.1)';
+                toggleKnob.style.background = 'var(--text-dim)';
+                modeText.innerText = `Mode: Indonesia (AI)`;
+            }
+        }
+
         async function chatWithAvatar(text) {
             const responseEl = document.getElementById('avatar-response');
+
+            if (chatMode === 'dusun' && dusunChatCount >= DUSUN_CHAT_LIMIT) {
+                const limitMsg = "Maaf, limit penggunaan mode Dusun habis untuk sesi ini.";
+                responseEl.innerText = limitMsg;
+                speak(limitMsg);
+                return;
+            }
+
             responseEl.innerText = "...";
             try {
                 const res = await fetch('/api/chat', {
@@ -1038,10 +1070,17 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         prompt: text,
-                        provider: 'groq' 
+                        provider: 'groq',
+                        mode: chatMode
                     })
                 });
                 const data = await res.json();
+                
+                if (data.success && chatMode === 'dusun') {
+                    dusunChatCount++;
+                    document.getElementById('chat-mode-text').innerText = `Mode: Dusun PALI (${dusunChatCount}/${DUSUN_CHAT_LIMIT})`;
+                }
+
                 if (data.answer) {
                     responseEl.innerText = data.answer;
                     speak(data.answer);
@@ -1095,6 +1134,16 @@
     <div id="avatar-container">
         <canvas id="avatar-canvas"></canvas>
         <div class="avatar-chat">
+            <div class="avatar-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <span id="chat-mode-text" style="font-size: 0.8rem; color: var(--text-dim); font-weight: 500;">Mode: Indonesia (AI)</span>
+                <div class="switch-toggle" style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="toggleChatMode()">
+                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim);">ID</span>
+                    <div id="chat-toggle-bg" style="position: relative; width: 40px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 20px; transition: .3s;">
+                        <div id="chat-toggle-knob" style="position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; background: var(--text-dim); border-radius: 50%; transition: transform .3s ease, background .3s;"></div>
+                    </div>
+                    <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim);">DSN</span>
+                </div>
+            </div>
             <div id="avatar-response">Halo! Saya asisten digital PALI. Ada yang bisa saya bantu?</div>
             <div class="avatar-input-area">
                 <button class="btn-primary mic-btn" style="background: var(--emerald-green); color: #0f172a; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer;" onclick="startListening()">🎤 Bicara</button>

@@ -337,7 +337,7 @@
   },
   {
     "indonesia": "cepat ",
-    "dusun": "gacong",
+    "dusun": "gacong, begancong",
     "contoh_id": "ayo cepat nanti keburu maghrib",
     "contoh_dusun": "payo gacong kagik maghrib ari"
   },
@@ -1748,12 +1748,6 @@
   {
     "indonesia": "coba, mencoba",
     "dusun": "cuka, nyuka",
-    "contoh_id": "",
-    "contoh_dusun": ""
-  },
-  {
-    "indonesia": "cepat",
-    "dusun": "gacong, begancong",
     "contoh_id": "",
     "contoh_dusun": ""
   },
@@ -3211,9 +3205,9 @@
   },
   {
     "indonesia": "lempar",
-    "dusun": "centang",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "dusun": "centang/nguntal",
+    "contoh_id": "coba lemparkan handuk di atas meja",
+    "contoh_dusun": "cuka untal/centangke andok di pocok mejo"
   },
   {
     "indonesia": "bersembunyi",

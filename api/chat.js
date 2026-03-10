@@ -74,7 +74,7 @@ try {
 module.exports = async (req, res) => {
     // Hanya menerima metode POST
     // 0. Resolve API Key & Provider from Body or Env
-    const { prompt, provider = "gemini", modelName } = req.body;
+    const { prompt, provider = "gemini", modelName, mode = "id" } = req.body;
 
     // Resolve Key (Body takes precedence, then Env)
     let userApiKey = req.body.userApiKey;
@@ -110,7 +110,18 @@ module.exports = async (req, res) => {
             ? relatedData.map(item => `- Indonesia: ${item.indonesia}\n  Artie: ${item.dusun}${item.contoh_id ? `\n  Contoh ID: "${item.contoh_id}"` : ""}${item.contoh_dusun ? `\n  Contoh Dusun: "${item.contoh_dusun}"` : ""}`).join("\n\n")
             : "";
 
-        const systemInstruction = `Anda adalah Dusun Bot, penutur asli Bahasa Dusun PALI (Kabupaten PALI, Sumatera Selatan).
+        let systemInstruction = "";
+
+        if (mode === 'id') {
+            systemInstruction = `Anda adalah Asisten Digital cerdas MASYARAKAT DUSUN PALI.
+      Tugas utama Anda adalah membantu pengguna menjawab pertanyaan dengan Bahasa Indonesia yang baik, asik, sopan, informatif, namun santai.
+      
+      ATURAN:
+      1. Jawab dengan relevan dan akurat.
+      2. Jangan menggunakan bahasa gaul yang berlebihan, tetap profesional namun ramah.
+      3. Jika pengguna bertanya tentang wilayah PALI (Penukal Abab Lematang Ilir), jawablah dengan antusias.`;
+        } else {
+            systemInstruction = `Anda adalah Dusun Bot, penutur asli Bahasa Dusun PALI (Kabupaten PALI, Sumatera Selatan).
       Tugas Anda: Menjawab pertanyaan dalam Bahasa Dusun PALI yang KENTAL dan ALAMI.
 
       ATURAN DIALEK PALI (WAJIB DIIKUTI):
@@ -139,6 +150,7 @@ module.exports = async (req, res) => {
       Bot: "Komputer tu alat kitek yang canggih nian cah, pacak nolongi kitek begawe ape bae. Kitek pacak nggunoke komputer buat nyari internet ngen ngirim email. Dengo lah ribong pakai komputer lum?"
 
       Jawablah dengan singkat ngen kental dialek PALI. JANGAN ngoceh idok-idok (ngawur) ngen JANGAN pakai kata-kata yang aneh. Ikuti aturan di atas biar bener. wkwkwkkw!`;
+        }
 
         let aiAnswer = "";
 

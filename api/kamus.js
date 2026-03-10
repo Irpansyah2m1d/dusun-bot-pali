@@ -114,6 +114,49 @@ module.exports = async (req, res) => {
             return 0;
         });
 
+        // AI Fallback Translation using Groq if no results found
+        if (results.length === 0 && process.env.GROQ_API_KEY) {
+            try {
+                console.log(`No results for '${query}', calling Groq AI fallback...`);
+                const systemInstruction = `Bantu saya menterjemahkan KATA: "${query}".
+
+Tugas Anda SANGAT SEDERHANA:
+Tebak terjemahan bahasa Dusun PALI (atau Indonesia) untuk kata tersebut dengan aturan:
+1. JIKA berakhiran 'a' dan ADA huruf 'e' di suku kata sebelumnya (meja, sepeda, kereta), ubah ke 'o' (mejo, sepedo, kereto).
+2. JIKA berakhiran 'a' dan TIDAK ADA huruf 'e' sebelumnya (apa, mana, dia), ubah ke 'e' (ape, mane, die).
+3. HANYA berikan 1 KATA hasil terjemahannya, TANPA PENJELASAN, TANPA TANDA KUTIP.`;
+
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: "llama-3.3-70b-versatile",
+                        messages: [{ role: "system", content: systemInstruction }],
+                        temperature: 0.2,
+                        top_p: 0.9
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    let aiResult = data.choices[0].message.content.trim();
+                    // Clean up potential quotes
+                    aiResult = aiResult.replace(/^['"]|['"]$/g, '');
+
+                    results.push({
+                        indonesia: query,
+                        dusun: aiResult,
+                        contoh_dusun: "⚠️ Hasil Tebakan AI (Silakan ajukan usulan jika belum tepat)"
+                    });
+                }
+            } catch (aiErr) {
+                console.error("Groq AI Fallback Error:", aiErr);
+            }
+        }
+
         return res.status(200).json({
             success: true,
             query: query,
