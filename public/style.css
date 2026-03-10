@@ -2474,45 +2474,42 @@ textarea.form-input {
 
 .bot-tooltip {
     position: absolute;
-    top: -45px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 40%;
+    left: 280px;
+    /* Aligned to side of larger avatar */
     background: #10b981;
-    color: #0f172a;
-    padding: 8px 14px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
-    z-index: 10002;
-    white-space: nowrap;
+    color: #01014e;
+    padding: 14px 22px;
+    border-radius: 4px 25px 25px 25px;
+    font-size: 0.95rem;
+    font-weight: 900;
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.6);
+    z-index: 10010;
+    width: 180px;
+    text-align: left;
     pointer-events: none;
-    animation: tooltipPulse 2s infinite ease-in-out;
+    line-height: 1.4;
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
     display: none;
-    /* Hidden by default, shown by JS */
+    border-left: 5px solid #064e3b;
+    transform: translateX(30px);
+}
+
+#bot-tour-tooltip.pop-active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .bot-tooltip::after {
     content: '';
     position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid #10b981;
-}
-
-@keyframes tooltipPulse {
-
-    0%,
-    100% {
-        transform: translateX(-50%) translateY(0);
-    }
-
-    50% {
-        transform: translateX(-50%) translateY(-5px);
-    }
+    top: 20px;
+    left: -12px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 12px solid #10b981;
 }
 
 .avatar-2d-wrapper {
@@ -2713,24 +2710,23 @@ textarea.form-input {
 
 .tour-speech-bubble {
     position: fixed;
-    bottom: 450px;
-    /* Elevated to match massive avatar */
-    left: 100px;
+    bottom: 520px;
+    /* High above the head of the massive avatar */
+    left: 120px;
     background: white;
     color: #01014e;
-    padding: 24px 36px;
-    border-radius: 30px 30px 30px 5px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    max-width: 500px;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
-    z-index: 17000;
-    /* Above everything */
+    padding: 26px 36px;
+    border-radius: 40px 40px 40px 5px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    max-width: 550px;
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.8);
+    z-index: 18000;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(30px) scale(0.9);
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 4px solid var(--emerald-green);
+    transform: translateY(40px) scale(0.8);
+    transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 5px solid var(--emerald-green);
     line-height: 1.6;
 }
 
@@ -2773,26 +2769,33 @@ textarea.form-input {
 
 /* Tour Mode Avatar State */
 #avatar-container.tour-mode {
-    bottom: -50px !important;
-    /* Peek from bottom */
-    left: -40px !important;
-    /* Peek from left */
+    bottom: -100px !important;
+    left: -80px !important;
     right: unset !important;
     top: unset !important;
-    width: 600px !important;
-    height: 700px !important;
+    width: 700px !important;
+    height: 900px !important;
     transform: scale(1) !important;
     transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1) !important;
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
     backdrop-filter: none !important;
-    z-index: 16500 !important;
+    z-index: 17500 !important;
 }
 
 #avatar-container.tour-mode .avatar-scene {
     height: 100% !important;
+    width: 100% !important;
     background: none !important;
+}
+
+#avatar-container.tour-mode .avatar-2d-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 #avatar-container.tour-mode .avatar-chat,
@@ -2803,13 +2806,13 @@ textarea.form-input {
 }
 
 #avatar-container.tour-mode .avatar-glow-ring {
-    width: 500px !important;
-    height: 500px !important;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, transparent 70%);
+    width: 700px !important;
+    height: 700px !important;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, transparent 75%);
 }
 
 #avatar-container.tour-mode .avatar-2d-img {
-    width: 550px !important;
-    /* Massive avatar for tour */
-    filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.3));
+    width: 700px !important;
+    /* Extremely massive */
+    filter: drop-shadow(0 0 80px rgba(16, 185, 129, 0.5));
 }

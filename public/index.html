@@ -1097,7 +1097,10 @@
             container.style.display = avatarActive ? 'flex' : 'none';
             
             if (avatarActive) {
-                if (tooltip) tooltip.style.display = 'block';
+                if (tooltip) {
+                    tooltip.classList.add('pop-active');
+                    typeText(tooltip, "Klik aku untuk tour website! 🚀", 30);
+                }
                 const greeted = localStorage.getItem('avatar_greeted');
                 const welcomeMsg = "Halo lur! Aku Sagarurung Bot, asisten digital PALI yang asik. Aku bisa bahasa Indonesia dan bahasa Dusun lho. Mau tanya-tanya apa kita hari ini?";
                 document.getElementById('avatar-response').innerText = welcomeMsg;
@@ -1108,7 +1111,7 @@
                     localStorage.setItem('avatar_greeted', 'true');
                 }
             } else {
-                if (tooltip) tooltip.style.display = 'none';
+                if (tooltip) tooltip.classList.remove('pop-active');
                 window.speechSynthesis.cancel();
                 clearInterval(mouthInterval);
                 const visualizer = document.getElementById('voice-visualizer');
@@ -1336,7 +1339,7 @@
             <div class="avatar-name-label">✦ Sagarurung Bot ✦</div>
             <!-- Avatar image floating -->
             <div class="avatar-2d-wrapper" onclick="startWebsiteTour()" title="Klik untuk tur website">
-                <div id="bot-tour-tooltip" class="bot-tooltip">Klik aku untuk tur singkat! 🚀</div>
+                <div id="bot-tour-tooltip" class="bot-tooltip">Klik aku untuk tour website! 🚀</div>
                 <img src="/avatar.png" alt="Sagarurung Bot" class="avatar-2d-img" />
                 <!-- Voice Frequency Visualizer -->
                 <div id="voice-visualizer" class="voice-visualizer">
