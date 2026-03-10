@@ -1044,6 +1044,14 @@
                 { id: null, msg: "Tur selesai! Sekarang mari kita mengobrol. Tanya apa saja tentang PALI, aku siap jawab!" }
             ];
 
+            const typeText = async (element, text, speed = 40) => {
+                element.innerText = "";
+                for (let i = 0; i < text.length; i++) {
+                    element.innerText += text.charAt(i);
+                    await new Promise(r => setTimeout(r, speed));
+                }
+            };
+
             for (const step of tourSteps) {
                 if (step.id) {
                     const el = document.getElementById(step.id);
@@ -1058,16 +1066,16 @@
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
 
-                speechBubble.innerText = step.msg;
                 speechBubble.classList.add('active');
-                
                 speak(step.msg);
                 animateMouthFromText(step.msg);
                 
-                // Tunggu suara selesai + jeda sesuai panjang teks
-                await new Promise(resolve => setTimeout(resolve, step.msg.length * 90 + 1500));
+                await typeText(speechBubble, step.msg);
+                
+                // Tunggu suara selesai + jeda tambahan
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 speechBubble.classList.remove('active');
-                await new Promise(resolve => setTimeout(resolve, 500)); // Jedah antar langkah
+                await new Promise(resolve => setTimeout(resolve, 600)); 
             }
 
             // Kembalikan ke normal
