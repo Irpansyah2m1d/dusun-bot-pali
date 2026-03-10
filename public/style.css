@@ -2777,7 +2777,7 @@ textarea.form-input {
 /* Tour Mode Avatar State */
 @keyframes flyOutTour {
     0% {
-        transform: translate(calc(100vw - 300px), -100px) scale(0.3);
+        transform: translate(calc(100vw - 380px), -80px) scale(1.75);
     }
 
     50% {
@@ -2797,8 +2797,7 @@ textarea.form-input {
     width: 200px !important;
     /* 20% smaller */
     height: 280px !important;
-    transform: scale(1) !important;
-    animation: flyOutTour 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+    animation: flyOutTour 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;

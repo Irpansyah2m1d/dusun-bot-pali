@@ -1031,13 +1031,14 @@
             if (tooltip) tooltip.style.display = 'none';
 
             vignette.classList.add('active');
-            avatarContainer.classList.add('tour-mode');
             avatarContainer.style.display = 'flex';
+            void avatarContainer.offsetWidth; // pancing reflow
+            avatarContainer.classList.add('tour-mode');
             
             const tourSteps = [
                 { id: null, msg: "Halo lur! Mari aku antar berkeliling di Website Dusun Bot Kamus Bahasa PALI ini. Siap?" },
-                { id: 'wisdom-text', msg: "Ini adalah bagian Nasehat. Di sini dengo bisa melihat kutipan bijak warisan leluhur kita dalam bahasa Dusun." },
-                { id: 'kamus-live', msg: "Ini fitur andalan kita, Kamus Digital PALI. Ada ribuan kosa kata yang bisa dengo cari secara live." },
+                { id: 'wisdom-text', msg: "Ini adalah bagian Nasehat. Di sini kamu bisa melihat kutipan bijak warisan leluhur kita dalam bahasa Dusun." },
+                { id: 'kamus-live', msg: "Ini fitur andalan kita, Kamus Digital PALI. Ada ribuan kosa kata yang bisa kamu cari secara live." },
                 { id: 'collab-preview', msg: "Project ini murni buatan komunitas. Buat kalian yang ngga nemu suatu kosakata, kalian bisa banget nambahin kosakata baru agar terdaftar sebagai kontributor!", action: 'open_collab' },
                 { id: 'folklore-grid', msg: "Lalu di sini ada Cerita Rakyat Digital. Kumpulan legenda Bumi Serepat Serasan yang sudah didigitalisasi.", action: 'flip_avatar' },
                 { id: 'features', msg: "Kita menggunakan teknologi AI terbaru untuk memastikan dialek PALI tetap relevan di era digital." },
@@ -1240,7 +1241,7 @@
                 toggleKnob.style.background = 'var(--text-dim)';
                 modeText.innerText = `Mode: Indonesia (AI)`;
                 responseEl.style.color = "var(--text-dim)";
-                responseEl.innerText = "Halo, Sagarurung Bot disini. Siap bantu dengo!";
+                responseEl.innerText = "Halo, Sagarurung Bot disini. Siap bantu kamu!";
             }
         }
 
