@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
         }
 
         if (req.method === 'POST') {
-            const { title, slug, excerpt, content, image_url } = req.body;
+            const { title, slug, excerpt, content, image_url, category } = req.body;
             if (!title || !content) return res.status(400).json({ success: false, message: 'Judul dan Isi wajib diisi.' });
 
             const { data, error } = await supabase
@@ -51,6 +51,7 @@ module.exports = async (req, res) => {
                     excerpt,
                     content,
                     image_url,
+                    category: category || 'Sejarah',
                     created_at: new Date().toISOString()
                 }]);
 
@@ -62,12 +63,12 @@ module.exports = async (req, res) => {
         }
 
         if (req.method === 'PUT') {
-            const { id, title, slug, excerpt, content, image_url } = req.body;
+            const { id, title, slug, excerpt, content, image_url, category } = req.body;
             if (!id) return res.status(400).json({ success: false, message: 'ID Cerita diperlukan untuk update.' });
 
             const { data, error } = await supabase
                 .from('cerita_rakyat')
-                .update({ title, slug, excerpt, content, image_url })
+                .update({ title, slug, excerpt, content, image_url, category })
                 .eq('id', id);
 
             if (error) {

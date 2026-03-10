@@ -333,8 +333,22 @@
         <!-- Cerita Rakyat Digital -->
         <section class="folklore-section">
             <h2 class="section-title">Pustaka Rakyat PALI</h2>
-            <div class="folklore-grid" id="folklore-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 0 5%;">
+            
+            <div class="folklore-filters">
+                <button class="filter-chip active" onclick="filterFolklore('Semua', this)">Semua</button>
+                <button class="filter-chip" onclick="filterFolklore('Mistis', this)">Mistis</button>
+                <button class="filter-chip" onclick="filterFolklore('Cinta Lama', this)">Cinta Lama</button>
+                <button class="filter-chip" onclick="filterFolklore('Zaman Dulu', this)">Zaman Dulu</button>
+                <button class="filter-chip" onclick="filterFolklore('Sejarah', this)">Sejarah</button>
+                <button class="filter-chip" onclick="filterFolklore('Cerita Lucu', this)">Cerita Lucu</button>
+            </div>
+
+            <div class="folklore-grid" id="folklore-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 0 5%;">
                 <!-- Data from API -->
+            </div>
+
+            <div class="folklore-more-container" id="folklore-more-container" style="display: none;">
+                <button class="btn-see-more" onclick="window.location.href='/pustaka.html'">Buka Semua Pustaka ➔</button>
             </div>
         </section>
 
@@ -915,6 +929,7 @@
         }
 
 
+        let allStories = [];
         async function loadFolklore() {
             const grid = document.getElementById('folklore-grid');
             if(!grid) return;
@@ -922,64 +937,56 @@
             try {
                 const res = await fetch('/api/cerita-rakyat');
                 const result = await res.json();
+                allStories = result.data || [];
                 
-                let stories = result.data || [];
-                
-                // Fallback data if database is empty for initial demo
-                if (stories.length === 0) {
-                    stories = [
-                        {
-                            title: "Legenda Candi Bumi Ayu",
-                            excerpt: "Kisah kemasyhuran candi termegah di tepian sungai Lematang.",
-                            content: "Candi Bumi Ayu merupakan peninggalan Hindu di Desa Bumi Ayu yang dahulunya...",
-                            image_url: "/gallery/heritage.png"
-                        },
-                        {
-                            title: "Sungai Lematang & Puyang",
-                            excerpt: "Cerita tentang urat nadi kehidupan masyarakat Penukal.",
-                            content: "Sungai Lematang bukan sekadar sungai, tapi saksi bisu sejarah...",
-                            image_url: "/gallery/river.png"
-                        }   
+                // Fallback data if empty
+                if (allStories.length === 0) {
+                    allStories = [
+                        { title: "Legenda Candi Bumi Ayu", excerpt: "Hindu heritage in Bumi Ayu.", category: "Sejarah", image_url: "/gallery/heritage.png" },
+                        { title: "Sungai Lematang", excerpt: "Life blood of Penukal.", category: "Zaman Dulu", image_url: "/gallery/river.png" }
                     ];
                 }
+                
+                renderFolklore('Semua');
+            } catch (err) { console.error("Folklore Error:", err); }
+        }
 
-                grid.innerHTML = stories.map(item => `
-                    <article class="folklore-card" onclick="openCerita('${item.slug || 'detail'}', ${item.id})">
-                        <img src="${item.image_url || '/gallery/heritage.png'}" class="folklore-img" alt="${item.title}">
-                        <div class="folklore-card-body">
-                            <h3>${item.title}</h3>
-                            <p>${item.excerpt || 'Klik untuk membaca selengkapnya...'}</p>
-                            <span class="read-more">Baca Selengkapnya ➔</span>
-                        </div>
-                    </article>
-                `).join('');
-            } catch (err) {
-                console.error("Folklore Error:", err);
-                const fallback = [
-                    {
-                        title: "Legenda Candi Bumi Ayu",
-                        excerpt: "Kisah kemasyhuran candi termegah di tepian sungai Lematang.",
-                        content: "Candi Bumi Ayu merupakan peninggalan Hindu di Desa Bumi Ayu yang dahulunya...",
-                        image_url: "/gallery/heritage.png"
-                    },
-                    {
-                        title: "Sungai Lematang & Puyang",
-                        excerpt: "Cerita tentang urat nadi kehidupan masyarakat Penukal.",
-                        content: "Sungai Lematang bukan sekadar sungai, tapi saksi bisu sejarah...",
-                        image_url: "/gallery/river.png"
-                    }
-                ];
-                grid.innerHTML = fallback.map(item => `
-                    <article class="folklore-card" onclick="openCerita('${item.slug || 'detail'}')">
-                        <img src="${item.image_url}" class="folklore-img" alt="${item.title}">
-                        <div class="folklore-card-body">
-                            <h3>${item.title}</h3>
-                            <p>${item.excerpt}</p>
-                            <span class="read-more">Baca Selengkapnya ➔</span>
-                        </div>
-                    </article>
-                `).join('');
+        function renderFolklore(categoryFilter) {
+            const grid = document.getElementById('folklore-grid');
+            const moreContainer = document.getElementById('folklore-more-container');
+            
+            let filtered = allStories;
+            if (categoryFilter !== 'Semua') {
+                filtered = allStories.filter(s => s.category === categoryFilter);
             }
+
+            // Limit logic: only show up to 8 cards (roughly 2 rows on desktop) on index
+            // and show "See More" if there's more
+            const displayed = filtered.slice(0, 8);
+            
+            if (filtered.length > 8) {
+                moreContainer.style.display = 'block';
+            } else {
+                moreContainer.style.display = 'none';
+            }
+
+            grid.innerHTML = displayed.map(item => `
+                <article class="folklore-card" onclick="openCerita('${item.slug || 'detail'}', ${item.id})" style="position:relative;">
+                    <div class="category-badge">${item.category || 'Sejarah'}</div>
+                    <img src="${item.image_url || '/gallery/heritage.png'}" class="folklore-img" alt="${item.title}">
+                    <div class="folklore-card-body">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 8px;">${item.title}</h3>
+                        <p style="font-size: 0.85rem; -webkit-line-clamp: 2;">${item.excerpt || 'Klik untuk membaca...'}</p>
+                        <span class="read-more" style="font-size: 0.8rem;">Baca ➔</span>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function filterFolklore(category, btn) {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            renderFolklore(category);
         }
 
         function openCerita(slug, id) {

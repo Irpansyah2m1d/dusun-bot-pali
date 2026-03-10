@@ -2506,13 +2506,13 @@ textarea.form-input {
 
 .folklore-img {
     width: 100%;
-    height: 220px;
+    aspect-ratio: 1/1;
     object-fit: cover;
     transition: 0.5s;
 }
 
 .folklore-card:hover .folklore-img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .folklore-card-body {
@@ -2569,4 +2569,72 @@ textarea.form-input {
     background: var(--emerald-green);
     color: #0f172a;
     transform: scale(1.1);
+}
+
+/* Folklore Categories & More */
+.folklore-filters {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    padding: 0 5%;
+}
+
+.filter-chip {
+    padding: 8px 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    border-radius: 50px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.filter-chip.active,
+.filter-chip:hover {
+    background: var(--emerald-green);
+    color: #0f172a;
+    border-color: var(--emerald-green);
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+}
+
+.folklore-more-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn-see-more {
+    padding: 12px 30px;
+    background: transparent;
+    border: 1px solid var(--emerald-green);
+    color: var(--emerald-green);
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-see-more:hover {
+    background: var(--emerald-green);
+    color: #0f172a;
+}
+
+.category-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 4px 12px;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(5px);
+    color: var(--emerald-green);
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    z-index: 2;
 }

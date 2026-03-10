@@ -55,6 +55,16 @@
                         <input type="text" id="folklore-slug" class="dash-input" placeholder="legenda-candi-bumi-ayu">
                     </div>
                     <div class="input-group">
+                        <label>Kategori</label>
+                        <select id="folklore-category" class="dash-input">
+                            <option value="Mistis">Mistis</option>
+                            <option value="Cinta Lama">Cinta Lama</option>
+                            <option value="Zaman Dulu">Zaman Dulu</option>
+                            <option value="Sejarah" selected>Sejarah</option>
+                            <option value="Cerita Lucu">Cerita Lucu</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
                         <label>Foto Sampul Cerita (Upload/URL)</label>
                         <div style="display: flex; gap: 10px;">
                             <input type="text" id="folklore-image" class="dash-input" placeholder="https://example.com/foto.jpg" style="flex: 1;">
@@ -149,6 +159,7 @@
             document.getElementById('folklore-excerpt').value = item.excerpt || "";
             document.getElementById('folklore-content').value = item.content;
             document.getElementById('folklore-image').value = item.image_url || "";
+            document.getElementById('folklore-category').value = item.category || "Sejarah";
             
             if (item.image_url) {
                 document.getElementById('image-preview').src = item.image_url;
@@ -168,6 +179,7 @@
             document.getElementById('folklore-excerpt').value = "";
             document.getElementById('folklore-content').value = "";
             document.getElementById('folklore-image').value = "";
+            document.getElementById('folklore-category').value = "Sejarah";
             document.getElementById('image-preview-container').classList.add('hidden');
             
             document.getElementById('btn-text-folklore').innerText = "Simpan Cerita";
@@ -220,7 +232,8 @@
                 slug: document.getElementById('folklore-slug').value,
                 excerpt: document.getElementById('folklore-excerpt').value,
                 content: document.getElementById('folklore-content').value,
-                image_url: document.getElementById('folklore-image').value
+                image_url: document.getElementById('folklore-image').value,
+                category: document.getElementById('folklore-category').value
             };
 
             if(!payload.title || !payload.content) return alert("Judul sama Isi jangan dikosongin ya.");
