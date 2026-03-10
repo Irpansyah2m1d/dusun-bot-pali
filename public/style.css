@@ -2006,7 +2006,8 @@ textarea.form-input {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
+    /* Change to visible for tooltip to pop out */
 }
 
 /* Glow ring behind avatar */
@@ -2039,6 +2040,9 @@ textarea.form-input {
     position: absolute;
     inset: 0;
     pointer-events: none;
+    overflow: hidden;
+    border-radius: 35px 35px 0 0;
+    /* Keep particles in rounded boundary */
 }
 
 .avatar-particles span {
@@ -2475,8 +2479,8 @@ textarea.form-input {
 .bot-tooltip {
     position: absolute;
     top: 40%;
-    right: 230px;
-    /* Moved to left side of mascot */
+    left: -130px;
+    /* Diatur dari kiri agar pas di sebelah luar mascot */
     background: #10b981;
     color: #01014e;
     padding: 10px 16px;
@@ -2485,7 +2489,7 @@ textarea.form-input {
     font-weight: 900;
     box-shadow: 0 12px 30px rgba(16, 185, 129, 0.6);
     z-index: 10010;
-    width: 140px;
+    width: 120px;
     text-align: right;
     pointer-events: none;
     line-height: 1.3;
