@@ -3254,17 +3254,17 @@
   {
     "indonesia": "jualan",
     "dusun": "juolon",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "aku menjual ikan di pasar",
+    "contoh_dusun": "aku juolon ikan di kalangan "
   },
   {
     "indonesia": "untuk",
     "dusun": "ngijeke",
-    "contoh_id": "",
-    "contoh_dusun": "untuk suami saya (ngijeke lakiku)"
+    "contoh_id": "untuk suami saya",
+    "contoh_dusun": "ngijeke lakiku"
   },
   {
-    "indonesia": "terasi",
+    "indonesia": "terasi/belacan",
     "dusun": "caluk",
     "contoh_id": "",
     "contoh_dusun": ""

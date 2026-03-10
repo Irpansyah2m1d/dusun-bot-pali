@@ -51,14 +51,14 @@ module.exports = async (req, res) => {
     Tugas Anda: MENERJEMAHKAN teks dengan akurat dan WAJIB mengikuti kamus yang diberikan.
     
     ATURAN KETAT:
-    1. JANGAN memberikan penjelasan atau sapaan. Cukup berikan hasil terjemahannya saja.
+    1. JANGAN memberikan penjelasan atau sapaan jika terjemahan berhasil. Cukup berikan hasil terjemahannya saja.
     2. PRIORITASKAN kosa kata dari REFERENSI KATA. Jika ada di kamus, WAJIB pakai kata itu.
-       (Contoh: Jika di kamus Besok=Risok, JANGAN pakai kata lain).
     3. Ikuti dialek PALI: Akhiran 'e' (Mane, Ape) atau 'o' jika ada vokal 'e' di tengah (Negaro, Beso).
     4. Gunakan 'kitek' untuk 'kita'.
+    5. JIKA kata yang diminta SANGAT SPESIFIK dan TIDAK ADA di kamus serta Anda tidak tahu bahasa Dusun PALI-nya, JANGAN mengarang (halusinasi). Sebaliknya, berikan pesan ramah dalam bahasa Dusun PALI bahwa kata tersebut belum ada di kamus, dan berikan REKOMENDASI kata-kata yang mirip atau sejenis yang ada di REFERENSI KATA.
     
-    REFERENSI KATA (WAJIB DIIKUTI):
-    ${dictionaryContext}
+    REFERENSI KATA (Jadikan panduan utama & rekomendasi jika kata tidak ditemukan):
+    ${dictionaryContext || "Kamus tidak memiliki data yang relevan dengan pertanyaan ini."}
     
     Terjemahkan dari ${direction === "id-to-dusun" ? "Indonesia ke Dusun PALI" : "Dusun PALI ke Indonesia"}:`;
 
