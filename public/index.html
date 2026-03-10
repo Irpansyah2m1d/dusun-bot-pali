@@ -1021,20 +1021,27 @@
             isTouring = true;
             
             const tooltip = document.getElementById('bot-tour-tooltip');
+            const avatarContainer = document.getElementById('avatar-container');
+            const vignette = document.getElementById('tour-vignette');
+            const speechBubble = document.getElementById('tour-speech-bubble');
+            
             if (tooltip) tooltip.style.display = 'none';
 
-            // Tutup dulu jika terbuka agar tidak menghalangi
-            const respEl = document.getElementById('avatar-response');
+            // Masuk ke mode tur: Aktifkan vignette dan pindahkan avatar ke kiri
+            vignette.classList.add('active');
+            avatarContainer.classList.add('tour-mode');
+            avatarContainer.style.display = 'flex'; // Pastikan muncul
+            
             const tourSteps = [
-                { id: null, msg: "Halo lur! Mari aku antar berkeliling di rumah digital PALI ini." },
+                { id: null, msg: "Halo lur! Mari aku antar berkeliling di rumah digital PALI ini. Siap?" },
                 { id: 'wisdom-text', msg: "Ini adalah bagian Nasehat. Di sini dengo bisa melihat kutipan bijak warisan leluhur kita dalam bahasa Dusun." },
-                { id: 'kamus-live', msg: "Ini fitur andalan kita, Kamus Digital PALI. Ada lebih dari dua ribu delapan ratus kosa kata yang bisa dengo cari secara live." },
+                { id: 'kamus-live', msg: "Ini fitur andalan kita, Kamus Digital PALI. Ada ribuan kosa kata yang bisa dengo cari secara live." },
                 { id: 'collab-preview', msg: "Project ini milik komunitas. Dengo bisa lihat daftar kontributor hebat kita di sini." },
-                { id: 'folklore-grid', msg: "Lalu di sini ada Cerita Rakyat Digital. Kumpulan legenda dan sejarah Bumi Serepat Serasan yang sudah didigitalisasi." },
-                { id: 'features', msg: "Kita menggunakan teknologi Kecerdasan Buatan terbaru untuk memastikan dialek PALI tetap relevan di era digital." },
-                { id: 'mission', msg: "Misi utama kita adalah melestarikan budaya sekaligus menghubungkannya dengan teknologi masa depan." },
+                { id: 'folklore-grid', msg: "Lalu di sini ada Cerita Rakyat Digital. Kumpulan legenda Bumi Serepat Serasan yang sudah didigitalisasi." },
+                { id: 'features', msg: "Kita menggunakan teknologi AI terbaru untuk memastikan dialek PALI tetap relevan di era digital." },
+                { id: 'mission', msg: "Misi utama kita adalah melestarikan budaya dan menghubungkannya dengan teknologi masa depan." },
                 { id: 'faq', msg: "Jika ada pertanyaan umum, dengo bisa cek di bagian FAQ ini." },
-                { id: null, msg: "Selesai! Sekarang mari kita mengobrol. Tanya apa saja tentang PALI, aku siap jawab!" }
+                { id: null, msg: "Tur selesai! Sekarang mari kita mengobrol. Tanya apa saja tentang PALI, aku siap jawab!" }
             ];
 
             for (const step of tourSteps) {
@@ -1042,25 +1049,37 @@
                     const el = document.getElementById(step.id);
                     if (el) {
                         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        el.style.outline = "3px solid var(--emerald-green)";
-                        el.style.outlineOffset = "5px";
+                        el.style.outline = "6px solid var(--emerald-green)";
+                        el.style.outlineOffset = "10px";
+                        el.style.borderRadius = "12px";
                         setTimeout(() => el.style.outline = "none", 3000);
                     }
                 } else {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
 
-                respEl.innerText = step.msg;
+                speechBubble.innerText = step.msg;
+                speechBubble.classList.add('active');
+                
                 speak(step.msg);
                 animateMouthFromText(step.msg);
                 
-                // Tunggu suara selesai + jeda dikit
-                await new Promise(resolve => setTimeout(resolve, step.msg.length * 80 + 1000));
+                // Tunggu suara selesai + jeda sesuai panjang teks
+                await new Promise(resolve => setTimeout(resolve, step.msg.length * 90 + 1500));
+                speechBubble.classList.remove('active');
+                await new Promise(resolve => setTimeout(resolve, 500)); // Jedah antar langkah
             }
 
+            // Kembalikan ke normal
             isTouring = false;
+            vignette.classList.remove('active');
+            avatarContainer.classList.remove('tour-mode');
+            speechBubble.classList.remove('active');
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            if (!avatarActive) toggleAvatar();
+            
+            // Buka chat normal di akhir
+            if (!avatarActive) toggleAvatar(); 
         }
 
         function toggleAvatar() {
@@ -1347,6 +1366,8 @@
         </div>
     </div>
 
+    <div id="tour-vignette" class="tour-vignette"></div>
+    <div id="tour-speech-bubble" class="tour-speech-bubble"></div>
     <button class="btn-avatar-toggle" onclick="toggleAvatar()">🤖</button>
 </body>
 </html>
