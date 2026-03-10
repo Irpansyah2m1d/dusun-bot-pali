@@ -2475,25 +2475,25 @@ textarea.form-input {
 .bot-tooltip {
     position: absolute;
     top: 40%;
-    left: 280px;
-    /* Aligned to side of larger avatar */
+    right: 230px;
+    /* Moved to left side of mascot */
     background: #10b981;
     color: #01014e;
-    padding: 14px 22px;
-    border-radius: 4px 25px 25px 25px;
-    font-size: 0.95rem;
+    padding: 10px 16px;
+    border-radius: 20px 20px 4px 20px;
+    font-size: 0.85rem;
     font-weight: 900;
-    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.6);
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.6);
     z-index: 10010;
-    width: 180px;
-    text-align: left;
+    width: 140px;
+    text-align: right;
     pointer-events: none;
-    line-height: 1.4;
+    line-height: 1.3;
     opacity: 0;
     transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
     display: none;
-    border-left: 5px solid #064e3b;
-    transform: translateX(30px);
+    border-right: 5px solid #064e3b;
+    transform: translateX(-20px);
 }
 
 #bot-tour-tooltip.pop-active {
@@ -2506,10 +2506,10 @@ textarea.form-input {
     content: '';
     position: absolute;
     top: 20px;
-    left: -12px;
+    right: -12px;
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-right: 12px solid #10b981;
+    border-left: 12px solid #10b981;
 }
 
 .avatar-2d-wrapper {
