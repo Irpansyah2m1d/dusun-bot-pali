@@ -1039,11 +1039,9 @@
             const modeText = document.getElementById('chat-mode-text');
             
             if (chatMode === 'id') {
-                chatMode = 'dusun';
-                toggleKnob.style.transform = 'translateX(20px)';
-                toggleBg.style.background = 'var(--emerald-green)';
-                toggleKnob.style.background = '#0f172a';
-                modeText.innerText = `Mode: Dusun PALI (${dusunChatCount}/${DUSUN_CHAT_LIMIT})`;
+                // Not yet ready for Dusun
+                alert("Maaf, mode Dusun PALI sedang disiapkan dan belum tersedia untuk saat ini. Silakan gunakan Mode Indonesia ya!");
+                // Keep it in ID mode
             } else {
                 chatMode = 'id';
                 toggleKnob.style.transform = 'translateX(0)';

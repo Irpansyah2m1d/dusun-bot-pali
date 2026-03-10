@@ -2012,6 +2012,25 @@ textarea.form-input {
     background: rgba(255, 255, 255, 0.03);
     padding: 12px;
     line-height: 1.4;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#avatar-response::-webkit-scrollbar {
+    width: 6px;
+}
+
+#avatar-response::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#avatar-response::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+#avatar-response::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .avatar-input-area {
