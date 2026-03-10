@@ -2714,8 +2714,8 @@ textarea.form-input {
 
 .tour-speech-bubble {
     position: fixed;
-    bottom: 360px;
-    /* Di atas mascot yang berukuran lebih kecil */
+    bottom: 290px;
+    /* Di atas mascot yang berukuran lebih kecil lagi (20% smaller) */
     left: 40px;
     background: white;
     color: #01014e;
@@ -2775,15 +2775,30 @@ textarea.form-input {
 
 
 /* Tour Mode Avatar State */
+@keyframes flyOutTour {
+    0% {
+        transform: translate(calc(100vw - 300px), -100px) scale(0.3);
+    }
+
+    50% {
+        transform: translate(calc(40vw), -200px) scale(1.1);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
 #avatar-container.tour-mode {
     bottom: 30px !important;
     left: 30px !important;
     right: unset !important;
     top: unset !important;
-    width: 250px !important;
-    height: 350px !important;
+    width: 200px !important;
+    /* 20% smaller */
+    height: 280px !important;
     transform: scale(1) !important;
-    transition: all 1s cubic-bezier(0.19, 1, 0.22, 1) !important;
+    animation: flyOutTour 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
@@ -2811,15 +2826,23 @@ textarea.form-input {
 }
 
 #avatar-container.tour-mode .avatar-glow-ring {
-    width: 250px !important;
-    height: 250px !important;
+    width: 200px !important;
+    height: 200px !important;
     background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
 }
 
 #avatar-container.tour-mode .avatar-2d-img {
-    width: 220px !important;
-    /* Diperkecil agar lebih proposional dan tidak terpotong */
+    width: 175px !important;
+    /* 20% smaller */
     height: auto !important;
     object-fit: contain !important;
-    filter: drop-shadow(0 0 35px rgba(16, 185, 129, 0.35));
+    filter: drop-shadow(0 0 25px rgba(16, 185, 129, 0.35));
+}
+
+#avatar-container.tour-mode #mute-btn,
+#avatar-container.tour-mode .avatar-name-label,
+#avatar-container.tour-mode .avatar-chat,
+#avatar-container.tour-mode .avatar-controls,
+#avatar-container.tour-mode .avatar-input-container {
+    display: none !important;
 }
