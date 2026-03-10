@@ -55,7 +55,10 @@ module.exports = async (req, res) => {
     2. PRIORITASKAN kosa kata dari REFERENSI KATA. Jika ada di kamus, WAJIB pakai kata itu.
     3. Ikuti dialek PALI: Akhiran 'e' (Mane, Ape) atau 'o' jika ada vokal 'e' di tengah (Negaro, Beso).
     4. Gunakan 'kitek' untuk 'kita'.
-    5. JIKA kata yang diminta SANGAT SPESIFIK dan TIDAK ADA di kamus serta Anda tidak tahu bahasa Dusun PALI-nya, JANGAN mengarang (halusinasi). Sebaliknya, berikan pesan ramah dalam bahasa Dusun PALI bahwa kata tersebut belum ada di kamus, dan berikan REKOMENDASI kata-kata yang mirip atau sejenis yang ada di REFERENSI KATA.
+    5. JIKA kata tidak ada di kamus, Terapkan aturan pembentukan kata Dusun PALI ini secara paksa untuk menebak terjemahannya:
+       - Jika kata berakhiran 'a' dan terdapat huruf 'e' di suku kata sebelumnya (contoh: me-ja, ke-re-ta, ce-la-na), jadikan akhirannya 'o' (mejo, kereto).
+       - Jika kata berakhiran 'a' dan TIDAK ada huruf 'e' sebelumnya (contoh: a-pa, ma-na, di-a), jadikan akhirannya 'e' (ape, mane, die).
+       - Namun, jika Anda menebak kata menggunakan aturan ini, ANDA WAJIB menambahkan pesan kecil di bawah hasil terjemahan (dengan ukuran teks atau baris baru) yang menyatakan: "(Peringatan: Beberapa kata mungkin hasil generasi AI karena belum ada di kamus. Mohon bantu usulkan kata jika keliru)".
     
     REFERENSI KATA (Jadikan panduan utama & rekomendasi jika kata tidak ditemukan):
     ${dictionaryContext || "Kamus tidak memiliki data yang relevan dengan pertanyaan ini."}
