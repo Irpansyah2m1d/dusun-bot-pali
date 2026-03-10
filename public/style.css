@@ -1991,28 +1991,31 @@ textarea.form-input {
 
 #avatar-canvas {
     width: 100%;
-    height: 55%;
+    height: 200px;
+    flex-shrink: 0;
     background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
 }
 
 .avatar-chat {
     flex: 1;
-    padding: 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
 }
 
 #avatar-response {
     flex: 1;
+    min-height: 0;
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     overflow-y: auto;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 12px;
-    line-height: 1.4;
-    white-space: pre-wrap;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 10px 12px;
+    line-height: 1.5;
     word-wrap: break-word;
 }
 
