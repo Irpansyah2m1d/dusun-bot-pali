@@ -1035,8 +1035,8 @@
             void avatarContainer.offsetWidth; // pancing reflow
             avatarContainer.classList.add('tour-mode');
             
-            // Tunggu sampai animasi terbang selesai sebelum mengobrol
-            await new Promise(resolve => setTimeout(resolve, 2500));
+            // Tunggu sampai animasi terbang selesai sebelum mengobrol (dipercepat)
+            await new Promise(resolve => setTimeout(resolve, 2000));
             
             const tourSteps = [
                 { id: null, msg: "Halo lur! Mari aku antar berkeliling di Website Dusun Bot Kamus Bahasa PALI ini. Siap?" },
@@ -1128,13 +1128,20 @@
                     speechBubble.classList.remove('tour-flip');
                     await new Promise(resolve => setTimeout(resolve, 1000)); // Jeda biar animasi geser ke kiri mulus
                 }
-            }
+            } // Menutup looping tourSteps
 
-            // Kembalikan ke normal
-            isTouring = false;
-            vignette.classList.remove('active');
-            avatarContainer.classList.remove('tour-mode', 'tour-flip', 'tour-unflip');
+            // Animasikan terbang kembali ke asal
             speechBubble.classList.remove('active', 'tour-flip', 'tour-unflip');
+            vignette.classList.remove('active');
+            avatarContainer.classList.add('tour-fly-back');
+            avatarContainer.classList.remove('tour-unflip');
+
+            // Tunggu animasi terbang kembali selesai
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Kembalikan ke normal sepenuhnya
+            isTouring = false;
+            avatarContainer.classList.remove('tour-mode', 'tour-flip', 'tour-unflip', 'tour-fly-back');
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
