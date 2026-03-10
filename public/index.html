@@ -1015,12 +1015,62 @@
             // But we will primarily check isMuted in speak()
         }
 
+        let isTouring = false;
+        async function startWebsiteTour() {
+            if (isTouring) return;
+            isTouring = true;
+            
+            const tooltip = document.getElementById('bot-tour-tooltip');
+            if (tooltip) tooltip.style.display = 'none';
+
+            // Tutup dulu jika terbuka agar tidak menghalangi
+            const respEl = document.getElementById('avatar-response');
+            const tourSteps = [
+                { id: null, msg: "Halo lur! Mari aku antar berkeliling di rumah digital PALI ini." },
+                { id: 'wisdom-text', msg: "Ini adalah bagian Nasehat. Di sini dengo bisa melihat kutipan bijak warisan leluhur kita dalam bahasa Dusun." },
+                { id: 'kamus-live', msg: "Ini fitur andalan kita, Kamus Digital PALI. Ada lebih dari dua ribu delapan ratus kosa kata yang bisa dengo cari secara live." },
+                { id: 'collab-preview', msg: "Project ini milik komunitas. Dengo bisa lihat daftar kontributor hebat kita di sini." },
+                { id: 'folklore-grid', msg: "Lalu di sini ada Cerita Rakyat Digital. Kumpulan legenda dan sejarah Bumi Serepat Serasan yang sudah didigitalisasi." },
+                { id: 'features', msg: "Kita menggunakan teknologi Kecerdasan Buatan terbaru untuk memastikan dialek PALI tetap relevan di era digital." },
+                { id: 'mission', msg: "Misi utama kita adalah melestarikan budaya sekaligus menghubungkannya dengan teknologi masa depan." },
+                { id: 'faq', msg: "Jika ada pertanyaan umum, dengo bisa cek di bagian FAQ ini." },
+                { id: null, msg: "Selesai! Sekarang mari kita mengobrol. Tanya apa saja tentang PALI, aku siap jawab!" }
+            ];
+
+            for (const step of tourSteps) {
+                if (step.id) {
+                    const el = document.getElementById(step.id);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.style.outline = "3px solid var(--emerald-green)";
+                        el.style.outlineOffset = "5px";
+                        setTimeout(() => el.style.outline = "none", 3000);
+                    }
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+                respEl.innerText = step.msg;
+                speak(step.msg);
+                animateMouthFromText(step.msg);
+                
+                // Tunggu suara selesai + jeda dikit
+                await new Promise(resolve => setTimeout(resolve, step.msg.length * 80 + 1000));
+            }
+
+            isTouring = false;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (!avatarActive) toggleAvatar();
+        }
+
         function toggleAvatar() {
             const container = document.getElementById('avatar-container');
+            const tooltip = document.getElementById('bot-tour-tooltip');
             avatarActive = !avatarActive;
             container.style.display = avatarActive ? 'flex' : 'none';
             
             if (avatarActive) {
+                if (tooltip) tooltip.style.display = 'block';
                 const greeted = localStorage.getItem('avatar_greeted');
                 const welcomeMsg = "Halo lur! Aku Sagarurung Bot, asisten digital PALI yang asik. Aku bisa bahasa Indonesia dan bahasa Dusun lho. Mau tanya-tanya apa kita hari ini?";
                 document.getElementById('avatar-response').innerText = welcomeMsg;
@@ -1031,6 +1081,7 @@
                     localStorage.setItem('avatar_greeted', 'true');
                 }
             } else {
+                if (tooltip) tooltip.style.display = 'none';
                 window.speechSynthesis.cancel();
                 clearInterval(mouthInterval);
                 const visualizer = document.getElementById('voice-visualizer');
@@ -1257,14 +1308,9 @@
             <!-- Bot name label -->
             <div class="avatar-name-label">✦ Sagarurung Bot ✦</div>
             <!-- Avatar image floating -->
-            <div class="avatar-2d-wrapper">
+            <div class="avatar-2d-wrapper" onclick="startWebsiteTour()" title="Klik untuk tur website">
+                <div id="bot-tour-tooltip" class="bot-tooltip">Klik aku untuk tur singkat! 🚀</div>
                 <img src="/avatar.png" alt="Sagarurung Bot" class="avatar-2d-img" />
-                <!-- Face overlays disabled as per user request -->
-                <!-- 
-                <div class="avatar-eye eye-left"></div>
-                <div class="avatar-eye eye-right"></div>
-                <div id="avatar-mouth" class="avatar-mouth-el shape-close"></div>
-                -->
                 <!-- Voice Frequency Visualizer -->
                 <div id="voice-visualizer" class="voice-visualizer">
                     <span></span><span></span><span></span><span></span><span></span>

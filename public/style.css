@@ -2463,7 +2463,6 @@ textarea.form-input {
     border: none;
     cursor: pointer;
     z-index: 10001;
-    /* Above everything */
     box-shadow: 0 10px 30px var(--emerald-glow);
     display: flex;
     align-items: center;
@@ -2472,8 +2471,57 @@ textarea.form-input {
     font-size: 1.8rem;
 }
 
-.btn-avatar-toggle:hover {
-    transform: scale(1.1);
+.bot-tooltip {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #10b981;
+    color: #0f172a;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+    z-index: 10002;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: tooltipPulse 2s infinite ease-in-out;
+    display: none;
+    /* Hidden by default, shown by JS */
+}
+
+.bot-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #10b981;
+}
+
+@keyframes tooltipPulse {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+.avatar-2d-wrapper {
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.avatar-2d-wrapper:hover {
+    transform: scale(1.05) rotate(2deg);
 }
 
 .mic-btn.active {
