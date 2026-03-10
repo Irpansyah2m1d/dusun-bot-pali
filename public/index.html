@@ -1020,6 +1020,9 @@
             if (isTouring) return;
             isTouring = true;
             
+            // Hentikan suara yang sedang berjalan jika ada
+            window.speechSynthesis.cancel();
+            
             const tooltip = document.getElementById('bot-tour-tooltip');
             const avatarContainer = document.getElementById('avatar-container');
             const vignette = document.getElementById('tour-vignette');
@@ -1027,10 +1030,9 @@
             
             if (tooltip) tooltip.style.display = 'none';
 
-            // Masuk ke mode tur: Aktifkan vignette dan pindahkan avatar ke kiri
             vignette.classList.add('active');
             avatarContainer.classList.add('tour-mode');
-            avatarContainer.style.display = 'flex'; // Pastikan muncul
+            avatarContainer.style.display = 'flex';
             
             const tourSteps = [
                 { id: null, msg: "Halo lur! Mari aku antar berkeliling di rumah digital PALI ini. Siap?" },
@@ -1044,12 +1046,32 @@
                 { id: null, msg: "Tur selesai! Sekarang mari kita mengobrol. Tanya apa saja tentang PALI, aku siap jawab!" }
             ];
 
-            const typeText = async (element, text, speed = 40) => {
+            const typeText = async (element, text, speed = 35) => {
                 element.innerText = "";
-                for (let i = 0; i < text.length; i++) {
-                    element.innerText += text.charAt(i);
+                // Gunakan for...of untuk mendukung karakter emoji jika ada
+                for (const char of text) {
+                    element.innerHTML += char;
                     await new Promise(r => setTimeout(r, speed));
                 }
+            };
+
+            const speakTour = (text) => {
+                return new Promise((resolve) => {
+                    if (isMuted) {
+                        animateMouthFromText(text);
+                        setTimeout(resolve, text.length * 70); // Estimasi jika mute
+                        return;
+                    }
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'id-ID';
+                    utterance.onstart = () => animateMouthFromText(text);
+                    utterance.onend = () => {
+                        const visualizer = document.getElementById('voice-visualizer');
+                        if (visualizer) visualizer.classList.remove('active');
+                        resolve();
+                    };
+                    window.speechSynthesis.speak(utterance);
+                });
             };
 
             for (const step of tourSteps) {
@@ -1060,20 +1082,23 @@
                         el.style.outline = "6px solid var(--emerald-green)";
                         el.style.outlineOffset = "10px";
                         el.style.borderRadius = "12px";
-                        setTimeout(() => el.style.outline = "none", 3000);
+                        setTimeout(() => el.style.outline = "none", 3500);
                     }
                 } else {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
 
                 speechBubble.classList.add('active');
-                speak(step.msg);
-                animateMouthFromText(step.msg);
                 
+                // Jalankan suara dan ketikan secara bersamaan
+                const speakPromise = speakTour(step.msg);
                 await typeText(speechBubble, step.msg);
                 
-                // Tunggu suara selesai + jeda tambahan
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // Tunggu sampai suara benar-benar selesai bicara
+                await speakPromise;
+                
+                // Jeda setelah kalimat selesai
+                await new Promise(resolve => setTimeout(resolve, 1500));
                 speechBubble.classList.remove('active');
                 await new Promise(resolve => setTimeout(resolve, 600)); 
             }
