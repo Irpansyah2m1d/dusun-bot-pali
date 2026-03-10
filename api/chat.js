@@ -78,8 +78,16 @@ module.exports = async (req, res) => {
 
     // Resolve Key (Body takes precedence, then Env)
     let userApiKey = req.body.userApiKey;
+
+    const groqKeys = [
+        process.env.GROQ_API_KEY,
+        process.env.GROQ_API_KEY_1,
+        process.env.GROQ_API_KEY_2,
+        process.env.GROQ_API_KEY_3
+    ].filter(k => !!k);
+
     if (!userApiKey) {
-        if (provider === 'groq') userApiKey = process.env.GROQ_API_KEY;
+        if (provider === 'groq') userApiKey = groqKeys[0];
         else if (provider === 'zai') userApiKey = process.env.ZAI_API_KEY;
         else userApiKey = process.env.GEMINI_API_KEY;
     }
@@ -88,7 +96,7 @@ module.exports = async (req, res) => {
     if (!prompt) {
         return res.status(400).json({ error: "Prompt harus diisi." });
     }
-    if (!userApiKey) {
+    if (!userApiKey && provider !== 'dusun') {
         return res.status(400).json({ error: `API Key untuk ${provider.toUpperCase()} belum dikonfigurasi di server.` });
     }
 
@@ -183,18 +191,54 @@ module.exports = async (req, res) => {
 
         let aiAnswer = "";
 
-        // 4. Pilih Provider (Gemini, Groq, atau Z.ai)
-        if (provider.toLowerCase() === "groq") {
-            // Logic Groq
-            aiAnswer = await callGroq(userApiKey, modelName || "llama-3.3-70b-versatile", systemInstruction, prompt);
+        // 4. Pilih Provider (Dusun via GAS, Groq, Z.ai, or Gemini)
+        if (mode === 'dusun') {
+            const GAS_URL = process.env.GAS_WEB_APP_URL;
+            if (!GAS_URL) {
+                throw new Error("GAS_WEB_APP_URL belum dikonfigurasi di server.");
+            }
+
+            const response = await fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    message: prompt,
+                    mode: "dusun",
+                    max_tokens: 1000
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Gagal menghubungi GAS Proxy.");
+            }
+
+            const data = await response.json();
+            aiAnswer = data.reply || data.answer || "Maaf, bot Dusun sedang tidak merespon.";
+        } else if (provider.toLowerCase() === "groq") {
+            // Logic Groq with Fallback Support
+            let lastError = null;
+            const keysToTry = req.body.userApiKey ? [req.body.userApiKey] : groqKeys;
+
+            for (const key of keysToTry) {
+                try {
+                    aiAnswer = await callGroq(key, modelName || "llama-3.3-70b-versatile", systemInstruction, prompt);
+                    lastError = null;
+                    break; // Berhasil, keluar dari loop
+                } catch (err) {
+                    console.error(`Groq Key Failed: ${key.substring(0, 8)}... Error: ${err.message}`);
+                    lastError = err;
+                    // Lanjut ke key berikutnya
+                }
+            }
+            if (lastError) throw lastError;
+
         } else if (provider.toLowerCase() === "zai") {
             // Logic Z.ai
             aiAnswer = await callZai(userApiKey, modelName || "glm-4.7-flash", systemInstruction, prompt);
         } else {
             // Default Gemini
-            const genAI = new GoogleGenerativeAI(userApiKey);
+            const genAI = new GoogleGenerativeAI((userApiKey || "").trim());
             const model = genAI.getGenerativeModel({
-                model: modelName || "gemini-flash-latest",
+                model: modelName || "gemini-1.5-flash-latest",
                 systemInstruction: systemInstruction
             });
 
