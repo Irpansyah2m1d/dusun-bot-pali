@@ -2780,11 +2780,23 @@ textarea.form-input {
         transform: translate(calc(100vw - 380px), -80px) scale(1.75);
     }
 
-    50% {
-        transform: translate(calc(40vw), -200px) scale(1.1);
+    20% {
+        /* Terbang ke atas dan mengecil sekecil mungkin */
+        transform: translate(calc(90vw - 380px), -60vh) scale(0.2);
+    }
+
+    60% {
+        /* Meluncur sejajar navbar di bagian atas */
+        transform: translate(calc(30vw), -65vh) scale(0.2);
+    }
+
+    85% {
+        /* Menuju target dan mulai membesar kembali */
+        transform: translate(0, -15vh) scale(0.6);
     }
 
     100% {
+        /* Mendarat dan kembali normal perlahan */
         transform: translate(0, 0) scale(1);
     }
 }
@@ -2797,7 +2809,7 @@ textarea.form-input {
     width: 200px !important;
     /* 20% smaller */
     height: 280px !important;
-    animation: flyOutTour 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+    animation: flyOutTour 2.5s ease-in-out forwards !important;
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;

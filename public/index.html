@@ -1035,6 +1035,9 @@
             void avatarContainer.offsetWidth; // pancing reflow
             avatarContainer.classList.add('tour-mode');
             
+            // Tunggu sampai animasi terbang selesai sebelum mengobrol
+            await new Promise(resolve => setTimeout(resolve, 2500));
+            
             const tourSteps = [
                 { id: null, msg: "Halo lur! Mari aku antar berkeliling di Website Dusun Bot Kamus Bahasa PALI ini. Siap?" },
                 { id: 'wisdom-text', msg: "Ini adalah bagian Nasehat. Di sini kamu bisa melihat kutipan bijak warisan leluhur kita dalam bahasa Dusun." },
