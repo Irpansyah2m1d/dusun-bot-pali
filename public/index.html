@@ -987,21 +987,39 @@
         }
 
         let avatarActive = false;
+        let isMuted = localStorage.getItem('avatar_muted') === 'true';
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            localStorage.setItem('avatar_muted', isMuted);
+            const btn = document.getElementById('mute-btn');
+            if (btn) {
+                btn.innerHTML = isMuted ? '🔇' : '🔊';
+                btn.classList.toggle('is-muted', isMuted);
+            }
+            if (isMuted) window.speechSynthesis.cancel();
+        }
+
         function toggleAvatar() {
             const container = document.getElementById('avatar-container');
             avatarActive = !avatarActive;
             container.style.display = avatarActive ? 'flex' : 'none';
             
             if (avatarActive) {
+                const greeted = localStorage.getItem('avatar_greeted');
                 const welcomeMsg = "Halo lur! Aku Sagarurung Bot, asisten digital PALI yang asik. Aku bisa bahasa Indonesia dan bahasa Dusun lho. Mau tanya-tanya apa kita hari ini?";
                 document.getElementById('avatar-response').innerText = welcomeMsg;
-                speak(welcomeMsg);
-                animateMouthFromText(welcomeMsg);
+                
+                if (!greeted) {
+                    speak(welcomeMsg);
+                    animateMouthFromText(welcomeMsg);
+                    localStorage.setItem('avatar_greeted', 'true');
+                }
             } else {
                 window.speechSynthesis.cancel();
                 clearInterval(mouthInterval);
-                const mouth = document.getElementById('avatar-mouth');
-                if (mouth) mouth.className = 'avatar-mouth-el shape-close';
+                const visualizer = document.getElementById('voice-visualizer');
+                if (visualizer) visualizer.classList.remove('active');
             }
         }
 
@@ -1038,6 +1056,9 @@
             clearInterval(mouthInterval);
             const mouth = document.getElementById('avatar-mouth');
             if (mouth) mouth.className = 'avatar-mouth-el shape-close';
+            
+            const visualizer = document.getElementById('voice-visualizer');
+            if (visualizer) visualizer.classList.remove('active');
             
             recognition.start();
             document.querySelector('.mic-btn').classList.add('active');
@@ -1119,9 +1140,36 @@
         }
 
         function speak(text) {
+            if (isMuted) return;
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'id-ID';
+            
+            const visualizer = document.getElementById('voice-visualizer');
+            
+            utterance.onstart = () => {
+                if (visualizer) visualizer.classList.add('active');
+            };
+            
+            utterance.onend = () => {
+                if (visualizer) visualizer.classList.remove('active');
+            };
+
             window.speechSynthesis.speak(utterance);
+        }
+
+        function handleTyping(e) {
+            if (e.key === 'Enter') sendChat();
+        }
+
+        async function sendChat() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            input.value = '';
+            document.getElementById('avatar-response').innerText = "Berpikir...";
+            
+            await chatWithAvatar(text);
         }
 
 
@@ -1130,6 +1178,13 @@
             console.log("Dusun Bot Page Loaded");
             loadContributors();
             initDusunWidgets();
+
+            // Sync mute button icon
+            const btn = document.getElementById('mute-btn');
+            if (btn) {
+                btn.innerHTML = isMuted ? '🔇' : '🔊';
+                btn.classList.toggle('is-muted', isMuted);
+            }
 
             // Back to Top Logic
             const backToTop = document.getElementById('backToTop');
@@ -1172,14 +1227,20 @@
             <!-- Avatar image floating -->
             <div class="avatar-2d-wrapper">
                 <img src="/avatar.png" alt="Sagarurung Bot" class="avatar-2d-img" />
-                <!-- Eye blink overlays -->
+                <!-- Face overlays disabled as per user request -->
+                <!-- 
                 <div class="avatar-eye eye-left"></div>
                 <div class="avatar-eye eye-right"></div>
-                <!-- CSS Mouth overlay -->
                 <div id="avatar-mouth" class="avatar-mouth-el shape-close"></div>
+                -->
+                <!-- Voice Frequency Visualizer -->
+                <div id="voice-visualizer" class="voice-visualizer">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
             </div>
         </div>
         <div class="avatar-chat">
+            <button id="mute-btn" class="btn-mute" onclick="toggleMute()" title="Toggle Mute">🔊</button>
             <div class="avatar-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <span id="chat-mode-text" style="font-size: 0.8rem; color: var(--text-dim); font-weight: 500;">Mode: Indonesia (AI)</span>
                 <div class="switch-toggle" style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="toggleChatMode()">
@@ -1190,10 +1251,21 @@
                     <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim);">DSN</span>
                 </div>
             </div>
-            <div id="avatar-response">Halo! Aku Sagarurung Bot, asisten digital PALI yang siap nemenin kamu belajar bahasa daerah. Mau tanya apa hari ini?</div>
-            <div class="avatar-input-area">
-                <button class="btn-primary mic-btn" style="background: var(--emerald-green); color: #0f172a; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer;" onclick="startListening()">🎤 Bicara</button>
-                <button class="btn-secondary" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer;" onclick="toggleAvatar()">Tutup</button>
+            
+            <div id="avatar-response">Halo lur! Aku Sagarurung Bot, asisten digital PALI yang asik. Aku bisa bahasa Indonesia dan bahasa Dusun lho. Mau tanya-tanya apa kita hari ini?</div>
+            <div style="font-size: 0.65rem; color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 8px; line-height: 1.2;">
+                ⚠️ Jawaban AI ini dapat tidak akurat. Harap verifikasi informasi penting secara manual.
+            </div>
+
+            <div class="avatar-input-container">
+                <div class="typing-area">
+                    <input type="text" id="chat-input" placeholder="Ketik pesan di sini..." onkeypress="handleTyping(event)">
+                    <button class="btn-send-chat" onclick="sendChat()">➔</button>
+                </div>
+                <div class="avatar-input-area" style="display: flex; gap: 8px;">
+                    <button class="btn-primary mic-btn" style="flex: 1; background: var(--emerald-green); color: #0f172a; border: none; padding: 10px; border-radius: 12px; font-weight: 700; cursor: pointer;" onclick="startListening()">🎤 Bicara</button>
+                    <button class="btn-secondary" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer;" onclick="toggleAvatar()">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
