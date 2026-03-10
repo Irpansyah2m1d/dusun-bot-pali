@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
-const pdf = require("pdf-parse");
+const pdf = require("pdf-parse-fork");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Multer setup for temporary storage

@@ -324,6 +324,7 @@
                                             <span class="from">${word}</span>
                                             <span class="arrow">➔</span>
                                             <span class="to">${translation}</span>
+                                            ${res.audio_url ? `<button class="btn-audio" onclick="playAudio('${res.audio_url}')" title="Putar Suara"><i class="fas fa-volume-up"></i></button>` : ''}
                                         </div>
                                     </div>
                                     <div class="result-examples-dual">
@@ -487,6 +488,11 @@
 
         function closeContributorsModal() {
             document.getElementById('contributors-modal').classList.remove('active');
+        }
+
+        function playAudio(url) {
+            const audio = new Audio(url);
+            audio.play().catch(e => console.error("Gagal memutar audio:", e));
         }
 
         // Load awal

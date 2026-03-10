@@ -76,6 +76,39 @@
             </div>
         </main>
     </div>
+    
+    <!-- Modal Edit Kosa Kata -->
+    <div id="editModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; padding: 20px;">
+        <div class="modal-content" style="background:#1e293b; padding:30px; border-radius:30px; width:100%; max-width:600px; border:1px solid rgba(255,255,255,0.1); max-height: 90vh; overflow-y: auto;">
+            <h2 style="margin-bottom: 25px;"><i class="fas fa-edit"></i> Edit Kosa Kata</h2>
+            <input type="hidden" id="edit-id">
+            <div class="input-group">
+                <label>Bahasa Indonesia</label>
+                <input type="text" id="edit-indo" class="dash-input" placeholder="Indonesia">
+            </div>
+            <div class="input-group">
+                <label>Bahasa Dusun PALI</label>
+                <input type="text" id="edit-dusun" class="dash-input" placeholder="Dusun">
+            </div>
+            <div class="input-group">
+                <label>Contoh Kalimat (Indo)</label>
+                <input type="text" id="edit-contoh-id" class="dash-input" placeholder="Contoh Indonesia">
+            </div>
+            <div class="input-group">
+                <label>Contoh Kalimat (Dusun)</label>
+                <input type="text" id="edit-contoh-dusun" class="dash-input" placeholder="Contoh Dusun">
+            </div>
+            <div class="input-group">
+                <label>Update Audio (MP3)</label>
+                <input type="file" id="edit-audio" class="dash-input" accept="audio/mpeg,audio/mp3">
+                <small id="current-audio" style="color: var(--text-dim);"></small>
+            </div>
+            <div style="display:flex; gap:12px; margin-top:30px;">
+                <button class="btn-dash btn-dash-primary" onclick="saveEdit()" style="flex:1; justify-content:center; padding: 15px;">Simpan Perubahan</button>
+                <button class="btn-dash btn-dash-secondary" onclick="closeEditModal()" style="padding: 15px;">Batal</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const password = localStorage.getItem('admin_password');
@@ -170,9 +203,14 @@
                                     <td><strong>${item.indonesia}</strong></td>
                                     <td><span style="color: var(--accent-green); font-weight: 700;">${item.dusun}</span></td>
                                     <td>
-                                        <button class="btn-dash btn-dash-delete" onclick="deleteKamusItem(${item.id})" title="Hapus dari Kamus Utama">
-                                            <i class="fas fa-trash-can"></i>
-                                        </button>
+                                        <div style="display: flex; gap: 8px;">
+                                            <button class="btn-dash btn-dash-edit" onclick='openEditModal(${JSON.stringify(item)})' title="Edit Kosa Kata">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-dash btn-dash-delete" onclick="deleteKamusItem(${item.id})" title="Hapus dari Kamus Utama">
+                                                <i class="fas fa-trash-can"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -181,6 +219,73 @@
                 `;
                 container.innerHTML = tableHTML;
             } catch (err) { console.error(err); }
+        }
+
+        // --- Edit Modal Logic ---
+        function openEditModal(item) {
+            currentEditItem = item;
+            document.getElementById('edit-id').value = item.id;
+            document.getElementById('edit-indo').value = item.indonesia;
+            document.getElementById('edit-dusun').value = item.dusun;
+            document.getElementById('edit-contoh-id').value = item.contoh_id || '';
+            document.getElementById('edit-contoh-dusun').value = item.contoh_dusun || '';
+            document.getElementById('current-audio').innerText = item.audio_url ? 'Sudah ada audio' : 'Belum ada audio';
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        async function saveEdit() {
+            const id = document.getElementById('edit-id').value;
+            const indonesia = document.getElementById('edit-indo').value;
+            const dusun = document.getElementById('edit-dusun').value;
+            const contoh_id = document.getElementById('edit-contoh-id').value;
+            const contoh_dusun = document.getElementById('edit-contoh-dusun').value;
+            const audioFile = document.getElementById('edit-audio').files[0];
+
+            let audioUrl = currentEditItem.audio_url;
+
+            // If there's a new audio file, upload it first
+            if (audioFile) {
+                const formData = new FormData();
+                formData.append('audio', audioFile);
+                
+                try {
+                    const uploadRes = await fetch('/api/admin-upload-audio', {
+                        method: 'POST',
+                        headers: { 'x-admin-password': password },
+                        body: formData
+                    });
+                    const uploadData = await uploadRes.json();
+                    if(uploadData.success) {
+                        audioUrl = uploadData.audio_url;
+                    } else {
+                        return alert("Gagal upload audio: " + uploadData.message);
+                    }
+                } catch (e) {
+                    return alert("Error upload audio.");
+                }
+            }
+
+            // Save to DB
+            const res = await fetch('/api/admin-usulan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                body: JSON.stringify({ 
+                    action: 'UPDATE_KAMUS_ITEM', 
+                    payload: { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url: audioUrl } 
+                })
+            });
+            const data = await res.json();
+            if(data.success) {
+                alert("Berhasil update!");
+                closeEditModal();
+                loadKamus();
+            } else {
+                alert("Gagal: " + data.message);
+            }
         }
 
         async function importJSON() {

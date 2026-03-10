@@ -2547,3 +2547,26 @@ textarea.form-input {
     font-size: 0.9rem;
     margin-top: auto;
 }
+
+/* Audio Button in Results */
+.btn-audio {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--emerald-green);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: 10px;
+    font-size: 0.8rem;
+}
+
+.btn-audio:hover {
+    background: var(--emerald-green);
+    color: #0f172a;
+    transform: scale(1.1);
+}

@@ -149,6 +149,16 @@ module.exports = async (req, res) => {
                 return res.status(200).json({ success: true, message: 'Kosa kata berhasil dihapus.' });
             }
 
+            if (action === 'UPDATE_KAMUS_ITEM') {
+                const { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url } = payload;
+                const { error } = await supabase.from('kamus_utama').update({
+                    indonesia, dusun, contoh_id, contoh_dusun, audio_url
+                }).eq('id', id);
+
+                if (error) return res.status(500).json({ success: false, message: 'Gagal update kosa kata.' });
+                return res.status(200).json({ success: true, message: 'Berhasil update kosa kata!' });
+            }
+
             return res.status(400).json({ success: false, message: `Action ${action} tidak dikenali.` });
         }
 
