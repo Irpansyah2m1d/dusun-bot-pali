@@ -1035,14 +1035,14 @@
             avatarContainer.style.display = 'flex';
             
             const tourSteps = [
-                { id: null, msg: "Halo lur! Mari aku antar berkeliling di rumah digital PALI ini. Siap?" },
+                { id: null, msg: "Halo lur! Mari aku antar berkeliling di Website Dusun Bot Kamus Bahasa PALI ini. Siap?" },
                 { id: 'wisdom-text', msg: "Ini adalah bagian Nasehat. Di sini dengo bisa melihat kutipan bijak warisan leluhur kita dalam bahasa Dusun." },
                 { id: 'kamus-live', msg: "Ini fitur andalan kita, Kamus Digital PALI. Ada ribuan kosa kata yang bisa dengo cari secara live." },
-                { id: 'collab-preview', msg: "Project ini milik komunitas. Dengo bisa lihat daftar kontributor hebat kita di sini." },
-                { id: 'folklore-grid', msg: "Lalu di sini ada Cerita Rakyat Digital. Kumpulan legenda Bumi Serepat Serasan yang sudah didigitalisasi." },
+                { id: 'collab-preview', msg: "Project ini murni buatan komunitas. Buat kalian yang ngga nemu suatu kosakata, kalian bisa banget nambahin kosakata baru agar terdaftar sebagai kontributor!", action: 'open_collab' },
+                { id: 'folklore-grid', msg: "Lalu di sini ada Cerita Rakyat Digital. Kumpulan legenda Bumi Serepat Serasan yang sudah didigitalisasi.", action: 'flip_avatar' },
                 { id: 'features', msg: "Kita menggunakan teknologi AI terbaru untuk memastikan dialek PALI tetap relevan di era digital." },
                 { id: 'mission', msg: "Misi utama kita adalah melestarikan budaya dan menghubungkannya dengan teknologi masa depan." },
-                { id: 'faq', msg: "Jika ada pertanyaan umum, dengo bisa cek di bagian FAQ ini." },
+                { id: 'faq', msg: "Jika ada pertanyaan umum, kamu bisa cek di bagian FAQ ini." },
                 { id: null, msg: "Tur selesai! Sekarang mari kita mengobrol. Tanya apa saja tentang PALI, aku siap jawab!" }
             ];
 
@@ -1090,6 +1090,15 @@
 
                 speechBubble.classList.add('active');
                 
+                // Jalankan aksi khusus (jika ada) sebelum bicara
+                if (step.action === 'open_collab') {
+                    openContributorsModal();
+                } else if (step.action === 'flip_avatar') {
+                    // Pindah ke kanan
+                    avatarContainer.classList.add('tour-flip');
+                    speechBubble.classList.add('tour-flip');
+                }
+
                 // Jalankan suara dan ketikan secara bersamaan
                 const speakPromise = speakTour(step.msg);
                 await typeText(speechBubble, step.msg);
@@ -1097,17 +1106,31 @@
                 // Tunggu sampai suara benar-benar selesai bicara
                 await speakPromise;
                 
+                // Tutup modal jika sebelumnya buka modal
+                if (step.action === 'open_collab') {
+                    closeContributorsModal();
+                }
+
                 // Jeda setelah kalimat selesai
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 speechBubble.classList.remove('active');
                 await new Promise(resolve => setTimeout(resolve, 600)); 
+                
+                // Kembalikan ke kiri setelah selesai slide folklore-grid
+                if (step.action === 'flip_avatar') {
+                    avatarContainer.classList.add('tour-unflip');
+                    speechBubble.classList.add('tour-unflip');
+                    avatarContainer.classList.remove('tour-flip');
+                    speechBubble.classList.remove('tour-flip');
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // Jeda biar animasi geser ke kiri mulus
+                }
             }
 
             // Kembalikan ke normal
             isTouring = false;
             vignette.classList.remove('active');
-            avatarContainer.classList.remove('tour-mode');
-            speechBubble.classList.remove('active');
+            avatarContainer.classList.remove('tour-mode', 'tour-flip', 'tour-unflip');
+            speechBubble.classList.remove('active', 'tour-flip', 'tour-unflip');
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
             

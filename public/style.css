@@ -2846,3 +2846,60 @@ textarea.form-input {
 #avatar-container.tour-mode .avatar-input-container {
     display: none !important;
 }
+
+/* Animasi untuk pindah kanan kiri pas fitur folklore */
+@keyframes slideToRightTour {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(calc(100vw - 250px), 0) scale(1);
+    }
+}
+
+@keyframes slideToLeftTour {
+    from {
+        transform: translate(calc(100vw - 250px), 0) scale(1);
+    }
+
+    to {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+#avatar-container.tour-mode.tour-flip {
+    animation: slideToRightTour 1s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+}
+
+#avatar-container.tour-mode.tour-unflip {
+    animation: slideToLeftTour 1s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+}
+
+@keyframes slideToRightBubble {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(calc(100vw - 520px), 0) scale(1);
+    }
+}
+
+@keyframes slideToLeftBubble {
+    from {
+        transform: translate(calc(100vw - 520px), 0) scale(1);
+    }
+
+    to {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+.tour-speech-bubble.active.tour-flip {
+    animation: slideToRightBubble 1s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+}
+
+.tour-speech-bubble.active.tour-unflip {
+    animation: slideToLeftBubble 1s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+}
