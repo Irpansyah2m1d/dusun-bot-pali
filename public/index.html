@@ -151,13 +151,11 @@
                 <span>Dusun Bot <span class="accent">PALI</span></span>
             </div>
             <div class="nav-links" id="nav-links">
-                <a href="/">Beranda</a>
-                <a href="/#features">Fitur</a>
-                <a href="/#mission">Misi</a>
-                <a href="/kamus.html">Kamus</a>
+                <a href="/" class="active">Beranda</a>
                 <a href="/sejarah.html">Sejarah</a>
+                <a href="/pustaka.html">Cerita Rakyat</a>
+                <a href="/kamus.html">Kamus</a>
                 <a href="/#docs">API</a>
-                <a href="/#partners">Partner</a>
                 <a href="https://github.com/Irpansyah2m1d/dusun-bot-pali" target="_blank" class="btn-github">GitHub</a>
             </div>
             <div class="menu-toggle" id="mobile-menu">
@@ -332,7 +330,7 @@
 
         <!-- Cerita Rakyat Digital -->
         <section class="folklore-section">
-            <h2 class="section-title">Pustaka Rakyat PALI</h2>
+            <h2 class="section-title">Cerita Rakyat PALI</h2>
             
             <div class="folklore-filters">
                 <button class="filter-chip active" onclick="filterFolklore('Semua', this)">Semua</button>
@@ -1096,7 +1094,7 @@
                 
                 // Show warning for Dusun mode
                 responseEl.style.color = "var(--emerald-green)";
-                responseEl.innerText = "Mode Dusun Aktif! (Merespon dalam 5-15 detik via GAS Web App)";
+                responseEl.innerText = "Mode Dusun Aktif! (Merespon dalam 5-15 detik dan jatah chat anda cuma 5 kali)";
             } else {
                 chatMode = 'id';
                 toggleKnob.style.transform = 'translateX(0)';
@@ -1137,14 +1135,13 @@
                     document.getElementById('chat-mode-text').innerText = `Mode: Dusun PALI (${dusunChatCount}/${DUSUN_CHAT_LIMIT})`;
                 }
 
-                if (data.answer) {
-                    responseEl.innerText = data.answer;
-                    speak(data.answer);
-                    animateMouthFromText(data.answer);
-                } else if (data.reply) {
-                    responseEl.innerText = data.reply;
-                    speak(data.reply);
-                    animateMouthFromText(data.reply);
+                if (data.answer || data.reply) {
+                    let finalAnswer = data.answer || data.reply;
+                    // Clean markdown code blocks if AI accidentally returns them
+                    finalAnswer = finalAnswer.replace(/```[a-z]*\n?/gi, '').replace(/```/g, '').trim();
+                    responseEl.innerText = finalAnswer;
+                    speak(finalAnswer);
+                    animateMouthFromText(finalAnswer);
                 } else {
                     const errMsg = data.error || "Maaf, ada gangguan di sistem. Coba lagi sebentar ya!";
                     responseEl.innerText = "⚠️ " + errMsg;
