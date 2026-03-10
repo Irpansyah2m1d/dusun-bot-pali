@@ -1105,10 +1105,12 @@
                     avatarContainer.classList.add('tour-flip');
                     speechBubble.classList.add('tour-flip');
                 } else if (step.action === 'type_kamus') {
-                    // Simulasi mengetik di input kamus
+                    // Simulasi mengetik di input kamus tanpa memunculkan keyboard di HP
                     const kInput = document.getElementById('kamus-input');
                     if (kInput) {
                         kInput.value = "";
+                        // Set readonly sementara agar keyboard HP tidak muncul saat fokus otomatis
+                        kInput.setAttribute('readonly', 'readonly');
                         kInput.focus();
                         
                         setTimeout(async () => {
@@ -1118,6 +1120,9 @@
                                 kInput.dispatchEvent(new Event('input', { bubbles: true }));
                                 await new Promise(r => setTimeout(r, 150));
                             }
+                            // Kembalikan ke normal tapi lepas fokus (blur) biar aman
+                            kInput.removeAttribute('readonly');
+                            kInput.blur();
                         }, 500); // Mulai ngetik sedikit setelah dia bicara
                     }
                 }
