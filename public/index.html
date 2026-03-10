@@ -997,7 +997,8 @@
                 btn.innerHTML = isMuted ? '🔇' : '🔊';
                 btn.classList.toggle('is-muted', isMuted);
             }
-            if (isMuted) window.speechSynthesis.cancel();
+            // If muting now, just let it finish or handle via volume if supported.
+            // But we will primarily check isMuted in speak()
         }
 
         function toggleAvatar() {
@@ -1140,7 +1141,14 @@
         }
 
         function speak(text) {
-            if (isMuted) return;
+            // Check mute state before starting
+            if (isMuted) {
+                // Return but still allow visualizer for "lip sync" context if wanted
+                // But user wants "mute". We still animate to show it's "talking" silently?
+                // Actually, let's keep animation for feedback.
+                animateMouthFromText(text); // Force manual animate if speak skipped
+                return;
+            }
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'id-ID';
             

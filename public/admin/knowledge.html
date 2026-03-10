@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengetahuan AI | Admin Dusun PALI</title>
+    <link rel="stylesheet" href="/admin/admin-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/admin/auth-check.js"></script>
+    <style>
+        .knowledge-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .knowledge-item .actions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .k-topic {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--emerald-green);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .k-content {
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        .add-box {
+            background: rgba(16, 185, 129, 0.05);
+            border: 2px dashed rgba(16, 185, 129, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 30px;
+        }
+        .add-box:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--emerald-green);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo-area">
+            <div class="stat-icon" style="margin-bottom: 0; padding: 10px; width: 45px; height: 45px;">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h2><span>Dusun Bot</span></h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="/admin/index.html" class="nav-link"><i class="fas fa-gauge-high"></i> <span>Dashboard</span></a>
+            <a href="/admin/words.html" class="nav-link"><i class="fas fa-language"></i> <span>Kosa Kata</span></a>
+            <a href="/admin/folklore.html" class="nav-link"><i class="fas fa-scroll"></i> <span>Cerita Rakyat</span></a>
+            <a href="/admin/nasehat.html" class="nav-link"><i class="fas fa-comment-dots"></i> <span>Nasehat</span></a>
+            <a href="/admin/knowledge.html" class="nav-link active"><i class="fas fa-brain"></i> <span>Pengetahuan AI</span></a>
+            <a href="/admin/settings.html" class="nav-link"><i class="fas fa-gear"></i> <span>Settings</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/" class="nav-link"><i class="fas fa-house"></i> <span>Ke Website</span></a>
+            <div class="nav-link" onclick="logout()" style="color: #ef4444;"><i class="fas fa-power-off"></i> <span>Logout</span></div>
+        </div>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="topbar">
+            <div class="page-title"><h1>Pengetahuan Inti Sagarurung BOT</h1></div>
+        </header>
+
+        <main class="content-area">
+            <div class="add-box" onclick="openModal()">
+                <i class="fas fa-plus-circle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Tambah Pengetahuan Baru</p>
+            </div>
+
+            <div id="knowledge-list">
+                <!-- Data loaded via JS -->
+                <p style="text-align: center; color: var(--text-dim);">Memuat data pengetahuan...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="kModal">
+        <div class="modal-content">
+            <h3 id="modalTitle" style="margin-bottom: 20px;">Tambah Pengetahuan</h3>
+            <div class="input-group">
+                <label>Topik (Contoh: Sejarah Desa)</label>
+                <input type="text" id="kTopic" class="dash-input" placeholder="Masukkan topik...">
+            </div>
+            <div class="input-group">
+                <label>Isi Pengetahuan (Wajib mendetail)</label>
+                <textarea id="kContent" class="dash-input" rows="8" placeholder="Tuliskan informasi di sini..."></textarea>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn-dash btn-dash-primary" onclick="saveKnowledge()" style="flex: 1;">Simpan</button>
+                <button class="btn-dash btn-dash-secondary" onclick="closeModal()">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const password = localStorage.getItem('admin_password');
+        let allKnowledge = [];
+        let editIndex = -1;
+
+        async function loadKnowledge() {
+            try {
+                const res = await fetch('/api/admin-knowledge', {
+                    headers: { 'x-admin-password': password }
+                });
+                const result = await res.json();
+                if(!result.success) return logout();
+                
+                allKnowledge = result.data;
+                renderKnowledge();
+            } catch (err) { console.error(err); }
+        }
+
+        function renderKnowledge() {
+            const list = document.getElementById('knowledge-list');
+            if (allKnowledge.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-dim);">Belum ada pengetahuan yang ditanamkan.</p>';
+                return;
+            }
+
+            list.innerHTML = allKnowledge.map((k, index) => `
+                <div class="knowledge-item">
+                    <div class="actions">
+                        <button class="btn-dash btn-dash-secondary" onclick="editKnowledge(${index})" style="padding: 8px 12px;"><i class="fas fa-edit"></i></button>
+                        <button class="btn-dash btn-dash-secondary" onclick="deleteKnowledge(${index})" style="padding: 8px 12px; color: #ef4444;"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <span class="k-topic">${k.topic}</span>
+                    <p class="k-content">${k.content.replace(/\n/g, '<br>')}</p>
+                </div>
+            `).join('');
+        }
+
+        function openModal() {
+            editIndex = -1;
+            document.getElementById('modalTitle').innerText = "Tambah Pengetahuan";
+            document.getElementById('kTopic').value = "";
+            document.getElementById('kContent').value = "";
+            document.getElementById('kModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('kModal').classList.remove('active');
+        }
+
+        function editKnowledge(index) {
+            editIndex = index;
+            const k = allKnowledge[index];
+            document.getElementById('modalTitle').innerText = "Edit Pengetahuan";
+            document.getElementById('kTopic').value = k.topic;
+            document.getElementById('kContent').value = k.content;
+            document.getElementById('kModal').classList.add('active');
+        }
+
+        async function saveKnowledge() {
+            const topic = document.getElementById('kTopic').value;
+            const content = document.getElementById('kContent').value;
+
+            if(!topic || !content) return alert("Harap isi semua bidang.");
+
+            const item = { topic, content };
+            
+            if (editIndex > -1) {
+                allKnowledge[editIndex] = item;
+            } else {
+                allKnowledge.push(item);
+            }
+
+            try {
+                const res = await fetch('/api/admin-knowledge', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-admin-password': password 
+                    },
+                    body: JSON.stringify({ knowledge: allKnowledge })
+                });
+                
+                const result = await res.json();
+                if(result.success) {
+                    closeModal();
+                    loadKnowledge();
+                } else {
+                    alert(result.message);
+                }
+            } catch (err) { alert("Gagal menyimpan."); }
+        }
+
+        async function deleteKnowledge(index) {
+            if(!confirm("Hapus pengetahuan ini?")) return;
+            allKnowledge.splice(index, 1);
+            
+            try {
+                const res = await fetch('/api/admin-knowledge', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-admin-password': password 
+                    },
+                    body: JSON.stringify({ knowledge: allKnowledge })
+                });
+                if((await res.json()).success) loadKnowledge();
+            } catch (err) { alert("Gagal menghapus."); }
+        }
+
+        window.onload = loadKnowledge;
+    </script>
+</body>
+</html>
