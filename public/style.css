@@ -2752,8 +2752,8 @@ textarea.form-input {
 }
 
 .tour-speech-bubble.active.tour-flip::before {
-    left: auto;
-    right: 40px;
+    left: auto !important;
+    right: 55px !important;
     /* Ekor gelembung pindah ke kanan menghadap mascot saat di kanan */
 }
 
@@ -2815,7 +2815,7 @@ textarea.form-input {
     width: 200px !important;
     /* 20% smaller */
     height: 280px !important;
-    animation: flyOutTour 2.5s ease-in-out forwards !important;
+    animation: flyOutTour 1.2s ease-in-out forwards !important;
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
@@ -2836,7 +2836,7 @@ textarea.form-input {
 }
 
 #avatar-container.tour-fly-back {
-    animation: flyBackTour 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+    animation: flyBackTour 1s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
     pointer-events: none;
 }
 

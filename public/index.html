@@ -33,7 +33,7 @@
     <meta name="twitter:image" content="https://dusun-bot-pali.vercel.app/dusun-bot.png">
     <meta name="twitter:image:alt" content="Dusun Bot PALI Logo">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1036,7 +1036,7 @@
             avatarContainer.classList.add('tour-mode');
             
             // Tunggu sampai animasi terbang selesai sebelum mengobrol (dipercepat)
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 1200));
             
             const tourSteps = [
                 { id: null, msg: "Halo lur! Mari aku antar berkeliling di Website Dusun Bot Kamus Bahasa PALI ini. Siap?" },
@@ -1137,7 +1137,7 @@
             avatarContainer.classList.remove('tour-unflip');
 
             // Tunggu animasi terbang kembali selesai
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             // Kembalikan ke normal sepenuhnya
             isTouring = false;
