@@ -1,28 +1,22 @@
+const { createClient } = require('@supabase/supabase-js');
 const fs = require("fs");
 const path = require("path");
 
-const learnedPath = path.join(process.cwd(), "data", "ai-learned.json");
-
-function readLearned() {
-    try {
-        if (fs.existsSync(learnedPath)) {
-            return JSON.parse(fs.readFileSync(learnedPath, "utf-8"));
-        }
-    } catch (e) { }
-    return [];
-}
-
-function writeLearned(data) {
-    const dir = path.dirname(learnedPath);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(learnedPath, JSON.stringify(data, null, 2), "utf-8");
-}
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = async (req, res) => {
-    // GET: Ambil semua data (publik untuk AI context, atau admin)
+    // GET: Ambil semua data (hasil belajar AI)
     if (req.method === 'GET') {
         try {
-            const data = readLearned();
+            const { data, error } = await supabase
+                .from('pali_ai_knowledge')
+                .select('*')
+                .eq('source', 'chatbot')
+                .order('updated_at', { ascending: false });
+
+            if (error) throw error;
             return res.status(200).json({ success: true, data });
         } catch (error) {
             return res.status(500).json({ success: false, message: error.message });
@@ -32,46 +26,56 @@ module.exports = async (req, res) => {
     // POST: Simpan atau update pengetahuan baru dari user (upsert by topic)
     if (req.method === 'POST') {
         try {
-            const { topic, content, source = "user" } = req.body;
+            const { topic, content, source = "chatbot" } = req.body;
             if (!topic || !content) {
                 return res.status(400).json({ success: false, message: "Topic dan content wajib diisi." });
             }
 
-            const data = readLearned();
             const normalizedTopic = topic.trim().toLowerCase();
-
-            // Cari apakah topik sudah ada (upsert)
-            const existingIdx = data.findIndex(
-                item => item.topic.trim().toLowerCase() === normalizedTopic
-            );
-
             const now = new Date().toISOString();
 
-            if (existingIdx !== -1) {
-                // Update: tambahkan konten baru ke yang ada (gabung, tidak timpa)
-                const existing = data[existingIdx];
-                // Cek apakah konten baru belum ada di konten lama
+            // Cek apakah topik sudah ada (upsert logic)
+            const { data: existing, error: fetchError } = await supabase
+                .from('pali_ai_knowledge')
+                .select('*')
+                .ilike('topic', normalizedTopic)
+                .limit(1)
+                .single();
+
+            if (existing) {
+                // Update: gabungkan konten baru ke yang ada jika belum ada
+                let newContent = existing.content;
                 if (!existing.content.toLowerCase().includes(content.trim().toLowerCase())) {
-                    existing.content += `\n\n---\n\n${content.trim()}`;
+                    newContent += `\n\n---\n\n${content.trim()}`;
                 }
-                existing.updated_at = now;
-                existing.source = source;
-                data[existingIdx] = existing;
+
+                const { error: updateError } = await supabase
+                    .from('pali_ai_knowledge')
+                    .update({ 
+                        content: newContent, 
+                        updated_at: now,
+                        source: source
+                    })
+                    .eq('id', existing.id);
+
+                if (updateError) throw updateError;
+                return res.status(200).json({ success: true, message: "Pengetahuan diperbarui!", data: { ...existing, content: newContent } });
             } else {
                 // Tambah baru
-                data.push({
-                    id: Date.now(),
-                    topic: topic.trim(),
-                    content: content.trim(),
-                    source,
-                    is_ai_learned: true, // Penanda khusus: hasil belajar AI
-                    created_at: now,
-                    updated_at: now
-                });
-            }
+                const { data: inserted, error: insertError } = await supabase
+                    .from('pali_ai_knowledge')
+                    .insert([{
+                        topic: topic.trim(),
+                        content: content.trim(),
+                        source,
+                        created_at: now,
+                        updated_at: now
+                    }])
+                    .select();
 
-            writeLearned(data);
-            return res.status(200).json({ success: true, message: "Pengetahuan berhasil disimpan!", data: data });
+                if (insertError) throw insertError;
+                return res.status(200).json({ success: true, message: "Pengetahuan baru disimpan!", data: inserted });
+            }
         } catch (error) {
             return res.status(500).json({ success: false, message: error.message });
         }
@@ -88,16 +92,17 @@ module.exports = async (req, res) => {
             const { id, topic, content } = req.body;
             if (!id) return res.status(400).json({ success: false, message: "ID wajib." });
 
-            const data = readLearned();
-            const idx = data.findIndex(item => item.id === id);
-            if (idx === -1) return res.status(404).json({ success: false, message: "Data tidak ditemukan." });
+            const { error: updateError } = await supabase
+                .from('pali_ai_knowledge')
+                .update({ 
+                    topic: topic?.trim(), 
+                    content: content?.trim(), 
+                    updated_at: new Date().toISOString() 
+                })
+                .eq('id', id);
 
-            if (topic) data[idx].topic = topic.trim();
-            if (content) data[idx].content = content.trim();
-            data[idx].updated_at = new Date().toISOString();
-
-            writeLearned(data);
-            return res.status(200).json({ success: true, message: "Berhasil diperbarui.", data: data[idx] });
+            if (updateError) throw updateError;
+            return res.status(200).json({ success: true, message: "Berhasil diperbarui." });
         } catch (error) {
             return res.status(500).json({ success: false, message: error.message });
         }
@@ -114,10 +119,12 @@ module.exports = async (req, res) => {
             const { id } = req.body;
             if (!id) return res.status(400).json({ success: false, message: "ID wajib." });
 
-            let data = readLearned();
-            data = data.filter(item => item.id !== id);
+            const { error: deleteError } = await supabase
+                .from('pali_ai_knowledge')
+                .delete()
+                .eq('id', id);
 
-            writeLearned(data);
+            if (deleteError) throw deleteError;
             return res.status(200).json({ success: true, message: "Berhasil dihapus." });
         } catch (error) {
             return res.status(500).json({ success: false, message: error.message });

@@ -1,6 +1,11 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { createClient } = require('@supabase/supabase-js');
 const fs = require("fs");
 const path = require("path");
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Helper for Groq API
 const callGroq = async (apiKey, model, systemInstruction, userPrompt) => {
@@ -38,7 +43,6 @@ const callGroq = async (apiKey, model, systemInstruction, userPrompt) => {
 const callGemini = async (apiKey, modelName, systemInstruction, prompt) => {
     try {
         const genAI = new GoogleGenerativeAI((apiKey || "").trim());
-        // Try the standard name. If 404 occurs, it will be caught.
         const model = genAI.getGenerativeModel({
             model: modelName || "gemini-1.5-flash",
             systemInstruction: systemInstruction
@@ -48,12 +52,11 @@ const callGemini = async (apiKey, modelName, systemInstruction, prompt) => {
         const response = await result.response;
         return response.text().trim();
     } catch (e) {
-        // If Gemini fails (404, limit, etc), we throw so the caller can fallback to Groq
         throw e;
     }
 };
 
-// Load dataset
+// Load dataset (Dictionary for Dusun Mode)
 const kamusPath = path.join(process.cwd(), "data", "kamus.json");
 let kamusData = [];
 
@@ -70,7 +73,6 @@ module.exports = async (req, res) => {
 
     const { prompt, provider = "gemini", modelName, mode = "id" } = req.body;
 
-    // Resolve Groq Keys for Rotation
     const groqKeys = [
         process.env.GROQ_API_KEY,
         process.env.GROQ_API_KEY_1,
@@ -87,8 +89,10 @@ module.exports = async (req, res) => {
     if (!prompt) return res.status(400).json({ error: "Prompt harus diisi." });
 
     try {
-        // 1. RAG Sederhana
-        const keywords = prompt.toLowerCase().split(/\s+/).filter(k => k.length > 2);
+        const promptLower = prompt.toLowerCase();
+        const keywords = promptLower.split(/\s+/).filter(k => k.length > 2);
+
+        // 1. RAG Kamus (untuk Dusun Mode atau referensi kata)
         const relatedData = kamusData
             .filter((item) => {
                 const i = item.indonesia.toLowerCase();
@@ -101,34 +105,39 @@ module.exports = async (req, res) => {
             ? relatedData.map(item => `- ID: ${item.indonesia} | DSN: ${item.dusun}`).join("\n")
             : "Gunakan dialek PALI.";
 
-        // 2. Load Base Knowledge
-        const knowledgePath = path.join(process.cwd(), "data", "knowledge.json");
-        let baseKnowledge = "";
-        if (fs.existsSync(knowledgePath)) {
-            try {
-                const kData = JSON.parse(fs.readFileSync(knowledgePath, "utf-8"));
-                baseKnowledge = kData.map(k => `T: ${k.topic}\nI: ${k.content}`).join("\n\n");
-            } catch (e) { }
-        }
+        // 2. Fetch Knowledge from Supabase (RAG Pengetahuan)
+        // Kita ambil semua pengetahuan lalu filter sederhana (untuk dataset kecil)
+        // Atau gunakan eq('topic', ...) jika sudah di-normalize
+        const { data: knowledgeList, error: kbError } = await supabase
+            .from('pali_ai_knowledge')
+            .select('*');
+        
+        let allKnowledge = "";
+        if (!kbError && knowledgeList) {
+            // Filter pengetahuan yang relevan dengan keyword
+            const relevantKB = knowledgeList.filter(k => {
+                const t = k.topic.toLowerCase();
+                const c = k.content.toLowerCase();
+                return keywords.some(kw => t.includes(kw) || c.includes(kw));
+            });
 
-        // 2b. Load AI Learned Knowledge (pengetahuan hasil belajar dari user)
-        const learnedPath = path.join(process.cwd(), "data", "ai-learned.json");
-        let learnedKnowledge = "";
-        if (fs.existsSync(learnedPath)) {
-            try {
-                const lData = JSON.parse(fs.readFileSync(learnedPath, "utf-8"));
-                if (lData.length > 0) {
-                    learnedKnowledge = "\n\nPengetahuan tambahan dari percakapan sebelumnya:\n" +
-                        lData.map(l => `T: ${l.topic}\nI: ${l.content}`).join("\n\n");
-                }
-            } catch (e) { }
+            // Jika tidak ada yang relevan lewat keyword, ambil 5 terbaru saja sebagai context general
+            const displayKB = relevantKB.length > 0 ? relevantKB : knowledgeList.slice(0, 10);
+            allKnowledge = displayKB.map(k => `Topik: ${k.topic}\nInfo: ${k.content}`).join("\n\n");
         }
-
-        const allKnowledge = baseKnowledge + learnedKnowledge;
 
         const systemInstruction = mode === 'id'
-            ? `Kamu Sagarurung BOT, asisten PALI. Jawab dlm Bhs Indonesia ramah & singkat. Ref: ${allKnowledge}\n\nATURAN PENTING: Jika kamu TIDAK TAHU atau TIDAK YAKIN tentang suatu topik/istilah/kata yang ditanyakan user, JANGAN mengatakan 'saya tidak menemukan informasi'. Sebagai gantinya, jawab dengan ramah bahwa kamu belum tahu tentang hal tersebut, lalu TANYAKAN ke user apakah mereka bisa menjelaskan maknanya. Sertakan tag [BELUM_TAHU:istilah_yang_ditanya] di akhir jawaban. Contoh: 'Hmm, istilah itu belum ada di pengetahuanku nih. Boleh jelaskan apa artinya supaya aku bisa belajar dan mengingatnya? [BELUM_TAHU:senjang]'`
-            : `Kamu ahli PALI. Jawab HANYA dlm dialek PALI kental. Ref: ${allKnowledge} Kamus: ${dictionaryContext}`;
+            ? `Kamu Sagarurung BOT, asisten cerdas kabupaten PALI (Penukal Abab Lematang Ilir). Jawablah dalam Bahasa Indonesia yang ramah, sopan, dan informatif.
+            
+            PENGETAHUAN REFERENSI (WAJIB DIBACA):
+            ${allKnowledge}
+
+            ATURAN JAWABAN:
+            1. Jika user bertanya tentang topik yang ada di PENGETAHUAN REFERENSI di atas, kamu WAJIB menjawab berdasarkan informasi tersebut. Jangan pura-pura tidak tahu.
+            2. Jika topik tersebut TIDAK ADA sama sekali di referensi, jawablah dengan jujur bahwa kamu belum mempelajarinya, lalu tanya user apakah mereka bisa memberikan penjelasan singkat.
+            3. Jika benar-benar tidak tahu, sertakan tag [BELUM_TAHU:istilah] di akhir kalimat agar aku bisa belajar. Contoh: 'Waduh, aku belum tahu tentang itu. Boleh kasih tahu artinya? [BELUM_TAHU:senjang]'
+            4. Prioritaskan kebenaran data dari referensi.`
+            : `Kamu ahli dialek PALI. Jawab HANYA dalam dialek PALI kental. Referensi Pengetahuan: ${allKnowledge}. Kamus: ${dictionaryContext}`;
 
         let aiAnswer = "";
 
