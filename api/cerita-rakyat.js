@@ -10,13 +10,24 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 module.exports = async (req, res) => {
     try {
         if (req.method === 'GET') {
+            const { id, slug } = req.query;
+
+            if (id || slug) {
+                let query = supabase.from('cerita_rakyat').select('*');
+                if (id) query = query.eq('id', id);
+                if (slug) query = query.eq('slug', slug);
+
+                const { data, error } = await query.single();
+                if (error) return res.status(404).json({ success: false, message: 'Cerita tidak ditemukan.' });
+                return res.status(200).json({ success: true, data });
+            }
+
             const { data, error } = await supabase
                 .from('cerita_rakyat')
                 .select('*')
                 .order('created_at', { ascending: false });
 
             if (error) {
-                // If table doesn't exist, return empty array (local fallback if needed)
                 return res.status(200).json({ success: true, data: [] });
             }
             return res.status(200).json({ success: true, data });
@@ -29,13 +40,14 @@ module.exports = async (req, res) => {
         }
 
         if (req.method === 'POST') {
-            const { title, excerpt, content, image_url } = req.body;
+            const { title, slug, excerpt, content, image_url } = req.body;
             if (!title || !content) return res.status(400).json({ success: false, message: 'Judul dan Isi wajib diisi.' });
 
             const { data, error } = await supabase
                 .from('cerita_rakyat')
                 .insert([{
                     title,
+                    slug,
                     excerpt,
                     content,
                     image_url,
@@ -50,12 +62,12 @@ module.exports = async (req, res) => {
         }
 
         if (req.method === 'PUT') {
-            const { id, title, excerpt, content, image_url } = req.body;
+            const { id, title, slug, excerpt, content, image_url } = req.body;
             if (!id) return res.status(400).json({ success: false, message: 'ID Cerita diperlukan untuk update.' });
 
             const { data, error } = await supabase
                 .from('cerita_rakyat')
-                .update({ title, excerpt, content, image_url })
+                .update({ title, slug, excerpt, content, image_url })
                 .eq('id', id);
 
             if (error) {

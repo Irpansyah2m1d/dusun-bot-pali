@@ -20,6 +20,7 @@
             <a href="/admin/index.html" class="nav-link"><i class="fas fa-gauge-high"></i> <span>Dashboard</span></a>
             <a href="/admin/words.html" class="nav-link"><i class="fas fa-language"></i> <span>Kosa Kata</span></a>
             <a href="/admin/folklore.html" class="nav-link active"><i class="fas fa-scroll"></i> <span>Cerita Rakyat</span></a>
+            <a href="/admin/nasehat.html" class="nav-link"><i class="fas fa-comment-dots"></i> <span>Nasehat</span></a>
             <a href="/admin/settings.html" class="nav-link"><i class="fas fa-gear"></i> <span>Settings</span></a>
         </nav>
         <div class="sidebar-footer">
@@ -47,7 +48,11 @@
                 <div class="form-grid">
                     <div class="input-group">
                         <label>Judul Cerita</label>
-                        <input type="text" id="folklore-title" class="dash-input" placeholder="Contoh: Legenda Candi Bumi Ayu">
+                        <input type="text" id="folklore-title" class="dash-input" placeholder="Contoh: Legenda Candi Bumi Ayu" oninput="generateSlug()">
+                    </div>
+                    <div class="input-group">
+                        <label>Slug URL (Otomatis)</label>
+                        <input type="text" id="folklore-slug" class="dash-input" placeholder="legenda-candi-bumi-ayu">
                     </div>
                     <div class="input-group">
                         <label>Foto Sampul Cerita (Upload/URL)</label>
@@ -140,6 +145,7 @@
             editingFolkloreId = item.id;
             document.getElementById('folklore-form-title').innerHTML = `<i class="fas fa-pen-to-square"></i> Mengubah: ${item.title}`;
             document.getElementById('folklore-title').value = item.title;
+            document.getElementById('folklore-slug').value = item.slug || "";
             document.getElementById('folklore-excerpt').value = item.excerpt || "";
             document.getElementById('folklore-content').value = item.content;
             document.getElementById('folklore-image').value = item.image_url || "";
@@ -158,6 +164,7 @@
             editingFolkloreId = null;
             document.getElementById('folklore-form-title').innerHTML = `<i class="fas fa-pen-to-square"></i> Kelola Pustaka Rakyat`;
             document.getElementById('folklore-title').value = "";
+            document.getElementById('folklore-slug').value = "";
             document.getElementById('folklore-excerpt').value = "";
             document.getElementById('folklore-content').value = "";
             document.getElementById('folklore-image').value = "";
@@ -165,6 +172,15 @@
             
             document.getElementById('btn-text-folklore').innerText = "Simpan Cerita";
             document.getElementById('btn-cancel-folklore').classList.add('hidden');
+        }
+
+        function generateSlug() {
+            if (editingFolkloreId) return; // Don't auto-generate when editing
+            const title = document.getElementById('folklore-title').value;
+            const slug = title.toLowerCase()
+                .replace(/[^\w ]+/g, '')
+                .replace(/ +/g, '-');
+            document.getElementById('folklore-slug').value = slug;
         }
 
         // Handle file upload to Base64
@@ -201,6 +217,7 @@
         async function saveFolklore() {
             const payload = {
                 title: document.getElementById('folklore-title').value,
+                slug: document.getElementById('folklore-slug').value,
                 excerpt: document.getElementById('folklore-excerpt').value,
                 content: document.getElementById('folklore-content').value,
                 image_url: document.getElementById('folklore-image').value

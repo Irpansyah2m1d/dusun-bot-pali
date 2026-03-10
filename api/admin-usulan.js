@@ -27,6 +27,18 @@ module.exports = async (req, res) => {
                 return res.status(200).json({ success: true, source: data ? data.key_value : 'json' });
             }
 
+            if (type === 'kamus') {
+                const { data, error } = await supabase
+                    .from('kamus_utama')
+                    .select('*')
+                    .order('indonesia', { ascending: true });
+
+                if (error) {
+                    return res.status(500).json({ success: false, message: 'Gagal mengambil data kamus dari Supabase.' });
+                }
+                return res.status(200).json({ success: true, data });
+            }
+
             // Ambil semua data usulan
             const { data, error } = await supabase
                 .from('usulan_kosakata')
@@ -126,6 +138,15 @@ module.exports = async (req, res) => {
 
                 if (error) return res.status(500).json({ success: false, message: 'Gagal mengupdate usulan.' });
                 return res.status(200).json({ success: true, message: 'Berhasil update data usulan!' });
+            }
+
+            if (action === 'DELETE_KAMUS_ITEM') {
+                const { id } = payload;
+                if (!id) return res.status(400).json({ success: false, message: 'ID diperlukan.' });
+
+                const { error } = await supabase.from('kamus_utama').delete().eq('id', id);
+                if (error) return res.status(500).json({ success: false, message: 'Gagal menghapus kosa kata.' });
+                return res.status(200).json({ success: true, message: 'Kosa kata berhasil dihapus.' });
             }
 
             return res.status(400).json({ success: false, message: `Action ${action} tidak dikenali.` });

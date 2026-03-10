@@ -374,44 +374,38 @@
   {
     "indonesia": "jawab",
     "dusun": "jawob",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "tolong jawab pertanyaan saya",
+    "contoh_dusun": "cuka jawobke pertanyean ku"
   },
   {
     "indonesia": "lupa",
     "dusun": "lupe",
-    "contoh_id": "",
-    "contoh_dusun": ""
-  },
-  {
-    "indonesia": "paham",
-    "dusun": "ngerti",
-    "contoh_id": "",
-    "contoh_dusun": ""
-  },
-  {
-    "indonesia": "mulai",
-    "dusun": "mulai",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "aku lupa kalo hari ini hari selasa",
+    "contoh_dusun": "aku lupe kalo serekak ari selaso"
   },
   {
     "indonesia": "pinjam",
     "dusun": "minjom",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "boleh nggak aku pinjam buku kamu",
+    "contoh_dusun": "bulih dok aku minjom buku dengo/nga"
   },
   {
     "indonesia": "sulit",
-    "dusun": "solet",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "dusun": "solet/sukar",
+    "contoh_id": "soal ini sulit sekali",
+    "contoh_dusun": "soal ikak solet/sukar nian"
   },
   {
     "indonesia": "ramai",
     "dusun": "rami",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "di pasar ramai sekali",
+    "contoh_dusun": "di pasar rami nian"
+  },
+  {
+    "indonesia": "ramai",
+    "dusun": "rami",
+    "contoh_id": "di pasar ramai sekali",
+    "contoh_dusun": "di pasar rami nian"
   },
   {
     "indonesia": "tidak ada",
@@ -434,44 +428,44 @@
   {
     "indonesia": "atas",
     "dusun": "pocok",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "uang kamu ada di atas meja",
+    "contoh_dusun": "sen dengo/nga ade di pocok meja"
   },
   {
     "indonesia": "uang",
     "dusun": "sen",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu punya uang nggk?",
+    "contoh_dusun": "dengo/nga punye sen dok?"
   },
   {
     "indonesia": "teman",
     "dusun": "kanti, kanca",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "rani adalah teman saya dari kecil",
+    "contoh_dusun": "rani kanti ku dari kecik"
   },
   {
     "indonesia": "keluarga",
     "dusun": "keluargo",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "keluarga saya ada di palembang",
+    "contoh_dusun": "keluargo ku ade di palembang"
   },
   {
     "indonesia": "jalan",
     "dusun": "jalon",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "ayo kita jalan ke pasar",
+    "contoh_dusun": "payo kitek bejalon ke kalangan"
   },
   {
     "indonesia": "kirim",
     "dusun": "kerem, keremke",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "tolong kirimkan uang ini ke ibu saya",
+    "contoh_dusun": "tolong keremke sen ikak ke emak ku"
   },
   {
     "indonesia": "bayar",
-    "dusun": "mayo",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "dusun": "mayo/bayo",
+    "contoh_id": "tolong bayarkan makanan saya",
+    "contoh_dusun": "tolong bayoke makananku"
   },
   {
     "indonesia": "kursus",
@@ -480,106 +474,106 @@
     "contoh_dusun": ""
   },
   {
-    "indonesia": "pakai",
+    "indonesia": "pakai/mengenakan",
     "dusun": "ngeneke, ",
-    "contoh_id": "",
-    "contoh_dusun": "pakai lah baju dengo"
+    "contoh_id": "pakailah sepatu kamu",
+    "contoh_dusun": "pakai lah sepatu dengo"
   },
   {
     "indonesia": "benci",
     "dusun": "luat",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "aku benci banget sama dia",
+    "contoh_dusun": "aku luat nian di dengo"
   },
   {
     "indonesia": "hemat",
     "dusun": "otep",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kamu harus hemat ya",
+    "contoh_dusun": "dengo/nga harus otep yex"
   },
   {
     "indonesia": "kaya",
     "dusun": "bajik",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "dia orang kaya",
+    "contoh_dusun": "nye wang bajik"
   },
   {
     "indonesia": "miskin",
     "dusun": "buntu",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "dia orang miskin",
+    "contoh_dusun": "nye wang buntu"
   },
   {
     "indonesia": "bau",
     "dusun": "embow",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "bau apa ini?",
+    "contoh_dusun": "embow tope ikak?"
   },
   {
     "indonesia": "harum",
     "dusun": "berum",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "harum sekali baju kamu",
+    "contoh_dusun": "berum nian baju dengo"
   },
   {
     "indonesia": "terang",
     "dusun": "nyantak, terang",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "terang sekali lampu ini",
+    "contoh_dusun": "nyantak nian lampu ikak"
   },
   {
     "indonesia": "gelap",
-    "dusun": "kelman",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "dusun": "keleman",
+    "contoh_id": "gelap sekali ruangan ini",
+    "contoh_dusun": "keleman nian ruangan ikak"
   },
   {
     "indonesia": "penuh",
     "dusun": "penoh",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "penuh sekali gelas ini",
+    "contoh_dusun": "penoh nian gelas ikak"
   },
   {
     "indonesia": "kosong",
     "dusun": "kosong",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "kosong sekali gelas ini",
+    "contoh_dusun": "kosong nian gelas ikak"
   },
   {
     "indonesia": "tidak ada ",
     "dusun": "getek",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "tidak ada uang",
+    "contoh_dusun": "getek sen"
   },
   {
     "indonesia": "pasar ",
     "dusun": "kalangan",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "pasar hari ini ramai",
+    "contoh_dusun": "kalangan serekak rami"
   },
   {
     "indonesia": "celana",
     "dusun": "celane",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "celana saya robek",
+    "contoh_dusun": "celane ku pedoh/koyak"
   },
   {
     "indonesia": "biasanya",
     "dusun": "biaso eg",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "biasanya dia datang jam 8",
+    "contoh_dusun": "biaso egnye datong jam 8"
   },
   {
     "indonesia": "tergesa-gesa",
     "dusun": "tegupu gupu",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "jangan tergesa-gesa",
+    "contoh_dusun": "jangon tegupu gupu"
   },
   {
     "indonesia": "sebenarnya",
     "dusun": "sebeno e",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "sebenarnya dia tidak mau",
+    "contoh_dusun": "sebeno e nye nggon"
   },
   {
     "indonesia": "tiba-tiba",
@@ -596,8 +590,8 @@
   {
     "indonesia": "cukup",
     "dusun": "cokop, diloh",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "cukup uang saya",
+    "contoh_dusun": "cokop sen ku"
   },
   {
     "indonesia": "aja",
@@ -608,14 +602,14 @@
   {
     "indonesia": "langit",
     "dusun": "langet",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "langit hari ini cerah",
+    "contoh_dusun": "langet serekak cerah"
   },
   {
     "indonesia": "bulan ",
     "dusun": "bulon",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "bulan purnama",
+    "contoh_dusun": "bulon purname"
   },
   {
     "indonesia": "hujan",
@@ -626,8 +620,8 @@
   {
     "indonesia": "air",
     "dusun": "ayik",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "air ini dingin",
+    "contoh_dusun": "ayik ikak dengen"
   },
   {
     "indonesia": "bunga",
@@ -2394,8 +2388,8 @@
     "contoh_dusun": ""
   },
   {
-    "indonesia": "pekasam",
-    "dusun": "pede",
+    "indonesia": "Fermentasi ikan yang di campur garam dan nasi yang didiamkan kurang lebih 2 minggu",
+    "dusun": "pede/pekasam",
     "contoh_id": "",
     "contoh_dusun": ""
   },
@@ -2916,7 +2910,7 @@
     "contoh_dusun": ""
   },
   {
-    "indonesia": "ayahnya kake",
+    "indonesia": "ayahnya kakek / orang tertua",
     "dusun": "puyang",
     "contoh_id": "",
     "contoh_dusun": ""
@@ -3362,8 +3356,8 @@
   {
     "indonesia": "sering-sering",
     "dusun": "neman-neman",
-    "contoh_id": "",
-    "contoh_dusun": ""
+    "contoh_id": "sering-sering ya kamu kesini",
+    "contoh_dusun": "neman-neman dengo kesikak yex"
   },
   {
     "indonesia": "tercengang / ekspresi terpesona melihat sesuatu",
@@ -3374,6 +3368,72 @@
   {
     "indonesia": "manggil",
     "dusun": "pantau",
+    "contoh_id": "kamu dipanggil oleh bu guru",
+    "contoh_dusun": "dengo/nga di pantau bu guru"
+  },
+  {
+    "indonesia": "biji",
+    "dusun": "ijot",
+    "contoh_id": "semangka ini banyak banget bijinya",
+    "contoh_dusun": "semangke ikk banyok nn ijot eg"
+  },
+  {
+    "indonesia": "makanan khas pali yang terbuat dari bahan baku ikan",
+    "dusun": "sagarurung",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "makanan khas pali yang mirip dengan bakso yang dalam penyajiaany",
+    "dusun": "miso",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ubi kayu",
+    "dusun": "menggalo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kebun karet",
+    "dusun": "kebun balom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "alat untuk menyadap karet",
+    "dusun": "lading balom",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "salah satu olahraga di kabupaten PALI",
+    "dusun": "kuntau",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "kegiatan gotong-royong masyarakat dalam menanam padi di lahan yang hanya mengandalkan air hujan atau tanah talang",
+    "dusun": "nugal",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "aktivitas mencari ikan saat sungai dangkal/kering",
+    "dusun": "bekarang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "simbol dalam pernikahan antara bujang dan gadis dengan bahan utama kelapa.",
+    "dusun": "teraju",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "makanan khas pali yang terbuat dari bahan baku ikan",
+    "dusun": "sagarurung",
     "contoh_id": "",
     "contoh_dusun": ""
   }

@@ -20,6 +20,7 @@
             <a href="/admin/index.html" class="nav-link"><i class="fas fa-gauge-high"></i> <span>Dashboard</span></a>
             <a href="/admin/words.html" class="nav-link active"><i class="fas fa-language"></i> <span>Kosa Kata</span></a>
             <a href="/admin/folklore.html" class="nav-link"><i class="fas fa-scroll"></i> <span>Cerita Rakyat</span></a>
+            <a href="/admin/nasehat.html" class="nav-link"><i class="fas fa-comment-dots"></i> <span>Nasehat</span></a>
             <a href="/admin/settings.html" class="nav-link"><i class="fas fa-gear"></i> <span>Settings</span></a>
         </nav>
         <div class="sidebar-footer">
@@ -41,16 +42,60 @@
 
         <main class="content-area">
             <div class="dashboard-card">
-                <div class="card-header">
-                    <h3><i class="fas fa-language"></i> Daftar Usulan Menunggu Moderasi</h3>
+                <div class="card-header" style="flex-direction: column; align-items: flex-start; gap: 15px;">
+                    <h3><i class="fas fa-language"></i> Manajemen Kosakata</h3>
+                    <div class="tab-group" style="display: flex; gap: 10px; width: 100%;">
+                        <button class="btn-dash btn-dash-primary tab-btn active" onclick="switchTab('usulan')">Antrian Usulan</button>
+                        <button class="btn-dash btn-dash-edit tab-btn" onclick="switchTab('kamus')">Semua Database Kamus</button>
+                    </div>
                 </div>
-                <div id="wordsList" class="loading-state">Sedang memuat usulan...</div>
+                
+                <!-- Section: Usulan -->
+                <div id="usulanSection">
+                    <div id="wordsList" class="loading-state">Sedang memuat usulan...</div>
+                </div>
+
+                <!-- Section: Kamus Utama -->
+                <div id="kamusSection" class="hidden">
+                    <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid var(--glass-border);">
+                        <h4 style="margin-bottom: 10px;"><i class="fas fa-file-import"></i> Tambah Data Massal (JSON)</h4>
+                        <div class="input-group full">
+                            <textarea id="jsonInput" class="dash-input" style="height: 120px; font-family: monospace; font-size: 0.8rem;" placeholder='[{"indonesia": "makan", "dusun": "mangan", "contoh_id": "Saya makan nasi.", "contoh_dusun": "Aku mangan nasi."}]'></textarea>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="btn-dash btn-dash-primary" onclick="importJSON()">
+                                <i class="fas fa-upload"></i> Import JSON
+                            </button>
+                            <label class="btn-dash btn-dash-edit" style="cursor: pointer; margin-bottom: 0;">
+                                <i class="fas fa-file-code"></i> Upload File JSON <input type="file" id="jsonFile" hidden accept=".json">
+                            </label>
+                        </div>
+                    </div>
+                    <div id="kamusTableContainer" class="loading-state">Sedang memuat database kamus...</div>
+                </div>
             </div>
         </main>
     </div>
 
     <script>
         const password = localStorage.getItem('admin_password');
+        let currentTab = 'usulan';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(tab === 'usulan') {
+                document.getElementById('usulanSection').classList.remove('hidden');
+                document.getElementById('kamusSection').classList.add('hidden');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                loadWords();
+            } else {
+                document.getElementById('usulanSection').classList.add('hidden');
+                document.getElementById('kamusSection').classList.remove('hidden');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                loadKamus();
+            }
+        }
 
         async function loadWords() {
             try {
@@ -64,8 +109,8 @@
                 const list = document.getElementById('wordsList');
                 if(result.data.length === 0) {
                     list.innerHTML = `<div style="text-align: center; padding: 40px; color: var(--text-dim);">
-                        <i class="fas fa-circle-check" style="font-size: 3rem; margin-bottom: 20px; color: var(--accent-green);"></i>
-                        <p>Bagus! Semua usulan sudah diproses.</p>
+                        <i class="fas fa-circle-check" style="font-size: 2rem; margin-bottom: 20px; color: var(--accent-green);"></i>
+                        <p>Semua usulan sudah diproses.</p>
                     </div>`;
                     return;
                 }
@@ -99,6 +144,80 @@
             } catch (err) { console.error(err); }
         }
 
+        async function loadKamus() {
+            try {
+                const res = await fetch('/api/admin-usulan?type=kamus', { 
+                    headers: { 'x-admin-password': password } 
+                });
+                const result = await res.json();
+                if(!result.success) return;
+
+                const container = document.getElementById('kamusTableContainer');
+                const tableHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Indonesia</th>
+                                <th>Dusun</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${result.data.map(item => `
+                                <tr>
+                                    <td style="font-size: 0.7rem; color: var(--text-dim);">${item.id}</td>
+                                    <td><strong>${item.indonesia}</strong></td>
+                                    <td><span style="color: var(--accent-green); font-weight: 700;">${item.dusun}</span></td>
+                                    <td>
+                                        <button class="btn-dash btn-dash-delete" onclick="deleteKamusItem(${item.id})" title="Hapus dari Kamus Utama">
+                                            <i class="fas fa-trash-can"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                container.innerHTML = tableHTML;
+            } catch (err) { console.error(err); }
+        }
+
+        async function importJSON() {
+            try {
+                const jsonStr = document.getElementById('jsonInput').value;
+                if(!jsonStr) return alert("Paste dulu JSON-nya mas.");
+                const jsonData = JSON.parse(jsonStr);
+                
+                const res = await fetch('/api/admin-usulan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                    body: JSON.stringify({ action: 'IMPORT_JSON', payload: { jsonData } })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert(data.message);
+                    document.getElementById('jsonInput').value = "";
+                    loadKamus();
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                alert("Format JSON kayaknya salah: " + err.message);
+            }
+        }
+
+        // Handle file upload
+        document.getElementById('jsonFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('jsonInput').value = event.target.result;
+            };
+            reader.readAsText(file);
+        });
+
         async function approveWord(item) {
             const res = await fetch('/api/admin-usulan', {
                 method: 'POST',
@@ -117,6 +236,17 @@
                 body: JSON.stringify({ id })
             });
             loadWords();
+        }
+
+        async function deleteKamusItem(id) {
+            if(!confirm('Yakin nak hapus kosa kata ini dari Kamus Utama?')) return;
+            const res = await fetch('/api/admin-usulan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                body: JSON.stringify({ action: 'DELETE_KAMUS_ITEM', payload: { id } })
+            });
+            const data = await res.json();
+            if(data.success) loadKamus();
         }
 
         window.onload = loadWords;

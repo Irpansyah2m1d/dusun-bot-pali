@@ -799,29 +799,6 @@
         observer.observe(statsSection);
 
         // --- Contributors Logic ---
-        async function loadContributors() {
-            try {
-                const res = await fetch('/api/contributors');
-                const json = await res.json();
-                if (json.success) {
-                    renderContributorsPreview(json.data);
-                    renderContributorsFull(json.data);
-                }
-            } catch (e) {
-                console.error("Gagal memuat kontributor");
-            }
-        }
-
-        function renderContributorsPreview(data) {
-            const preview = document.getElementById('collab-preview');
-            if(!preview) return;
-            // Ambil 3 pertama
-            const top3 = data.slice(0, 3).map(c => c.name).join(", ");
-            const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
-            
-            preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
-        }
-
         function renderContributorsFull(data) {
             const list = document.getElementById('contributor-list');
             if(!list) return;
@@ -831,6 +808,23 @@
                     <span class="contributor-count">${c.count} Kata</span>
                 </div>
             `).join('');
+        }
+
+        async function loadContributors() {
+            try {
+                const res = await fetch('/api/contributors');
+                const json = await res.json();
+                if (json.success) {
+                    const data = json.data;
+                    const preview = document.getElementById('collab-preview');
+                    if (preview) {
+                        const top3 = data.slice(0, 3).map(c => c.name).join(", ");
+                        const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
+                        preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
+                    }
+                    renderContributorsFull(data);
+                }
+            } catch (e) { console.error("Gagal memuat kontributor"); }
         }
 
         function openContributorsModal() {
@@ -855,38 +849,58 @@
         }
 
         async function initDusunWidgets() {
-            const randomProverb = proverbs[Math.floor(Math.random() * proverbs.length)];
+            let nasehatData = proverbs;
+            try {
+                const res = await fetch('/api/nasehat');
+                const json = await res.json();
+                if (json.success && json.data && json.data.length > 0) {
+                    nasehatData = json.data;
+                }
+            } catch (err) {
+                console.error("Gagal load nasehat:", err);
+            }
+
+            const randomProverb = nasehatData[Math.floor(Math.random() * nasehatData.length)];
             const wisdomText = document.getElementById('wisdom-text');
             const wisdomMeaning = document.getElementById('wisdom-meaning');
             if(wisdomText) wisdomText.innerText = `"${randomProverb.text}"`;
             if(wisdomMeaning) wisdomMeaning.innerText = randomProverb.meaning;
 
-            // Force show for testing/debugging as per user feedback
+            // Word of the Day (WOTD) logic - Show once per day
+            const lastShown = localStorage.getItem('wotd_last_shown');
+            const today = new Date().toDateString();
+
             try {
-                console.log("Fetching WOTD...");
-                const response = await fetch('/api/kamus'); 
-                const data = await response.json();
-                console.log("WOTD Data:", data);
-                
-                if (data.success && data.results && data.results.length > 0) {
-                    const daily = data.results[0];
-                    const popupWord = document.getElementById('popup-word');
-                    const popupMeaning = document.getElementById('popup-meaning');
-                    const popupExample = document.getElementById('popup-example');
+                if (lastShown !== today) {
+                    console.log("Fetching WOTD...");
+                    const response = await fetch('/api/kamus'); 
+                    if (!response.ok) throw new Error("Gagal ambil data (500)");
                     
-                    if(popupWord) popupWord.innerText = daily.dusun || daily.word;
-                    if(popupMeaning) popupMeaning.innerText = daily.indonesia || daily.meaning || daily.arti;
+                    const data = await response.json();
                     
-                    const example = daily.contoh_dusun || daily.example;
-                    if (popupExample) {
-                        if (example) { popupExample.innerText = `"${example}"`; popupExample.style.display = 'block'; }
-                        else { popupExample.style.display = 'none'; }
+                    if (data.success && data.results && data.results.length > 0) {
+                        const daily = data.results[0];
+                        const popupWord = document.getElementById('popup-word');
+                        const popupMeaning = document.getElementById('popup-meaning');
+                        const popupExample = document.getElementById('popup-example');
+                        
+                        if(popupWord) popupWord.innerText = daily.dusun || daily.word || daily.indonesia;
+                        if(popupMeaning) popupMeaning.innerText = daily.indonesia || daily.meaning || daily.arti || "";
+                        
+                        const example = daily.contoh_dusun || daily.example;
+                        if (popupExample) {
+                            if (example) { popupExample.innerText = `"${example}"`; popupExample.style.display = 'block'; }
+                            else { popupExample.style.display = 'none'; }
+                        }
+                        
+                        setTimeout(() => {
+                            const modal = document.getElementById('wotdModal');
+                            if(modal) {
+                                modal.classList.add('active');
+                                localStorage.setItem('wotd_last_shown', today);
+                            }
+                        }, 1000);
                     }
-                    
-                    setTimeout(() => {
-                        const modal = document.getElementById('wotdModal');
-                        if(modal) modal.classList.add('active');
-                    }, 1000);
                 }
             } catch (err) { console.error("WOTD Error:", err); }
             
@@ -918,16 +932,17 @@
                             excerpt: "Cerita tentang urat nadi kehidupan masyarakat Penukal.",
                             content: "Sungai Lematang bukan sekadar sungai, tapi saksi bisu sejarah...",
                             image_url: "/gallery/river.png"
-                        }
+                        }   
                     ];
                 }
 
                 grid.innerHTML = stories.map(item => `
-                    <article class="folklore-card" onclick="openCerita(${JSON.stringify(item).replace(/"/g, '&quot;')})">
-                        <img src="${item.image_url || 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800'}" class="folklore-img" alt="${item.title}">
-                        <div class="folklore-content">
+                    <article class="folklore-card" onclick="openCerita('${item.slug || 'detail'}', ${item.id})">
+                        <img src="${item.image_url || '/gallery/heritage.png'}" class="folklore-img" alt="${item.title}">
+                        <div class="folklore-card-body">
                             <h3>${item.title}</h3>
-                            <p>${item.excerpt}</p>
+                            <p>${item.excerpt || 'Klik untuk membaca selengkapnya...'}</p>
+                            <span class="read-more">Baca Selengkapnya ➔</span>
                         </div>
                     </article>
                 `).join('');
@@ -948,19 +963,20 @@
                     }
                 ];
                 grid.innerHTML = fallback.map(item => `
-                    <article class="folklore-card" onclick="openCerita(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                    <article class="folklore-card" onclick="openCerita('${item.slug || 'detail'}')">
                         <img src="${item.image_url}" class="folklore-img" alt="${item.title}">
-                        <div class="folklore-content">
+                        <div class="folklore-card-body">
                             <h3>${item.title}</h3>
                             <p>${item.excerpt}</p>
+                            <span class="read-more">Baca Selengkapnya ➔</span>
                         </div>
                     </article>
                 `).join('');
             }
         }
 
-        function openCerita(item) {
-            alert(item.title + "\n\n" + item.content);
+        function openCerita(slug, id) {
+            window.location.href = `/cerita.html?slug=${slug || id}`;
         }
 
         let avatarActive = false;
@@ -989,7 +1005,7 @@
             });
         }
 
-        function animate() {
+        function animate() { 
             requestAnimationFrame(animate);
             if(avatar) avatar.rotation.y += 0.01;
             renderer.render(scene, camera);
@@ -1038,18 +1054,7 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        async function loadContributors() {
-            try {
-                const res = await fetch('/api/contributors');
-                const data = await res.json();
-                const preview = document.getElementById('contributor-preview');
-                if(preview) {
-                    const top3 = data.slice(0, 3).map(c => c.name).join(", ");
-                    const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
-                    preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
-                }
-            } catch (err) { console.error("Contributors Error:", err); }
-        }
+
 
         document.addEventListener('DOMContentLoaded', () => {
             console.log("Dusun Bot Page Loaded");

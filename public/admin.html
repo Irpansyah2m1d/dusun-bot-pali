@@ -17,8 +17,11 @@
         <h2 style="margin-bottom: 10px; font-size: 1.8rem;">Dusun Admin</h2>
         <p style="color: var(--text-dim); margin-bottom: 40px;">Masukkan password untuk melanjutkan.</p>
         
-        <div class="input-group">
-            <input type="password" id="adminPass" class="dash-input" placeholder="Password Admin" style="text-align: center;">
+        <div class="input-group" style="position: relative;">
+            <input type="password" id="adminPass" class="dash-input" placeholder="Password Admin" style="text-align: center; width: 100%;">
+            <button type="button" onclick="togglePassword()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; padding: 5px;">
+                <i id="toggleIcon" class="fas fa-eye"></i>
+            </button>
         </div>
         
         <button class="btn-dash btn-dash-primary" onclick="login()" style="width: 100%; justify-content: center; padding: 18px;">
@@ -34,6 +37,20 @@
         // Check if already logged in
         if (localStorage.getItem('admin_password')) {
             window.location.href = '/admin/index.html';
+        }
+
+        function togglePassword() {
+            const passInput = document.getElementById('adminPass');
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
         }
 
         async function login() {

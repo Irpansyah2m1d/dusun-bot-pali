@@ -20,6 +20,7 @@
             <a href="/admin/index.html" class="nav-link"><i class="fas fa-gauge-high"></i> <span>Dashboard</span></a>
             <a href="/admin/words.html" class="nav-link"><i class="fas fa-language"></i> <span>Kosa Kata</span></a>
             <a href="/admin/folklore.html" class="nav-link"><i class="fas fa-scroll"></i> <span>Cerita Rakyat</span></a>
+            <a href="/admin/nasehat.html" class="nav-link"><i class="fas fa-comment-dots"></i> <span>Nasehat</span></a>
             <a href="/admin/settings.html" class="nav-link active"><i class="fas fa-gear"></i> <span>Settings</span></a>
         </nav>
         <div class="sidebar-footer">
@@ -54,6 +55,16 @@
                     </button>
                 </div>
                 <div id="source-status" style="margin-top: 20px; font-weight: 600; font-size: 0.9rem;"></div>
+                
+                <hr style="border:0; border-top:1px solid var(--border-glass); margin: 30px 0;">
+                
+                <div class="card-header" style="margin-bottom: 10px;">
+                    <h3 style="font-size: 1.2rem;"><i class="fas fa-sync"></i> Sinkronisasi Database</h3>
+                </div>
+                <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 0.9rem;">Gunakan tombol ini untuk menimpa seluruh data di Cloud Supabase (kamus_utama) dengan data dari file `data/kamus.json` yang ada di server lokal Anda saat ini. Ini akan menghapus data lama!</p>
+                <button class="btn-dash btn-dash-delete" onclick="syncKamusJson()">
+                    <i class="fas fa-rotate-right"></i> Refresh Database dari kamus.json
+                </button>
             </div>
         </main>
     </div>
@@ -92,6 +103,26 @@
             if(data.success) {
                 updateSourceButtons(val);
                 alert("Pengaturan diperbarui.");
+            }
+        }
+
+        async function syncKamusJson() {
+            if(!confirm('🚨 PERINGATAN BUKAN MAIN!\n\nYakin ingin menimpa seluruh tabel kamus_utama di Supabase dengan file kamus.json lokal? Data tambahan yang tidak ada di json akan terhapus secara permanen.')) return;
+            
+            try {
+                const res = await fetch('/api/admin-usulan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                    body: JSON.stringify({ action: 'MIGRATE_KAMUS' })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert("✅ Sukses!\n\n" + data.message);
+                } else {
+                    alert("❌ Gagal!\n\n" + data.message);
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan sistem saat sinkronisasi.");
             }
         }
 
