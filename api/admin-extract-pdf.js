@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
 
             // 2. Process with AI to break down into chunks (Topics & Content)
             const genAI = new GoogleGenerativeAI((process.env.GEMINI_API_KEY || "").trim());
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
             const prompt = `
             Berikut adalah teks dari dokumen PDF tentang Kabupaten PALI atau budaya lokal. 

@@ -238,7 +238,7 @@ module.exports = async (req, res) => {
             // Default Gemini
             const genAI = new GoogleGenerativeAI((userApiKey || "").trim());
             const model = genAI.getGenerativeModel({
-                model: modelName || "gemini-1.5-flash-latest",
+                model: modelName || "gemini-1.5-flash",
                 systemInstruction: systemInstruction
             });
 

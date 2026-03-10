@@ -1078,13 +1078,14 @@
         };
 
         let chatMode = 'id'; 
-        let dusunChatCount = 0;
+        let dusunChatCount = parseInt(localStorage.getItem('dusun_chat_count') || '0');
         const DUSUN_CHAT_LIMIT = 5;
 
         function toggleChatMode() {
             const toggleBg = document.getElementById('chat-toggle-bg');
             const toggleKnob = document.getElementById('chat-toggle-knob');
             const modeText = document.getElementById('chat-mode-text');
+            const responseEl = document.getElementById('avatar-response');
             
             if (chatMode === 'id') {
                 chatMode = 'dusun';
@@ -1092,12 +1093,18 @@
                 toggleBg.style.background = 'var(--emerald-green)';
                 toggleKnob.style.background = '#0f172a';
                 modeText.innerText = `Mode: Dusun PALI (${dusunChatCount}/${DUSUN_CHAT_LIMIT})`;
+                
+                // Show warning for Dusun mode
+                responseEl.style.color = "var(--emerald-green)";
+                responseEl.innerText = "Mode Dusun Aktif! (Merespon dalam 5-15 detik via GAS Web App)";
             } else {
                 chatMode = 'id';
                 toggleKnob.style.transform = 'translateX(0)';
                 toggleBg.style.background = 'rgba(255,255,255,0.1)';
                 toggleKnob.style.background = 'var(--text-dim)';
                 modeText.innerText = `Mode: Indonesia (AI)`;
+                responseEl.style.color = "var(--text-dim)";
+                responseEl.innerText = "Halo, Sagarurung Bot disini. Siap bantu dengo!";
             }
         }
 
@@ -1126,6 +1133,7 @@
                 
                 if (data.success && chatMode === 'dusun') {
                     dusunChatCount++;
+                    localStorage.setItem('dusun_chat_count', dusunChatCount);
                     document.getElementById('chat-mode-text').innerText = `Mode: Dusun PALI (${dusunChatCount}/${DUSUN_CHAT_LIMIT})`;
                 }
 
