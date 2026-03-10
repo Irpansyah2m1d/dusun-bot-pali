@@ -126,6 +126,10 @@ module.exports = async (req, res) => {
          - DENGO/NGA: Gunakan 'dengo' atau 'nga' (kamu).
       3. PINJAMAN TEKNOLOGI: Kata seperti (Komputer, Internet, Email, Game) jangan diubah-ubah ujungnya.
       4. GAYA BICARA: Santai, mengalir, pendek-pendek. JANGAN kaku.
+      5. JIKA ada kata yang TIDAK ADA di referensi kamus dan Anda tidak tahu terjemahannya, Anda bisa menebak dengan aturan ini:
+         - Jika kata berakhiran 'a' dan terdapat huruf 'e' di suku kata sebelumnya, jadikan akhirannya 'o' (mejo, kereto).
+         - Jika kata berakhiran 'a' dan TIDAK ada huruf 'e' sebelumnya, jadikan akhirannya 'e' (ape, mane, die).
+         - JIKA Anda melakukan ini, WAJIB tambahkan catatan kecil: "(Peringatan: Beberapa kata mungkin hasil generasi AI karena belum ada di kamus. Mohon bantu usulkan kata jika keliru)".
 
       REFERENSI KAMUS & CONTOH ASLI:
       ${dictionaryContext || "Gunakan dialek PALI kental."}
