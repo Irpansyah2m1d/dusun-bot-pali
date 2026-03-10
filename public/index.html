@@ -1212,6 +1212,7 @@
 
     <!-- Avatar Chat Container -->
     <div id="avatar-container">
+        <button id="mute-btn" class="btn-mute" onclick="toggleMute()" title="Toggle Mute" style="position: absolute; top: 15px; right: 15px; z-index: 10000; background: rgba(0,0,0,0.4); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">🔊</button>
         <!-- 2D Avatar Scene -->
         <div class="avatar-scene">
             <!-- Particle layer -->
@@ -1240,7 +1241,6 @@
             </div>
         </div>
         <div class="avatar-chat">
-            <button id="mute-btn" class="btn-mute" onclick="toggleMute()" title="Toggle Mute">🔊</button>
             <div class="avatar-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <span id="chat-mode-text" style="font-size: 0.8rem; color: var(--text-dim); font-weight: 500;">Mode: Indonesia (AI)</span>
                 <div class="switch-toggle" style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="toggleChatMode()">
@@ -1262,9 +1262,9 @@
                     <input type="text" id="chat-input" placeholder="Ketik pesan di sini..." onkeypress="handleTyping(event)">
                     <button class="btn-send-chat" onclick="sendChat()">➔</button>
                 </div>
-                <div class="avatar-input-area" style="display: flex; gap: 8px;">
-                    <button class="btn-primary mic-btn" style="flex: 1; background: var(--emerald-green); color: #0f172a; border: none; padding: 10px; border-radius: 12px; font-weight: 700; cursor: pointer;" onclick="startListening()">🎤 Bicara</button>
-                    <button class="btn-secondary" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer;" onclick="toggleAvatar()">Tutup</button>
+                <div class="avatar-input-area" style="display: flex; gap: 12px; justify-content: center;">
+                    <button class="btn-primary mic-btn" style="min-width: 120px; background: var(--emerald-green); color: #0f172a; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="startListening()">🎤 Bicara</button>
+                    <button class="btn-secondary" style="min-width: 100px; background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer;" onclick="toggleAvatar()">Tutup</button>
                 </div>
             </div>
         </div>
