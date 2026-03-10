@@ -2171,14 +2171,13 @@ textarea.form-input {
 /* ---- Mouth overlay ---- */
 .avatar-mouth-el {
     position: absolute;
-    bottom: 52.5%;
-    left: 49.5%;
+    bottom: 52.8%;
+    left: 49.8%;
     transform: translateX(-50%);
-    background: #110502;
+    background: linear-gradient(to bottom, #110502 0%, #2a0a05 100%);
     border-radius: 50%;
     transition: width 0.08s ease, height 0.08s ease, border-radius 0.08s ease;
-    border: none;
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.8);
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(255, 255, 255, 0.1);
     pointer-events: none;
     z-index: 4;
 }
@@ -2261,25 +2260,25 @@ textarea.form-input {
 }
 
 .avatar-eye.eye-left {
-    width: 13px;
-    height: 14px;
-    bottom: 61.5%;
-    left: 38%;
+    width: 15px;
+    height: 16px;
+    bottom: 61.2%;
+    left: 38.2%;
     animation: eyeBlink 5s ease-in-out infinite;
-    background: #120808;
-    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: radial-gradient(circle at 35% 35%, #2a1a1a 0%, #110808 70%);
+    box-shadow: inset -1px -1px 3px rgba(255, 255, 255, 0.15), 0 0 5px rgba(0, 0, 0, 0.3);
+    border: none;
 }
 
 .avatar-eye.eye-right {
-    width: 13px;
-    height: 14px;
-    bottom: 61.5%;
-    right: 37%;
+    width: 15px;
+    height: 16px;
+    bottom: 61.2%;
+    right: 36.8%;
     animation: eyeBlink 5s ease-in-out infinite 0.15s;
-    background: #120808;
-    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: radial-gradient(circle at 35% 35%, #2a1a1a 0%, #110808 70%);
+    box-shadow: inset -1px -1px 3px rgba(255, 255, 255, 0.15), 0 0 5px rgba(0, 0, 0, 0.3);
+    border: none;
 }
 
 .avatar-chat {

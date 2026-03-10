@@ -1028,6 +1028,11 @@
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = 'id-ID';
         function startListening() {
+            window.speechSynthesis.cancel();
+            clearInterval(mouthInterval);
+            const mouth = document.getElementById('avatar-mouth');
+            if (mouth) mouth.className = 'avatar-mouth-el shape-close';
+            
             recognition.start();
             document.querySelector('.mic-btn').classList.add('active');
         }
