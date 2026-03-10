@@ -1089,9 +1089,15 @@
                     speak(data.reply);
                     animateMouthFromText(data.reply);
                 } else {
-                    responseEl.innerText = data.error || "Maaf, saya sedang tidak enak badan.";
+                    const errMsg = data.error || "Maaf, ada gangguan di sistem. Coba lagi sebentar ya!";
+                    responseEl.innerText = "⚠️ " + errMsg;
+                    speak(errMsg);
                 }
-            } catch (err) { responseEl.innerText = "Error menghubungkan ke AI!"; }
+            } catch (err) {
+                const errMsg = "Waduh, Sagarurung Bot lagi nggak bisa dihubungi. Mungkin ada masalah di sistem, coba beberapa saat lagi ya!";
+                responseEl.innerText = "⚠️ " + errMsg;
+                speak(errMsg);
+            }
         }
 
         function speak(text) {
