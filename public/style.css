@@ -1581,18 +1581,24 @@ textarea.form-input {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 15px;
-    padding: 0;
-    background: none;
-    border: none;
+    margin: 25px auto 35px;
+    /* Center with margin auto */
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: 100px;
     cursor: pointer;
     transition: 0.3s;
-    justify-content: flex-start;
+    justify-content: center;
+    /* Centered */
+    width: fit-content;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .contributors-bar:hover {
-    transform: translateX(4px);
-    opacity: 0.8;
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--emerald-green);
 }
 
 .collab-label {

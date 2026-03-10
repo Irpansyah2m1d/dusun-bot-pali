@@ -221,7 +221,7 @@
                         </div>
                     </div>
 
-                    <div class="kamus-actions" style="display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;">
+                    <div class="kamus-actions" style="display: flex; gap: 12px; margin-bottom: 40px; justify-content: center; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;">
                         <a href="/kamus.html" class="btn-secondary" style="border-color: var(--emerald-green); color: var(--emerald-green); flex-shrink: 0; white-space: nowrap;">Buka Kamus Lengkap ↗</a>
                         <button onclick="openUsulanModal()" class="btn-primary" style="padding: 14px 24px; font-size: 0.95rem; border: none; cursor: pointer; flex-shrink: 0; white-space: nowrap;">+ Tambah Kosakata</button>
                     </div>
@@ -882,46 +882,55 @@
             // Word of the Day (WOTD) logic - Show once per day
             const lastShown = localStorage.getItem('wotd_last_shown');
             const today = new Date().toDateString();
+            const urlParams = new URLSearchParams(window.location.search);
+            const isDebugWotd = urlParams.has('debug_wotd');
 
             try {
-                if (lastShown !== today) {
-                    console.log("Fetching WOTD...");
+                if (isDebugWotd || lastShown !== today) {
+                    console.log("WOTD: Memulai pengecekan kata hari ini...");
                     const response = await fetch('/api/kamus'); 
-                    if (!response.ok) throw new Error("Gagal ambil data (500)");
+                    if (!response.ok) {
+                        console.error("WOTD: Server merespon dengan status", response.status);
+                        return;
+                    }
                     
                     const data = await response.json();
+                    console.log("WOTD: Data diterima", data);
                     
                     if (data.success && data.results && data.results.length > 0) {
                         const daily = data.results[0];
                         const popupWord = document.getElementById('popup-word');
                         const popupMeaning = document.getElementById('popup-meaning');
-                        const popupExample = document.getElementById('popup-example');
                         
                         if(popupWord) {
                             const dsnText = daily.dusun || daily.word || "";
-                            popupWord.innerHTML = `<span style="font-size: 0.35em; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-green); display: block; margin-bottom: 5px;">PALI/DSN</span>${dsnText}`;
-                            popupWord.style.fontSize = "3rem"; 
-                            popupWord.style.lineHeight = "1.2";
+                            popupWord.innerHTML = `<span style="font-size: 0.35em; letter-spacing: 2px; text-transform: uppercase; color: var(--emerald-green); display: block; margin-bottom: 5px;">PALI/DSN</span>${dsnText}`;
+                            popupWord.style.fontSize = "3.2rem"; 
                         }
                         if(popupMeaning) {
                             const idText = daily.indonesia || daily.meaning || daily.arti || "";
                             popupMeaning.innerHTML = `<span style="font-size: 0.6em; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); display: block; margin-bottom: 5px; margin-top: 15px;">ID</span>${idText}`;
                         }
                         
-                        if (popupExample) {
-                            popupExample.style.display = 'none'; // Sesuai permintaan: contohnya nggk usah
-                        }
-                        
                         setTimeout(() => {
                             const modal = document.getElementById('wotdModal');
                             if(modal) {
                                 modal.classList.add('active');
-                                localStorage.setItem('wotd_last_shown', today);
+                                if (!isDebugWotd) {
+                                    localStorage.setItem('wotd_last_shown', today);
+                                }
+                                console.log("WOTD: Modal ditampilkan.");
                             }
-                        }, 1000);
+                        }, 1200);
+                    } else {
+                        console.warn("WOTD: Tidak ada kata yang ditemukan di database.");
                     }
+                } else {
+                    console.log("WOTD: Sudah ditampilkan hari ini (Skip).");
                 }
-            } catch (err) { console.error("WOTD Error:", err); }
+            } catch (err) { 
+                console.error("WOTD Error:", err); 
+            }
             
             loadFolklore();
         }

@@ -39,36 +39,42 @@ module.exports = async (req, res) => {
         }
 
         if (!query) {
-            // Jika tidak ada query, kembalikan kata acak (bisa digunakan untuk WOTD)
+            // Jika tidak ada query, kembalikan kata acak (untuk WOTD)
             let dailyWord = null;
+
+            // 1. Coba ambil dari Supabase jika dikonfigurasi
             if (source === 'supabase' && supabase) {
                 try {
-                    const { data: dbData, error } = await supabase
+                    // Teknik random di Supabase: Ambil total count lalu gunakan offset
+                    const { count, error: countErr } = await supabase
                         .from('kamus_utama')
-                        .select('*')
-                        .limit(1)
-                        .order('id', { ascending: Math.random() > 0.5 });
+                        .select('*', { count: 'exact', head: true });
 
-                    if (!error && dbData && dbData.length > 0) {
-                        dailyWord = dbData[0];
+                    if (!countErr && count > 0) {
+                        const randomIndex = Math.floor(Math.random() * count);
+                        const { data: dbData, error: dbErr } = await supabase
+                            .from('kamus_utama')
+                            .select('*')
+                            .range(randomIndex, randomIndex)
+                            .single();
+
+                        if (!dbErr && dbData) {
+                            dailyWord = dbData;
+                        }
                     }
                 } catch (err) {
-                    console.error("Supabase daily word error:", err);
+                    console.error("Supabase random word error:", err);
                 }
             }
 
-            // Fallback to JSON source if Supabase fails or source is JSON
+            // 2. Fallback ke JSON jika Supabase gagal/tidak diaktifkan
             if (!dailyWord && kamusDataJSON && kamusDataJSON.length > 0) {
-                dailyWord = kamusDataJSON[Math.floor(Math.random() * kamusDataJSON.length)];
+                const randIndex = Math.floor(Math.random() * kamusDataJSON.length);
+                dailyWord = kamusDataJSON[randIndex];
             }
 
-            // Final safety check if everything failed
             if (!dailyWord) {
-                return res.status(200).json({
-                    success: true,
-                    isWotd: true,
-                    results: []
-                });
+                return res.status(200).json({ success: true, results: [] });
             }
 
             return res.status(200).json({
