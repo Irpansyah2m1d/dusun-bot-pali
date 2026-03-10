@@ -1989,12 +1989,237 @@ textarea.form-input {
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
 }
 
-#avatar-canvas {
+/* ========== 2D Avatar Scene ========== */
+.avatar-scene {
+    position: relative;
     width: 100%;
     height: 200px;
     flex-shrink: 0;
-    background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+    background: radial-gradient(ellipse at 50% 80%, rgba(16, 185, 129, 0.18) 0%, rgba(99, 102, 241, 0.12) 50%, rgba(15, 23, 42, 0) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
+
+/* Glow ring behind avatar */
+.avatar-glow-ring {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(99, 102, 241, 0.12) 55%, transparent 75%);
+    animation: glowPulse 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+}
+
+/* Floating particles */
+.avatar-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.avatar-particles span {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.55);
+    animation: particleFloat linear infinite;
+}
+
+.avatar-particles span:nth-child(1) {
+    width: 5px;
+    height: 5px;
+    left: 12%;
+    animation-duration: 5s;
+    animation-delay: 0s;
+}
+
+.avatar-particles span:nth-child(2) {
+    width: 4px;
+    height: 4px;
+    left: 28%;
+    animation-duration: 7s;
+    animation-delay: 1.2s;
+    background: rgba(99, 102, 241, 0.6);
+}
+
+.avatar-particles span:nth-child(3) {
+    width: 3px;
+    height: 3px;
+    left: 55%;
+    animation-duration: 4.5s;
+    animation-delay: 2s;
+}
+
+.avatar-particles span:nth-child(4) {
+    width: 6px;
+    height: 6px;
+    left: 70%;
+    animation-duration: 6s;
+    animation-delay: 0.5s;
+    background: rgba(99, 102, 241, 0.5);
+}
+
+.avatar-particles span:nth-child(5) {
+    width: 3px;
+    height: 3px;
+    left: 85%;
+    animation-duration: 5.5s;
+    animation-delay: 3s;
+}
+
+.avatar-particles span:nth-child(6) {
+    width: 4px;
+    height: 4px;
+    left: 40%;
+    animation-duration: 8s;
+    animation-delay: 1.8s;
+    background: rgba(251, 191, 36, 0.5);
+}
+
+.avatar-particles span:nth-child(7) {
+    width: 3px;
+    height: 3px;
+    left: 20%;
+    animation-duration: 6.5s;
+    animation-delay: 2.5s;
+    background: rgba(251, 191, 36, 0.4);
+}
+
+.avatar-particles span:nth-child(8) {
+    width: 5px;
+    height: 5px;
+    left: 62%;
+    animation-duration: 4s;
+    animation-delay: 0.8s;
+}
+
+@keyframes particleFloat {
+    0% {
+        bottom: -10px;
+        opacity: 0;
+        transform: translateX(0);
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 0.6;
+    }
+
+    100% {
+        bottom: 105%;
+        opacity: 0;
+        transform: translateX(20px);
+    }
+}
+
+/* Avatar 2D image wrapper with float + breathe */
+.avatar-2d-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
+    animation: avatarFloat 3.5s ease-in-out infinite;
+    filter: drop-shadow(0 8px 24px rgba(16, 185, 129, 0.35)) drop-shadow(0 0 40px rgba(99, 102, 241, 0.2));
+    z-index: 2;
+}
+
+@keyframes avatarFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px) scale(1);
+    }
+
+    30% {
+        transform: translateY(-8px) scale(1.01);
+    }
+
+    60% {
+        transform: translateY(-4px) scale(1.005);
+    }
+}
+
+.avatar-2d-img {
+    height: 165px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    border-radius: 0;
+    image-rendering: crisp-edges;
+}
+
+/* ---- Mouth overlay ---- */
+.avatar-mouth-el {
+    position: absolute;
+    bottom: 22%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a0a04;
+    border-radius: 50%;
+    transition: width 0.07s ease, height 0.07s ease, border-radius 0.07s ease;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+/* Mouth shapes */
+.avatar-mouth-el.shape-close {
+    width: 18px;
+    height: 3px;
+    border-radius: 4px;
+}
+
+.avatar-mouth-el.shape-a {
+    width: 22px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.avatar-mouth-el.shape-i {
+    width: 28px;
+    height: 5px;
+    border-radius: 4px;
+}
+
+.avatar-mouth-el.shape-u {
+    width: 12px;
+    height: 14px;
+    border-radius: 50%;
+}
+
+.avatar-mouth-el.shape-e {
+    width: 24px;
+    height: 8px;
+    border-radius: 30% 30% 50% 50%;
+}
+
+.avatar-mouth-el.shape-o {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
+
+
 
 .avatar-chat {
     flex: 1;

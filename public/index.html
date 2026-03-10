@@ -986,35 +986,36 @@
         }
 
         let avatarActive = false;
-        let scene, camera, renderer, avatar;
         function toggleAvatar() {
             const container = document.getElementById('avatar-container');
             avatarActive = !avatarActive;
             container.style.display = avatarActive ? 'flex' : 'none';
-            if(avatarActive && !scene) initAvatar();
         }
 
-        function initAvatar() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(45, 350 / 300, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('avatar-canvas'), antialias: true, alpha: true });
-            renderer.setSize(350, 300);
-            scene.add(new THREE.AmbientLight(0xffffff, 2));
-            camera.position.set(0, 1.4, 2.5);
-            const loader = new THREE.GLTFLoader();
-            loader.load('https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxAnimated/glTF/BoxAnimated.gltf', (gltf) => {
-                avatar = gltf.scene;
-                avatar.scale.set(0.5, 0.5, 0.5);
-                avatar.position.y = 0.5;
-                scene.add(avatar);
-                animate();
-            });
-        }
+        // Lip sync state
+        let mouthInterval = null;
+        const PHONEME_MAP = {
+            'a': 'shape-a', 'i': 'shape-i', 'u': 'shape-u',
+            'e': 'shape-e', 'o': 'shape-o'
+        };
 
-        function animate() { 
-            requestAnimationFrame(animate);
-            if(avatar) avatar.rotation.y += 0.01;
-            renderer.render(scene, camera);
+        function animateMouthFromText(text) {
+            const mouth = document.getElementById('avatar-mouth');
+            if (!mouth) return;
+            const chars = text.toLowerCase().split('');
+            let idx = 0;
+            clearInterval(mouthInterval);
+            mouthInterval = setInterval(() => {
+                if (idx >= chars.length) {
+                    clearInterval(mouthInterval);
+                    mouth.className = 'avatar-mouth-el shape-close';
+                    return;
+                }
+                const ch = chars[idx];
+                const shape = PHONEME_MAP[ch] || 'shape-close';
+                mouth.className = `avatar-mouth-el ${shape}`;
+                idx++;
+            }, 90);
         }
 
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -1082,9 +1083,11 @@
                 if (data.answer) {
                     responseEl.innerText = data.answer;
                     speak(data.answer);
+                    animateMouthFromText(data.answer);
                 } else if (data.reply) {
                     responseEl.innerText = data.reply;
                     speak(data.reply);
+                    animateMouthFromText(data.reply);
                 } else {
                     responseEl.innerText = data.error || "Maaf, saya sedang tidak enak badan.";
                 }
@@ -1130,7 +1133,23 @@
 
     <!-- Avatar Chat Container -->
     <div id="avatar-container">
-        <canvas id="avatar-canvas"></canvas>
+        <!-- 2D Avatar Scene -->
+        <div class="avatar-scene">
+            <!-- Particle layer -->
+            <div class="avatar-particles">
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+                <span></span><span></span>
+            </div>
+            <!-- Glow ring -->
+            <div class="avatar-glow-ring"></div>
+            <!-- Avatar image floating -->
+            <div class="avatar-2d-wrapper">
+                <img src="/avatar.png" alt="avatar" class="avatar-2d-img" />
+                <!-- CSS Mouth overlay -->
+                <div id="avatar-mouth" class="avatar-mouth-el shape-close"></div>
+            </div>
+        </div>
         <div class="avatar-chat">
             <div class="avatar-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <span id="chat-mode-text" style="font-size: 0.8rem; color: var(--text-dim); font-weight: 500;">Mode: Indonesia (AI)</span>
