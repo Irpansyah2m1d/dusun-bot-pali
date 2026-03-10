@@ -2160,7 +2160,7 @@ textarea.form-input {
 }
 
 .avatar-2d-img {
-    height: 165px;
+    height: 185px;
     width: auto;
     object-fit: contain;
     display: block;
@@ -2171,7 +2171,7 @@ textarea.form-input {
 /* ---- Mouth overlay ---- */
 .avatar-mouth-el {
     position: absolute;
-    bottom: 22%;
+    bottom: 47%;
     left: 50%;
     transform: translateX(-50%);
     background: #1a0a04;
@@ -2219,7 +2219,60 @@ textarea.form-input {
     border-radius: 50%;
 }
 
+/* ---- Bot Name Label ---- */
+.avatar-name-label {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--emerald-green);
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+}
 
+/* ---- Eye overlays for blink animation ---- */
+.avatar-eye {
+    position: absolute;
+    background: #110808;
+    border-radius: 50%;
+    pointer-events: none;
+    transform-origin: center center;
+    z-index: 5;
+}
+
+@keyframes eyeBlink {
+
+    0%,
+    92%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    96% {
+        transform: scaleY(0.05);
+    }
+}
+
+.avatar-eye.eye-left {
+    width: 10px;
+    height: 10px;
+    bottom: 67%;
+    left: 38%;
+    animation: eyeBlink 4s ease-in-out infinite;
+}
+
+.avatar-eye.eye-right {
+    width: 10px;
+    height: 10px;
+    bottom: 67%;
+    right: 34%;
+    animation: eyeBlink 4s ease-in-out infinite 0.05s;
+}
 
 .avatar-chat {
     flex: 1;
