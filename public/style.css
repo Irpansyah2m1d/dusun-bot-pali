@@ -2936,3 +2936,88 @@ textarea.form-input {
 .tour-speech-bubble.active.tour-unflip {
     animation: slideToLeftBubble 1s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
 }
+
+/* ------------------- RESPONSIF UNTUK TOUR ------------------- */
+@media (max-width: 768px) {
+    @keyframes flyOutTourMobile {
+        0% {
+            transform: translate(calc(100vw - 150px), -80px) scale(1.5);
+        }
+
+        20% {
+            transform: translate(calc(80vw - 100px), -40vh) scale(0.3);
+        }
+
+        60% {
+            transform: translate(calc(30vw), -45vh) scale(0.3);
+        }
+
+        85% {
+            transform: translate(0, -10vh) scale(0.7);
+        }
+
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+    }
+
+    @keyframes flyBackTourMobile {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        100% {
+            transform: translate(calc(100vw - 150px), -80px) scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    #avatar-container.tour-mode {
+        width: 140px !important;
+        height: 196px !important;
+        bottom: 20px !important;
+        left: 20px !important;
+        animation: flyOutTourMobile 1.2s ease-in-out forwards !important;
+    }
+
+    #avatar-container.tour-fly-back {
+        animation: flyBackTourMobile 1s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+    }
+
+    #avatar-container.tour-mode .avatar-2d-img {
+        width: 125px !important;
+    }
+
+    #avatar-container.tour-mode .avatar-glow-ring {
+        width: 140px !important;
+        height: 140px !important;
+    }
+
+    /* Jangan pindah kanan/kiri di mobile, matikan animasi flip */
+    #avatar-container.tour-mode.tour-flip,
+    #avatar-container.tour-mode.tour-unflip,
+    .tour-speech-bubble.active.tour-flip,
+    .tour-speech-bubble.active.tour-unflip {
+        animation: none !important;
+        transform: translate(0, 0) scale(1) !important;
+    }
+
+    .tour-speech-bubble {
+        bottom: 220px !important;
+        left: 20px !important;
+        right: 20px !important;
+        max-width: none !important;
+        padding: 15px 20px !important;
+        font-size: 0.95rem !important;
+    }
+
+    .tour-speech-bubble::before {
+        left: 50px !important;
+    }
+
+    .tour-speech-bubble.active.tour-flip::before {
+        right: auto !important;
+        left: 50px !important;
+        /* Tetap menunjuk ke avatar karena ga pindah letak avatar */
+    }
+}
