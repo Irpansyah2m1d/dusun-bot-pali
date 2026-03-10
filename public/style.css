@@ -3020,4 +3020,43 @@ textarea.form-input {
         left: 50px !important;
         /* Tetap menunjuk ke avatar karena ga pindah letak avatar */
     }
+
+    /* ---- Jendela Chat Avatar di Mobile ---- */
+    #avatar-container {
+        width: calc(100vw - 40px) !important;
+        max-width: 320px !important;
+        height: 440px !important;
+        bottom: 80px !important;
+        right: 20px !important;
+        border-radius: 28px !important;
+    }
+
+    .avatar-scene {
+        height: 150px !important;
+    }
+
+    .avatar-2d-img {
+        width: 100px !important;
+    }
+
+    .avatar-glow-ring {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .avatar-chat {
+        padding: 12px !important;
+    }
+
+    #avatar-response {
+        font-size: 0.82rem !important;
+    }
+
+    .btn-avatar-toggle {
+        width: 55px !important;
+        height: 55px !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        font-size: 1.4rem !important;
+    }
 }
