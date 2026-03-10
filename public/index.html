@@ -1119,6 +1119,12 @@
                                 kInput.dispatchEvent(new Event('input', { bubbles: true }));
                                 await new Promise(r => setTimeout(r, 150));
                             }
+                            // Setelah selesai ngetik, tunggu hasil muncul lalu scroll ke hasil terjemahan
+                            await new Promise(r => setTimeout(r, 1000));
+                            const kamusResultEl = document.getElementById('kamus-result');
+                            if (kamusResultEl) {
+                                kamusResultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
                         }, 500); // Mulai ngetik sedikit setelah dia bicara
                     }
                 }
