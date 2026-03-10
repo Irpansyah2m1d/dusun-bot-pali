@@ -990,6 +990,13 @@
             const container = document.getElementById('avatar-container');
             avatarActive = !avatarActive;
             container.style.display = avatarActive ? 'flex' : 'none';
+            
+            if (avatarActive) {
+                const welcomeMsg = "Halo lur! Aku Sagarurung Bot, asisten digital PALI yang asik. Aku bisa bahasa Indonesia dan bahasa Dusun lho. Mau tanya-tanya apa kita hari ini?";
+                document.getElementById('avatar-response').innerText = welcomeMsg;
+                speak(welcomeMsg);
+                animateMouthFromText(welcomeMsg);
+            }
         }
 
         // Lip sync state
@@ -1172,7 +1179,7 @@
                     <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-dim);">DSN</span>
                 </div>
             </div>
-            <div id="avatar-response">Halo! Aku Sagarurung Bot. Tanyakan apa saja ya!</div>
+            <div id="avatar-response">Halo! Aku Sagarurung Bot, asisten digital PALI yang siap nemenin kamu belajar bahasa daerah. Mau tanya apa hari ini?</div>
             <div class="avatar-input-area">
                 <button class="btn-primary mic-btn" style="background: var(--emerald-green); color: #0f172a; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer;" onclick="startListening()">🎤 Bicara</button>
                 <button class="btn-secondary" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer;" onclick="toggleAvatar()">Tutup</button>
