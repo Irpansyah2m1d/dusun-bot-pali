@@ -33,7 +33,7 @@
     <meta name="twitter:image" content="https://dusun-bot-pali.vercel.app/dusun-bot.png">
     <meta name="twitter:image:alt" content="Dusun Bot PALI Logo">
 
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <link rel="stylesheet" href="style.css?v=1.2">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1041,7 +1041,7 @@
             const tourSteps = [
                 { id: null, msg: "Halo lur! Mari aku antar berkeliling di Website Dusun Bot Kamus Bahasa PALI ini" },
                 { id: 'wisdom-text', msg: "Ini adalah bagian Nasehat. Di sini kamu bisa melihat kutipan bijak warisan leluhur kita dalam bahasa Dusun." },
-                { id: 'kamus-live', msg: "Ini fitur andalan kita, Kamus Digital PALI. Ada ribuan kosa kata yang bisa kamu cari secara live. Sambil aku ketik kata 'cantik' ya..", action: 'type_kamus' },
+                { id: 'kamus-live', msg: "Ini fitur andalan kita, Kamus Digital PALI. Ada ribuan kosa kata yang bisa kamu cari secara live.", action: 'type_kamus' },
                 { id: 'collab-preview', msg: "Project ini murni buatan komunitas. Buat kalian yang ngga nemu suatu kosakata, kalian bisa banget nambahin kosakata baru agar terdaftar sebagai kontributor!", action: 'open_collab' },
                 { id: 'folklore-grid', msg: "Lalu di sini ada Cerita Rakyat Digital. Kumpulan legenda Bumi Serepat Serasan yang sudah didigitalisasi.", action: 'flip_avatar' },
                 { id: 'features', msg: "Kita menggunakan teknologi AI terbaru untuk memastikan dialek PALI tetap relevan di era digital." },
@@ -1099,6 +1099,9 @@
                     openContributorsModal();
                 } else if (step.action === 'flip_avatar') {
                     // Pindah ke kanan
+                    avatarContainer.classList.remove('tour-unflip');
+                    speechBubble.classList.remove('tour-unflip');
+                    void avatarContainer.offsetWidth; // pancing reflow untuk restart animasi
                     avatarContainer.classList.add('tour-flip');
                     speechBubble.classList.add('tour-flip');
                 } else if (step.action === 'type_kamus') {
