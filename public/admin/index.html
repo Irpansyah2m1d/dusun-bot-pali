@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Overview | Admin Dusun PALI</title>
+    <link rel="icon" type="image/png" href="/dusun-bot.png">
     <link rel="stylesheet" href="/admin/admin-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/admin/auth-check.js"></script>
 </head>
 <body>
@@ -57,15 +59,37 @@
                     <div class="stat-info"><span class="val" id="stats-folklore-count">...</span><span class="label">Cerita Rakyat</span></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-graduation-cap"></i></div>
                     <div class="stat-info"><span class="val" id="stats-learned">...</span><span class="label">Hasil Belajar AI</span></div>
                 </div>
             </div>
 
-            <div class="dashboard-card">
-                <div class="card-header"><h3><i class="fas fa-clock-rotate-left"></i> Aktifitas Terakhir</h3></div>
-                <p style="color: var(--text-dim);">Review usulan kosakata terbaru untuk mengembangkan Pustaka Dusun PALI.</p>
-                <div id="mini-words-preview" style="margin-top: 25px;">Memuat data...</div>
+            <!-- Analytics Charts -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 40px;">
+                <div class="dashboard-card" style="margin-bottom: 0;">
+                    <div class="card-header"><h3><i class="fas fa-chart-line"></i> Tren Pengunjung (7 Hari Terakhir)</h3></div>
+                    <div style="height: 300px; width: 100%;"><canvas id="chart-visitors"></canvas></div>
+                </div>
+                <div class="dashboard-card" style="margin-bottom: 0;">
+                    <div class="card-header"><h3><i class="fas fa-magnifying-glass-chart"></i> Volume Pencarian Kata</h3></div>
+                    <div style="height: 300px; width: 100%;"><canvas id="chart-searches"></canvas></div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 40px;">
+                <div class="dashboard-card" style="margin-bottom: 0;">
+                    <div class="card-header"><h3><i class="fas fa-clock-rotate-left"></i> Aktifitas Terakhir</h3></div>
+                    <p style="color: var(--text-dim);">Review usulan kosakata terbaru untuk mengembangkan Pustaka Dusun PALI.</p>
+                    <div id="mini-words-preview" style="margin-top: 25px;">Memuat data...</div>
+                </div>
+
+                <div class="dashboard-card" style="margin-bottom: 0; border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <div class="card-header"><h3 style="color: #10b981;"><i class="fas fa-fire"></i> Top 5 Pencarian (Bulan Ini)</h3></div>
+                    <p style="color: var(--text-dim);">Kata yang paling sering dicari oleh pengguna dalam 30 hari terakhir.</p>
+                    <div id="top-words-container" style="margin-top: 15px; border-radius: 12px; background: rgba(0,0,0,0.2); overflow: hidden;">
+                        Memuat data...
+                    </div>
+                </div>
             </div>
 
             <div class="dashboard-card" style="border: 1px solid rgba(245,158,11,0.2);">
@@ -102,13 +126,20 @@
                     mini.innerHTML = "<p style='color: var(--text-dim);'>Semua usulan telah diproses.</p>";
                 }
 
-                // Load folklore count
-                const resF = await fetch('/api/cerita-rakyat');
-                const dataF = await resF.json();
-                document.getElementById('stats-folklore-count').innerText = (dataF.data || []).length;
+                // Load Dashboard Statistics (Unified)
+                const resStats = await fetch('/api/admin-usulan?type=dashboard-stats', { 
+                    headers: { 'Authorization': `Bearer ${token}` } 
+                });
+                const statsData = await resStats.json();
                 
-                // Load total kamus (can fetch from /api/kamus or admin total)
-                document.getElementById('stats-total').innerText = "2.8rb+";
+                if (statsData.success) {
+                    document.getElementById('stats-total').innerText = statsData.counts.kamus.toLocaleString();
+                    document.getElementById('stats-folklore-count').innerText = statsData.counts.cerita;
+                    document.getElementById('stats-learned').innerText = statsData.counts.learned;
+                    
+                    // Render Charts
+                    renderAnalyticsCharts(statsData.analytics);
+                }
 
                 // Load AI Learned count + feed
                 const resL = await fetch('/api/ai-learned');
@@ -138,6 +169,102 @@
                     }
                 }
             } catch (err) { console.error(err); }
+        }
+
+        function renderAnalyticsCharts(data) {
+            const days = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                days.push(d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' }));
+            }
+
+            const visitorCounts = new Array(7).fill(0);
+            const searchCounts = new Array(7).fill(0);
+            
+            const wordCounts = {};
+
+            data.forEach(item => {
+                const itemDate = new Date(item.created_at).toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' });
+                const idx = days.indexOf(itemDate);
+                
+                if (item.event_type === 'visitor') {
+                    // Cek jika datanya ada di metadata.visitors (format baru)
+                    const vCount = item.metadata && Array.isArray(item.metadata.visitors) ? item.metadata.visitors.length : 1;
+                    if (idx !== -1) visitorCounts[idx] += vCount;
+                } else if (item.event_type === 'search') {
+                    // Cek jika datanya array di metadata.queries (format baru)
+                    if (item.metadata && Array.isArray(item.metadata.queries)) {
+                        if (idx !== -1) searchCounts[idx] += item.metadata.queries.length;
+                        
+                        // Hitung kata untuk Top 5 (menggunakan data 30 hari penuh)
+                        item.metadata.queries.forEach(q => {
+                            const w = (q.query || "").toLowerCase().trim();
+                            if (w) wordCounts[w] = (wordCounts[w] || 0) + 1;
+                        });
+                    } else {
+                        // Data format lama (fallback)
+                        if (idx !== -1) searchCounts[idx] += 1;
+                        const w = (item.query || "").toLowerCase().trim();
+                        if (w && w !== 'daily_summary') wordCounts[w] = (wordCounts[w] || 0) + 1;
+                    }
+                }
+            });
+
+            // --- Rendel List Top 5 Pencarian (30 Hari) ---
+            const topWords = Object.entries(wordCounts)
+                .sort((a, b) => b[1] - a[1]) // urut dari terbanyak
+                .slice(0, 5); // ambil 5 besar
+            
+            let htmlTop = '';
+            if (topWords.length > 0) {
+                htmlTop = topWords.map((entry, i) => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div>
+                            <span style="display:inline-block; width: 24px; height: 24px; background: rgba(16,185,129,0.1); color: #10b981; text-align: center; border-radius: 50%; line-height: 24px; font-size: 0.8rem; margin-right: 10px;">${i+1}</span>
+                            <strong style="color: white; text-transform: capitalize;">${entry[0]}</strong>
+                        </div>
+                        <span style="color: var(--emerald-green); font-weight: 700;">${entry[1]}x dicari</span>
+                    </div>
+                `).join('');
+            } else {
+                htmlTop = '<p style="color: var(--text-dim); padding: 15px;">Belum ada data pencarian yang cukup bulan ini.</p>';
+            }
+            document.getElementById('top-words-container').innerHTML = htmlTop;
+
+            // Visitors Chart
+            new Chart(document.getElementById('chart-visitors'), {
+                type: 'line',
+                data: {
+                    labels: days,
+                    datasets: [{
+                        label: 'Pengunjung',
+                        data: visitorCounts,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+            });
+
+            // Searches Chart
+            new Chart(document.getElementById('chart-searches'), {
+                type: 'line',
+                data: {
+                    labels: days,
+                    datasets: [{
+                        label: 'Pencarian',
+                        data: searchCounts,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+            });
         }
 
         window.onload = loadDashboardStats;

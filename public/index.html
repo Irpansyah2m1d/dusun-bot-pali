@@ -879,6 +879,20 @@
             document.getElementById('wotdModal').classList.remove('active');
             window.speechSynthesis.cancel();
         }
+        // Global Utilities
+        function typeText(element, text, speed = 40) {
+            if (!element) return;
+            element.innerText = "";
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, speed);
+        }
 
         async function initDusunWidgets() {
             let nasehatData = proverbs;
@@ -938,11 +952,11 @@
                                 if (!isDebugWotd) {
                                     localStorage.setItem('wotd_last_shown', today);
                                 }
-                                console.log("WOTD: Modal ditampilkan.");
+                        console.log("WOTD: Modal ditampilkan.");
                             }
                         }, 1200);
                     } else {
-                        console.warn("WOTD: Tidak ada kata yang ditemukan di database.");
+                        console.warn("WOTD: Tidak ada kata yang ditemukan (Success false atau Results Kosong).", data);
                     }
                 } else {
                     console.log("WOTD: Sudah ditampilkan hari ini (Skip).");
@@ -996,14 +1010,24 @@
                 moreContainer.style.display = 'none';
             }
 
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.5);"><div style="font-size: 3rem; margin-bottom: 15px;">📭</div><p style="font-size: 1.1rem;">Belum ada cerita untuk kategori ini.</p></div>';
+                moreContainer.style.display = 'none';
+                return;
+            }
+
             grid.innerHTML = displayed.map(item => `
                 <article class="folklore-card" onclick="openCerita('${item.slug || 'detail'}', ${item.id})" style="position:relative;">
                     <div class="category-badge">${item.category || 'Sejarah'}</div>
                     <img src="${item.image_url || '/gallery/heritage.png'}" class="folklore-img" alt="${item.title}">
                     <div class="folklore-card-body">
-                        <h3 style="font-size: 1.1rem; margin-bottom: 8px;">${item.title}</h3>
-                        <p style="font-size: 0.85rem; -webkit-line-clamp: 2;">${item.excerpt || 'Klik untuk membaca...'}</p>
-                        <span class="read-more" style="font-size: 0.8rem;">Baca ➔</span>
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;">${item.title}</h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">
+                            ${item.penulis ? `<span style="font-size: 0.75rem; color: #10b981;"><i class="fas fa-pen-nib" style="margin-right: 4px;"></i>${item.penulis}</span>` : ''}
+                            ${item.asal ? `<span style="font-size: 0.7rem; color: var(--text-dim); font-style: italic;"><i class="fas fa-map-marker-alt" style="margin-right: 4px;"></i>${item.asal}</span>` : ''}
+                        </div>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">${item.excerpt ? item.excerpt.split('.')[0] + '...' : 'Klik untuk membaca...'}</p>
+                        <span class="read-more" style="font-size: 0.8rem; margin-top: 10px; display: inline-block;">Baca ➔</span>
                     </div>
                 </article>
             `).join('');
@@ -1406,19 +1430,6 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        function typeText(element, text, speed = 40) {
-            if (!element) return;
-            element.innerText = "";
-            let i = 0;
-            const timer = setInterval(() => {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(timer);
-                }
-            }, speed);
-        }
 
         function handleTyping(e) {
             if (e.key === 'Enter') sendChat();
@@ -1479,6 +1490,31 @@
             console.log("Dusun Bot Page Loaded");
             loadContributors();
             initDusunWidgets();
+
+            // Log unique daily visitor event (non-blocking)
+            const today = new Date().toDateString();
+            const lastLog = localStorage.getItem('last_visitor_log');
+            
+            if (lastLog !== today) {
+                // Ensure unique ID for the visitor if not exists
+                let vId = localStorage.getItem('visitor_id');
+                if (!vId) {
+                    vId = 'v_' + Math.random().toString(36).substr(2, 9) + Date.now();
+                    localStorage.setItem('visitor_id', vId);
+                }
+
+                fetch('/api/analytics', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        type: 'visitor',
+                        metadata: { visitor_id: vId }
+                    })
+                }).then(() => {
+                    localStorage.setItem('last_visitor_log', today);
+                }).catch(() => {});
+            }
+            
 
             // Sync mute button icon
             const btn = document.getElementById('mute-btn');

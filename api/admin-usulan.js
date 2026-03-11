@@ -25,6 +25,37 @@ module.exports = async (req, res) => {
                 return res.status(200).json({ success: true, source: data ? data.key_value : 'json' });
             }
 
+            if (type === 'dashboard-stats') {
+                try {
+                    // Get all counts in parallel for performance
+                    const [ kamus, usulan, cerita, learned, analytics ] = await Promise.all([
+                        supabase.from('kamus_utama').select('id', { count: 'exact', head: true }),
+                        supabase.from('usulan_kosakata').select('id', { count: 'exact', head: true }),
+                        supabase.from('cerita_rakyat').select('id', { count: 'exact', head: true }),
+                        supabase.from('pali_ai_knowledge').select('id', { count: 'exact', head: true }),
+                        supabase.from('app_analytics').select('*').gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+                    ]);
+
+                    return res.status(200).json({
+                        success: true,
+                        counts: {
+                            kamus: kamus?.count || 0,
+                            usulan: usulan?.count || 0,
+                            cerita: cerita?.count || 0,
+                            learned: learned?.count || 0
+                        },
+                        analytics: analytics?.data || []
+                    });
+                } catch (err) {
+                    console.warn("Stats retrieval partially failed (check if tables exist):", err.message);
+                    return res.status(200).json({
+                        success: true,
+                        counts: { kamus: 0, usulan: 0, cerita: 0, learned: 0 },
+                        analytics: []
+                    });
+                }
+            }
+
             if (type === 'kamus') {
                 const { data, error } = await supabase
                     .from('kamus_utama')
@@ -142,15 +173,33 @@ module.exports = async (req, res) => {
                 const { id } = payload;
                 if (!id) return res.status(400).json({ success: false, message: 'ID diperlukan.' });
 
+                // Ambil data lama untuk hapus audio
+                const { data: oldData } = await supabase.from('kamus_utama').select('audio_url').eq('id', id).single();
+                if (oldData && oldData.audio_url) {
+                    const filename = oldData.audio_url.split('/').pop();
+                    await supabase.storage.from('audio-kamus').remove([filename]).catch(e => console.error("Gagal hapus file storage:", e));
+                }
+
                 const { error } = await supabase.from('kamus_utama').delete().eq('id', id);
                 if (error) return res.status(500).json({ success: false, message: 'Gagal menghapus kosa kata.' });
-                return res.status(200).json({ success: true, message: 'Kosa kata berhasil dihapus.' });
+                return res.status(200).json({ success: true, message: 'Kosa kata & file audio (jika ada) berhasil dihapus.' });
             }
 
             if (action === 'UPDATE_KAMUS_ITEM') {
                 if (!payload) return res.status(400).json({ success: false, message: 'Payload needed.' });
-                const { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url } = payload;
+                const { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url, delete_audio } = payload;
                 if (!id) return res.status(400).json({ success: false, message: 'ID (ID kosa kata) wajib ada untuk update.' });
+
+                // Cek data lama jika diupdate/delete audio-nya
+                const { data: oldData } = await supabase.from('kamus_utama').select('audio_url').eq('id', id).single();
+                
+                // Jika user hapus audio, atau rekam audio baru (URL berubah), maka hapus file lama di storage
+                if (oldData && oldData.audio_url && (delete_audio || oldData.audio_url !== audio_url)) {
+                    const filename = oldData.audio_url.split('/').pop();
+                    await supabase.storage.from('audio-kamus').remove([filename]).catch(e => console.error("Gagal replace file storage:", e));
+                }
+
+                const finalAudioUrl = delete_audio && audio_url === oldData?.audio_url ? null : audio_url;
 
                 const { error: updateError } = await supabase
                     .from('kamus_utama')
@@ -159,7 +208,7 @@ module.exports = async (req, res) => {
                         dusun: dusun?.trim(), 
                         contoh_id: contoh_id?.trim(), 
                         contoh_dusun: contoh_dusun?.trim(), 
-                        audio_url: audio_url 
+                        audio_url: finalAudioUrl 
                     })
                     .eq('id', id);
 

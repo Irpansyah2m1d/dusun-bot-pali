@@ -41,15 +41,15 @@ module.exports = async (req, res) => {
         if (!decoded) return res.status(401).json({ success: false, message: 'Unauthorized.' });
 
         if (req.method === 'POST') {
-            const { title, slug, excerpt, content, image_url, category } = req.body;
-            const { error } = await supabase.from('cerita_rakyat').insert([{ title, slug, excerpt, content, image_url, category: category || 'Sejarah', created_at: new Date().toISOString() }]);
+            const { title, slug, excerpt, content, image_url, category, penulis, instagram, asal } = req.body;
+            const { error } = await supabase.from('cerita_rakyat').insert([{ title, slug, excerpt, content, image_url, category: category || 'Sejarah', penulis, instagram, asal, created_at: new Date().toISOString() }]);
             if (error) return res.status(500).json({ success: false, message: error.message });
             return res.status(200).json({ success: true, message: 'Berhasil menambah.' });
         }
 
         if (req.method === 'PUT') {
-            const { id, title, slug, excerpt, content, image_url, category } = req.body;
-            const { error } = await supabase.from('cerita_rakyat').update({ title, slug, excerpt, content, image_url, category }).eq('id', id);
+            const { id, title, slug, excerpt, content, image_url, category, penulis, instagram, asal } = req.body;
+            const { error } = await supabase.from('cerita_rakyat').update({ title, slug, excerpt, content, image_url, category, penulis, instagram, asal }).eq('id', id);
             if (error) return res.status(500).json({ success: false, message: error.message });
             return res.status(200).json({ success: true, message: 'Berhasil update.' });
         }

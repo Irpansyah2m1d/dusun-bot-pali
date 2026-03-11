@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moderasi Kosakata | Admin Dusun PALI</title>
+    <link rel="icon" type="image/png" href="/dusun-bot.png">
     <link rel="stylesheet" href="/admin/admin-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/admin/auth-check.js"></script>
@@ -147,14 +148,15 @@
                     <button class="btn-dash btn-dash-delete" onclick="stopRecording()" style="padding: 5px 12px; font-size: 0.8rem;">Stop</button>
                 </div>
                 <div id="recorded-audio-preview" style="display: none; margin-top: 10px; align-items: center; gap: 10px; background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 8px;">
-                    <button onclick="playRecordedAudio()" class="btn-dash btn-dash-edit" style="width: 40px; height: 40px; border-radius: 50%;"><i class="fas fa-play"></i></button>
+                    <button onclick="playRecordedAudio(this)" class="btn-dash btn-dash-edit" style="width: 40px; height: 40px; border-radius: 50%;"><i class="fas fa-play"></i></button>
                     <span style="font-size: 0.8rem; color: var(--accent-green);">Rekaman Tersimpan</span>
-                    <button onclick="discardRecording()" class="btn-dash btn-dash-delete" style="padding: 5px 12px; font-size: 0.8rem;">Hapus</button>
+                    <button onclick="discardRecording()" class="btn-dash btn-dash-delete" style="padding: 5px 12px; font-size: 0.8rem; margin-left: auto;">Hapus</button>
                 </div>
                 <small id="current-audio" style="color: var(--text-dim); margin-top: 5px; display: block;"></small>
                 <div id="existing-audio-preview" style="display: none; margin-top: 10px; align-items: center; gap: 10px; background: rgba(59, 130, 246, 0.1); padding: 10px; border-radius: 8px;">
                     <button onclick="playExistingAudio(this)" class="btn-dash btn-dash-primary" style="width: 40px; height: 40px; border-radius: 50%;"><i class="fas fa-volume-up"></i></button>
                     <span style="font-size: 0.8rem; color: var(--accent-color);">Audio Saat Ini</span>
+                    <button onclick="markExistingAudioForDeletion()" class="btn-dash btn-dash-delete" style="padding: 5px 12px; font-size: 0.8rem; margin-left: auto;">Hapus</button>
                 </div>
             </div>
             
@@ -393,6 +395,7 @@
         let startTime;
         let currentEditItem = null;
         let isAddMode = false;
+        let deleteAudioFlag = false;
 
         function openAddModal() {
             isAddMode = true;
@@ -478,11 +481,21 @@
             document.getElementById('recording-timer').innerText = `${mins}:${secs}`;
         }
 
-        function playRecordedAudio() {
+        function playRecordedAudio(btn) {
             if (recordedBlob) {
                 const url = URL.createObjectURL(recordedBlob);
                 const audio = new Audio(url);
+                const icon = btn.querySelector('i');
+                
+                btn.classList.add('playing');
+                icon.className = 'fas fa-volume-up';
+                
                 audio.play();
+                
+                audio.onended = () => {
+                    btn.classList.remove('playing');
+                    icon.className = 'fas fa-play';
+                };
             }
         }
 
@@ -511,6 +524,7 @@
         // --- Edit Modal Logic ---
         function openEditModal(item) {
             isAddMode = false;
+            deleteAudioFlag = false;
             currentEditItem = item;
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Kosa Kata';
             document.getElementById('edit-id').value = item.id;
@@ -529,6 +543,13 @@
 
             discardRecording();
             document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function markExistingAudioForDeletion() {
+            deleteAudioFlag = true;
+            document.getElementById('existing-audio-preview').style.display = 'none';
+            document.getElementById('current-audio').innerText = 'Audio akan dihapus saat disimpan.';
+            document.getElementById('current-audio').style.color = '#ef4444';
         }
 
         function playExistingAudio(btn) {
@@ -568,7 +589,7 @@
 
             setBtnLoading(btnId, true);
 
-            let audioUrl = isAddMode ? null : currentEditItem.audio_url;
+            let audioUrl = isAddMode || deleteAudioFlag ? null : currentEditItem.audio_url;
 
             // Handle Audio Upload (File or Recording)
             let audioToUpload = null;
@@ -604,7 +625,7 @@
             // Save to DB
             try {
                 const action = isAddMode ? 'ADD_KAMUS_ITEM' : 'UPDATE_KAMUS_ITEM';
-                const payload = { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url: audioUrl };
+                const payload = { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url: audioUrl, delete_audio: deleteAudioFlag };
 
                 const res = await fetch('/api/admin-usulan', {
                     method: 'POST',

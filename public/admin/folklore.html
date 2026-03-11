@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Cerita Rakyat | Admin Dusun PALI</title>
+    <link rel="icon" type="image/png" href="/dusun-bot.png">
     <link rel="stylesheet" href="/admin/admin-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/admin/auth-check.js"></script>
@@ -68,6 +69,7 @@
                     </div>
                     <div class="input-group">
                         <label>Foto Sampul Cerita (Upload/URL)</label>
+                        <small style="display: block; color: var(--text-dim); margin-bottom: 8px; font-weight: normal;"><i>Rekomendasi rasio gambar 16:9 (misal: 1280x720) dan ukuran maksimal 500KB.</i></small>
                         <div style="display: flex; gap: 10px;">
                             <input type="text" id="folklore-image" class="dash-input" placeholder="https://example.com/foto.jpg" style="flex: 1;">
                             <label class="btn-dash btn-dash-edit" style="cursor: pointer; margin-bottom: 0; padding: 12px 18px;">
@@ -78,6 +80,18 @@
                             <img id="image-preview" src="" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; border: 1px solid var(--glass-border);">
                             <p style="font-size: 0.75rem; color: var(--accent-green); margin-top: 5px;">Gambar siap disimpan!</p>
                         </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Penulis / Narator</label>
+                        <input type="text" id="folklore-penulis" class="dash-input" placeholder="Nama Penulis">
+                    </div>
+                    <div class="input-group">
+                        <label>Instagram Penulis (Tanpa @)</label>
+                        <input type="text" id="folklore-instagram" class="dash-input" placeholder="username_ig">
+                    </div>
+                    <div class="input-group">
+                        <label>Asal Cerita Lengkap</label>
+                        <input type="text" id="folklore-asal" class="dash-input" placeholder="Misal: Ds. Bumi Ayu, Kec. Tanah Abang">
                     </div>
                     <div class="input-group full">
                         <label>Ringkasan Pendek (Excerpt)</label>
@@ -168,6 +182,9 @@
             document.getElementById('folklore-content').value = item.content;
             document.getElementById('folklore-image').value = item.image_url || "";
             document.getElementById('folklore-category').value = item.category || "Sejarah";
+            document.getElementById('folklore-penulis').value = item.penulis || "";
+            document.getElementById('folklore-instagram').value = item.instagram || "";
+            document.getElementById('folklore-asal').value = item.asal || "";
             
             if (item.image_url) {
                 document.getElementById('image-preview').src = item.image_url;
@@ -188,6 +205,9 @@
             document.getElementById('folklore-content').value = "";
             document.getElementById('folklore-image').value = "";
             document.getElementById('folklore-category').value = "Sejarah";
+            document.getElementById('folklore-penulis').value = "";
+            document.getElementById('folklore-instagram').value = "";
+            document.getElementById('folklore-asal').value = "";
             document.getElementById('image-preview-container').classList.add('hidden');
             
             document.getElementById('btn-text-folklore').innerText = "Simpan Cerita";
@@ -241,7 +261,10 @@
                 excerpt: document.getElementById('folklore-excerpt').value,
                 content: document.getElementById('folklore-content').value,
                 image_url: document.getElementById('folklore-image').value,
-                category: document.getElementById('folklore-category').value
+                category: document.getElementById('folklore-category').value,
+                penulis: document.getElementById('folklore-penulis').value,
+                instagram: document.getElementById('folklore-instagram').value,
+                asal: document.getElementById('folklore-asal').value
             };
 
             if(!payload.title || !payload.content) return alert("Judul sama Isi jangan dikosongin ya.");
