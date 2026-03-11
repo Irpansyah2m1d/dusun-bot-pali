@@ -257,6 +257,14 @@ body {
     0% { background-position: -1000px 0; }
     100% { background-position: 1000px 0; }
 }
+
+.skeleton-row, .skeleton-block {
+    background: linear-gradient(to right, rgba(255,255,255,0.02) 4%, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.02) 36%) !important;
+    background-size: 1000px 100% !important;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 8px;
+}
+
 .skeleton-row td {
     background: linear-gradient(to right, rgba(255,255,255,0.02) 4%, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.02) 36%) !important;
     background-size: 1000px 100% !important;

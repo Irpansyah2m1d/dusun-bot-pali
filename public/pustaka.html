@@ -6,6 +6,7 @@
     <title>Pustaka Digital PALI | Cerita Rakyat & Sejarah</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/png" href="/dusun-bot.png">
     <style>
         .pustaka-page { padding: 80px 5% 60px; max-width: 1200px; margin: 0 auto; }
@@ -54,6 +55,8 @@
         <div class="folklore-grid" id="pustaka-grid">
             <!-- Data -->
         </div>
+        <!-- Back to Top -->
+        <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
     </main>
 
     <script>
@@ -123,6 +126,30 @@
         mobileMenu.addEventListener('click', () => {
             mobileMenu.classList.toggle('active');
             navLinks.classList.toggle('active');
+        });
+
+        // Visitor Tracking & Back to Top Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toDateString();
+            const lastLog = localStorage.getItem('last_visitor_log');
+            if (lastLog !== today) {
+                let vId = localStorage.getItem('visitor_id') || ('v_' + Math.random().toString(36).substr(2, 9) + Date.now());
+                localStorage.setItem('visitor_id', vId);
+                fetch('/api/analytics', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'visitor', metadata: { visitor_id: vId } })
+                }).then(() => localStorage.setItem('last_visitor_log', today)).catch(() => {});
+            }
+
+            const backToTop = document.getElementById('backToTop');
+            if(backToTop) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 500) backToTop.classList.add('visible');
+                    else backToTop.classList.remove('visible');
+                });
+                backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            }
         });
     </script>
 </body>

@@ -21,63 +21,59 @@ module.exports = async (req, res) => {
         const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
         const uniqueId = (metadata && metadata.visitor_id) || ip;
 
-        // Prevent blocking user experience
-        (async () => {
-            try {
-                const todayStart = new Date();
-                todayStart.setUTCHours(0, 0, 0, 0);
-                const todayStr = todayStart.toISOString();
+        const todayStart = new Date();
+        todayStart.setUTCHours(0, 0, 0, 0);
+        const todayStr = todayStart.toISOString();
 
-                // Cari record hari ini untuk tipe event ini
-                const { data: existingData } = await supabase
-                    .from('app_analytics')
-                    .select('*')
-                    .gte('created_at', todayStr)
-                    .eq('event_type', type)
-                    .order('id', { ascending: false })
-                    .limit(1)
-                    .single();
+        // Cari record hari ini untuk tipe event ini
+        const { data: existingData, error: fetchError } = await supabase
+            .from('app_analytics')
+            .select('*')
+            .gte('created_at', todayStr)
+            .eq('event_type', type)
+            .order('id', { ascending: false })
+            .limit(1)
+            .single();
 
-                if (existingData) {
-                    let currentMeta = existingData.metadata || {};
-                    let updated = false;
+        if (existingData) {
+            let currentMeta = existingData.metadata || {};
+            let updated = false;
 
-                    if (type === 'visitor') {
-                        if (!currentMeta.visitors) currentMeta.visitors = [];
-                        if (!currentMeta.visitors.includes(uniqueId)) {
-                            currentMeta.visitors.push(uniqueId);
-                            updated = true;
-                        }
-                    } else if (type === 'search') {
-                        if (!currentMeta.queries) currentMeta.queries = [];
-                        currentMeta.queries.push({ query: query, time: new Date().toISOString() });
-                        updated = true;
-                    }
-
-                    if (updated) {
-                        await supabase.from('app_analytics').update({ metadata: currentMeta }).eq('id', existingData.id);
-                    }
-                } else {
-                    // Create new daily row
-                    let initialMeta = {};
-                    if (type === 'visitor') initialMeta.visitors = [uniqueId];
-                    if (type === 'search') initialMeta.queries = [{ query: query, time: new Date().toISOString() }];
-
-                    await supabase.from('app_analytics').insert([{
-                        event_type: type,
-                        query: 'daily_summary',
-                        metadata: initialMeta,
-                        created_at: new Date().toISOString()
-                    }]);
+            if (type === 'visitor') {
+                if (!currentMeta.visitors) currentMeta.visitors = [];
+                // Ensure uniqueId is string and not already in list
+                const strId = String(uniqueId);
+                if (!currentMeta.visitors.includes(strId)) {
+                    currentMeta.visitors.push(strId);
+                    updated = true;
                 }
-            } catch (err) {
-                console.error("Async Analytics Error:", err.message);
+            } else if (type === 'search') {
+                if (!currentMeta.queries) currentMeta.queries = [];
+                currentMeta.queries.push({ query: query, time: new Date().toISOString() });
+                updated = true;
             }
-        })();
+
+            if (updated) {
+                await supabase.from('app_analytics').update({ metadata: currentMeta }).eq('id', existingData.id);
+            }
+        } else {
+            // Create new daily row
+            let initialMeta = {};
+            if (type === 'visitor') initialMeta.visitors = [String(uniqueId)];
+            if (type === 'search') initialMeta.queries = [{ query: query, time: new Date().toISOString() }];
+
+            await supabase.from('app_analytics').insert([{
+                event_type: type,
+                query: 'daily_summary',
+                metadata: initialMeta,
+                created_at: new Date().toISOString()
+            }]);
+        }
 
         return res.status(200).json({ success: true });
     } catch (error) {
         console.error("Analytics error:", error);
-        return res.status(500).json({ success: false });
+        // Still return 200 to not break client-side experience if logging fails
+        return res.status(200).json({ success: true, warning: 'Logged with background error' });
     }
 };

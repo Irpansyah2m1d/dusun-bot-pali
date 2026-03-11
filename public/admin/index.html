@@ -46,6 +46,10 @@
 
         <main class="content-area">
             <div class="stats-row">
+                <div class="stat-card" style="border-bottom: 3px solid #10b981;">
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-users"></i></div>
+                    <div class="stat-info"><span class="val" id="stats-visitors">...</span><span class="label">Total Pengunjung</span></div>
+                </div>
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-inbox"></i></div>
                     <div class="stat-info"><span class="val" id="stats-pending">...</span><span class="label">Usulan Baru</span></div>
@@ -57,10 +61,6 @@
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-feather-pointed"></i></div>
                     <div class="stat-info"><span class="val" id="stats-folklore-count">...</span><span class="label">Cerita Rakyat</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-graduation-cap"></i></div>
-                    <div class="stat-info"><span class="val" id="stats-learned">...</span><span class="label">Hasil Belajar AI</span></div>
                 </div>
             </div>
 
@@ -80,14 +80,19 @@
                 <div class="dashboard-card" style="margin-bottom: 0;">
                     <div class="card-header"><h3><i class="fas fa-clock-rotate-left"></i> Aktifitas Terakhir</h3></div>
                     <p style="color: var(--text-dim);">Review usulan kosakata terbaru untuk mengembangkan Pustaka Dusun PALI.</p>
-                    <div id="mini-words-preview" style="margin-top: 25px;">Memuat data...</div>
+                    <div id="mini-words-preview" style="margin-top: 25px;">
+                        <div class="skeleton-row" style="height: 20px; width: 80%; margin-bottom: 10px;"></div>
+                        <div class="skeleton-row" style="height: 20px; width: 60%;"></div>
+                    </div>
                 </div>
 
                 <div class="dashboard-card" style="margin-bottom: 0; border: 1px solid rgba(16, 185, 129, 0.2);">
                     <div class="card-header"><h3 style="color: #10b981;"><i class="fas fa-fire"></i> Top 5 Pencarian (Bulan Ini)</h3></div>
                     <p style="color: var(--text-dim);">Kata yang paling sering dicari oleh pengguna dalam 30 hari terakhir.</p>
                     <div id="top-words-container" style="margin-top: 15px; border-radius: 12px; background: rgba(0,0,0,0.2); overflow: hidden;">
-                        Memuat data...
+                        <div class="skeleton-row" style="height: 50px; margin-bottom: 1px;"></div>
+                        <div class="skeleton-row" style="height: 50px; margin-bottom: 1px;"></div>
+                        <div class="skeleton-row" style="height: 50px; margin-bottom: 1px;"></div>
                     </div>
                 </div>
             </div>
@@ -95,7 +100,10 @@
             <div class="dashboard-card" style="border: 1px solid rgba(245,158,11,0.2);">
                 <div class="card-header"><h3 style="color: #f59e0b;"><i class="fas fa-graduation-cap"></i> Riwayat Belajar AI dari User</h3></div>
                 <p style="color: var(--text-dim);">Pengetahuan baru yang dipelajari Sagarurung Bot dari percakapan pengguna.</p>
-                <div id="ai-learned-feed" style="margin-top: 20px;">Memuat...</div>
+                <div id="ai-learned-feed" style="margin-top: 20px;">
+                    <div class="skeleton-row" style="height: 100px; margin-bottom: 15px; border-radius: 15px;"></div>
+                    <div class="skeleton-row" style="height: 100px; border-radius: 15px;"></div>
+                </div>
             </div>
         </main>
     </div>
@@ -135,7 +143,19 @@
                 if (statsData.success) {
                     document.getElementById('stats-total').innerText = statsData.counts.kamus.toLocaleString();
                     document.getElementById('stats-folklore-count').innerText = statsData.counts.cerita;
-                    document.getElementById('stats-learned').innerText = statsData.counts.learned;
+                    
+                    // Hitung total pengunjung unik dari data analytics (30 hari)
+                    let totalV = 0;
+                    if(statsData.analytics) {
+                        const recordedIds = new Set();
+                        statsData.analytics.forEach(item => {
+                            if(item.event_type === 'visitor' && item.metadata && Array.isArray(item.metadata.visitors)) {
+                                item.metadata.visitors.forEach(id => recordedIds.add(id));
+                            }
+                        });
+                        totalV = recordedIds.size;
+                    }
+                    document.getElementById('stats-visitors').innerText = totalV.toLocaleString();
                     
                     // Render Charts
                     renderAnalyticsCharts(statsData.analytics);

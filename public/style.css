@@ -3226,6 +3226,15 @@ textarea.form-input {
         right: 20px !important;
         font-size: 1.4rem !important;
     }
+
+    .back-to-top {
+        width: 50px !important;
+        height: 50px !important;
+        bottom: 85px !important;
+        right: 45px !important;
+        font-size: 1.2rem !important;
+        z-index: 10002 !important;
+    }
 }
 
 /* Thinking Dots Animation */
