@@ -1406,6 +1406,20 @@
             window.speechSynthesis.speak(utterance);
         }
 
+        function typeText(element, text, speed = 40) {
+            if (!element) return;
+            element.innerText = "";
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, speed);
+        }
+
         function handleTyping(e) {
             if (e.key === 'Enter') sendChat();
         }

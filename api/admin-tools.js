@@ -60,12 +60,14 @@ module.exports = async (req, res) => {
             const aiData = await response.json();
             const aiContent = aiData.choices[0].message.content;
 
-            await supabase.from('ai_learned').upsert({
+            const { error: dbErr } = await supabase.from('pali_ai_knowledge').upsert({
                 topic: `PDF: ${req.file.originalname}`,
                 content: aiContent,
                 source: 'admin-pdf',
                 updated_at: new Date().toISOString()
             }, { onConflict: 'topic' });
+
+            if (dbErr) throw dbErr;
 
             fs.unlinkSync(req.file.path);
             return res.status(200).json({ success: true, message: "PDF diproses." });

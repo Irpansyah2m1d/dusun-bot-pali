@@ -51,7 +51,12 @@ module.exports = async (req, res) => {
     // 2. AI Learned (Hasil Belajar)
     if (type === 'learned') {
         if (req.method === 'GET') {
-            const { data, error } = await supabase.from('ai_learned').select('*').order('updated_at', { ascending: false });
+            const { data, error } = await supabase
+                .from('pali_ai_knowledge')
+                .select('*')
+                .neq('source', 'manual') // Basically user, gas, or other learned sources
+                .order('updated_at', { ascending: false });
+            
             if (error) return res.status(200).json({ success: true, data: [] });
             return res.status(200).json({ success: true, data });
         }
@@ -60,8 +65,16 @@ module.exports = async (req, res) => {
         if (req.method === 'POST') {
             const { topic, content, source = 'user' } = req.body;
             if (!topic || !content) return res.status(400).json({ success: false, message: 'Data incomplete.' });
-            const { error } = await supabase.from('ai_learned').upsert({ topic: topic.trim(), content: content.trim(), source, updated_at: new Date().toISOString() }, { onConflict: 'topic' });
-            if (error) throw error;
+            
+            // We use upsert on topic to avoid duplicate knowledge
+            const { error } = await supabase.from('pali_ai_knowledge').upsert({ 
+                topic: topic.trim(), 
+                content: content.trim(), 
+                source, 
+                updated_at: new Date().toISOString() 
+            }, { onConflict: 'topic' });
+            
+            if (error) return res.status(500).json({ success: false, message: error.message });
             return res.status(200).json({ success: true, message: 'Thank you for teaching me.' });
         }
 
@@ -71,15 +84,21 @@ module.exports = async (req, res) => {
 
         if (req.method === 'PUT') {
             const { id, topic, content } = req.body;
-            const { error } = await supabase.from('ai_learned').update({ topic, content, updated_at: new Date().toISOString() }).eq('id', id);
-            if (error) throw error;
+            const { error } = await supabase.from('pali_ai_knowledge').update({ 
+                topic, 
+                content, 
+                updated_at: new Date().toISOString() 
+            }).eq('id', id);
+            
+            if (error) return res.status(500).json({ success: false, message: error.message });
             return res.status(200).json({ success: true });
         }
 
         if (req.method === 'DELETE') {
             const { id } = req.body;
-            const { error } = await supabase.from('ai_learned').delete().eq('id', id);
-            if (error) throw error;
+            const { error } = await supabase.from('pali_ai_knowledge').delete().eq('id', id);
+            
+            if (error) return res.status(500).json({ success: false, message: error.message });
             return res.status(200).json({ success: true });
         }
     }

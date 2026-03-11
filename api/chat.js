@@ -119,24 +119,17 @@ module.exports = async (req, res) => {
         }
 
         // 2. Fetch Knowledge from Supabase (RAG Pengetahuan)
-        const [kbResult, learnedResult] = await Promise.all([
-            supabase.from('pali_ai_knowledge').select('*'),
-            supabase.from('ai_learned').select('*')
-        ]);
-        
-        const knowledgeList = [
-            ...(kbResult.data || []),
-            ...(learnedResult.data || [])
-        ];
+        // Fetches both 'manual' and 'learned' sources from a single table
+        const { data: knowledgeList, error: kbError } = await supabase.from('pali_ai_knowledge').select('*');
         
         let allKnowledge = "";
-        if (knowledgeList.length > 0) {
+        if (!kbError && knowledgeList && knowledgeList.length > 0) {
             const relevantKB = knowledgeList.filter(k => {
                 const t = (k.topic || "").toLowerCase();
                 const c = (k.content || "").toLowerCase();
                 return keywords.some(kw => t.includes(kw) || c.includes(kw));
             });
-            const displayKB = relevantKB.length > 0 ? relevantKB : knowledgeList.slice(0, 10);
+            const displayKB = relevantKB.length > 0 ? relevantKB : knowledgeList.slice(0, 12);
             allKnowledge = displayKB.map(k => `Topik: ${k.topic}\nInfo: ${k.content}`).join("\n\n");
         }
 
@@ -177,25 +170,34 @@ module.exports = async (req, res) => {
 
         // 4. Default AI Providers with Fallback Logic
         if (!aiAnswer) {
+            // Priority: Gemini -> Groq Rotation
             if (provider === 'gemini') {
                 try {
                     aiAnswer = await callGemini(userApiKey, modelName, systemInstruction, prompt);
                 } catch (geminiError) {
-                    console.warn("Gemini Failed (possibly 404), falling back to Groq Llama...");
-                    // Fallback to Groq if Gemini fails
-                    aiAnswer = await callGroq(groqKeys[0], "llama-3.3-70b-versatile", systemInstruction, prompt);
+                    console.warn("Gemini Failed, falling back to Groq...");
                 }
-            } else {
-                // Groq with rotation
+            }
+
+            if (!aiAnswer) {
+                // Groq with rotation and model fallback
+                const fallbackModels = ["llama-3.3-70b-versatile", "mixtral-8x7b-32768", "llama3-8b-8192", "llama-3.1-8b-instant"];
                 let lastErr = null;
-                for (const key of groqKeys) {
-                    try {
-                        aiAnswer = await callGroq(key, modelName, systemInstruction, prompt);
-                        lastErr = null;
-                        break;
-                    } catch (err) { lastErr = err; }
+                
+                for (const model of fallbackModels) {
+                    for (const key of groqKeys) {
+                        try {
+                            aiAnswer = await callGroq(key, model, systemInstruction, prompt);
+                            lastErr = null;
+                            if (aiAnswer) break;
+                        } catch (err) { 
+                            lastErr = err;
+                            console.warn(`Groq ${model} failed with key: ${key.substring(0, 8)}...`);
+                        }
+                    }
+                    if (aiAnswer) break;
                 }
-                if (lastErr) throw lastErr;
+                if (lastErr && !aiAnswer) throw lastErr;
             }
         }
 
