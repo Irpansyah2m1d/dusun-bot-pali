@@ -132,10 +132,18 @@
         let editingFolkloreId = null;
 
         async function loadFolklore() {
+            const list = document.getElementById('folkloreList');
+            list.innerHTML = `
+                <table class="data-table">
+                    <thead><tr><th>Cover</th><th>Judul Cerita</th><th>Aksi</th></tr></thead>
+                    <tbody>
+                        ${Array(5).fill('<tr class="skeleton-row"><td><div class="skeleton-text" style="width: 60px; height: 40px; border-radius: 8px;"></div></td><td><div class="skeleton-text" style="width: 70%"></div></td><td><div class="skeleton-text" style="width: 150px"></div></td></tr>').join('')}
+                    </tbody>
+                </table>
+            `;
             try {
                 const res = await fetch('/api/cerita-rakyat');
                 const result = await res.json();
-                const list = document.getElementById('folkloreList');
                 
                 const stories = result.data || [];
                 if(stories.length === 0) {

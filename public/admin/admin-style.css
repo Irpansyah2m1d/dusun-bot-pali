@@ -252,6 +252,24 @@ body {
     border-bottom: 1px solid var(--glass-border);
 }
 
+/* Skeleton Effect */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+.skeleton-row td {
+    background: linear-gradient(to right, rgba(255,255,255,0.02) 4%, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.02) 36%) !important;
+    background-size: 1000px 100% !important;
+    animation: shimmer 2s infinite linear;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+.skeleton-text {
+    height: 15px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    display: inline-block;
+}
+
 .data-table tr td:first-child {
     border-left: 1px solid var(--glass-border);
     border-radius: 15px 0 0 15px;

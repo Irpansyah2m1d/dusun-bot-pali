@@ -257,6 +257,18 @@
         }
 
         async function loadKnowledge() {
+            const list = document.getElementById('knowledge-list');
+            list.innerHTML = Array(4).fill(`
+                <div class="knowledge-item skeleton-row">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div class="skeleton-text" style="width: 80px; height: 25px;"></div>
+                        <div class="skeleton-text" style="width: 150px; height: 25px;"></div>
+                    </div>
+                    <div class="skeleton-text" style="width: 100%; height: 15px; margin-bottom: 8px;"></div>
+                    <div class="skeleton-text" style="width: 90%; height: 15px;"></div>
+                </div>
+            `).join('');
+
             try {
                 // Load manual knowledge
                 const res = await fetch('/api/admin-knowledge', {

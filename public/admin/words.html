@@ -215,6 +215,16 @@
         }
 
         async function loadWords() {
+            const list = document.getElementById('wordsList');
+            list.innerHTML = `
+                <table class="data-table">
+                    <thead><tr><th>Kata (ID)</th><th>Kata (Dusun)</th><th>Kontributor</th><th>Aksi</th></tr></thead>
+                    <tbody>
+                        ${Array(5).fill('<tr class="skeleton-row"><td><div class="skeleton-text" style="width: 60%"></div></td><td><div class="skeleton-text" style="width: 70%"></div></td><td><div class="skeleton-text" style="width: 40%"></div></td><td><div class="skeleton-text" style="width: 90px"></div></td></tr>').join('')}
+                    </tbody>
+                </table>
+            `;
+
             try {
                 const res = await fetch('/api/admin-usulan', { 
                     headers: { 'Authorization': `Bearer ${token}` } 
@@ -264,6 +274,15 @@
         let kamusDataGlobal = [];
 
         async function loadKamus() {
+            const container = document.getElementById('kamusTableContainer');
+            container.innerHTML = `
+                <table class="data-table">
+                    <thead><tr><th>Kata ID/Dusun</th><th>Contoh Penggunaan</th><th>Status Audio</th><th>Aksi</th></tr></thead>
+                    <tbody>
+                        ${Array(5).fill('<tr class="skeleton-row"><td><div class="skeleton-text" style="width: 80%"></div><br><div class="skeleton-text" style="width: 60%"></div></td><td><div class="skeleton-text" style="width: 100%"></div><br><div class="skeleton-text" style="width: 90%"></div></td><td><div class="skeleton-text" style="width: 40px"></div></td><td><div class="skeleton-text" style="width: 90px"></div></td></tr>').join('')}
+                    </tbody>
+                </table>
+            `;
             try {
                 const res = await fetch('/api/admin-usulan?type=kamus', { 
                     headers: { 'Authorization': `Bearer ${token}` } 

@@ -975,6 +975,18 @@
             if(!grid) return;
             
             try {
+                grid.innerHTML = Array(4).fill(`
+                    <article class="skeleton-card skeleton">
+                        <div class="skeleton-img"></div>
+                        <div class="folklore-card-body" style="padding: 20px;">
+                            <div class="skeleton-text title skeleton"></div>
+                            <div class="skeleton-text skeleton" style="width: 50%;"></div>
+                            <div class="skeleton-text skeleton" style="margin-top: 15px; width: 90%;"></div>
+                            <div class="skeleton-text skeleton" style="width: 70%;"></div>
+                        </div>
+                    </article>
+                `).join('');
+
                 const res = await fetch('/api/cerita-rakyat');
                 const result = await res.json();
                 allStories = result.data || [];

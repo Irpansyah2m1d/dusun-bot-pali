@@ -88,10 +88,18 @@
         let editingNasehatId = null;
 
         async function loadNasehat() {
+            const list = document.getElementById('nasehatList');
+            list.innerHTML = `
+                <table class="data-table">
+                    <thead><tr><th>#</th><th>Nasehat</th><th>Makna</th><th>Aksi</th></tr></thead>
+                    <tbody>
+                        ${Array(5).fill('<tr class="skeleton-row"><td><div class="skeleton-text" style="width: 20px"></div></td><td><div class="skeleton-text" style="width: 80%"></div></td><td><div class="skeleton-text" style="width: 60%"></div></td><td><div class="skeleton-text" style="width: 150px"></div></td></tr>').join('')}
+                    </tbody>
+                </table>
+            `;
             try {
                 const res = await fetch('/api/nasehat');
                 const result = await res.json();
-                const list = document.getElementById('nasehatList');
                 
                 const data = result.data || [];
                 if(data.length === 0) {

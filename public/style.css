@@ -1981,6 +1981,37 @@ textarea.form-input {
     line-height: 1.5;
 }
 
+/* Skeleton Loading Effect */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+.skeleton {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(to right, #1e293b 4%, #334155 25%, #1e293b 36%);
+    background-size: 1000px 100%;
+}
+.skeleton-card {
+    background: #1e293b;
+    border-radius: 30px;
+    overflow: hidden;
+    height: 380px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.skeleton-img {
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+.skeleton-text {
+    height: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+.skeleton-text.title {
+    height: 20px;
+    width: 80%;
+}
+
 /* Avatar UI Overlay */
 #avatar-container {
     position: fixed;
