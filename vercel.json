@@ -2,6 +2,42 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/auth",
+      "destination": "/api/account.js?action=login"
+    },
+    {
+      "source": "/api/change-password",
+      "destination": "/api/account.js?action=change-password"
+    },
+    {
+      "source": "/api/cerita-rakyat",
+      "destination": "/api/content.js?type=cerita-rakyat"
+    },
+    {
+      "source": "/api/nasehat",
+      "destination": "/api/content.js?type=nasehat"
+    },
+    {
+      "source": "/api/contributors",
+      "destination": "/api/content.js?type=contributors"
+    },
+    {
+      "source": "/api/admin-knowledge",
+      "destination": "/api/ai-hub.js?type=knowledge"
+    },
+    {
+      "source": "/api/ai-learned",
+      "destination": "/api/ai-hub.js?type=learned"
+    },
+    {
+      "source": "/api/admin-upload-audio",
+      "destination": "/api/admin-tools.js?type=audio"
+    },
+    {
+      "source": "/api/admin-extract-pdf",
+      "destination": "/api/admin-tools.js?type=pdf"
+    },
+    {
       "source": "/api/chat",
       "destination": "/api/chat.js"
     },
@@ -20,14 +56,6 @@
     {
       "source": "/api/admin-usulan",
       "destination": "/api/admin-usulan.js"
-    },
-    {
-      "source": "/api/contributors",
-      "destination": "/api/contributors.js"
-    },
-    {
-      "source": "/api/ai-learned",
-      "destination": "/api/ai-learned.js"
     }
   ],
   "headers": [
