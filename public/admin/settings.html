@@ -68,21 +68,30 @@
                     <i class="fas fa-rotate-right"></i> Refresh Database dari kamus.json
                 </button>
             </div>
-        </main>
-    </div>
 
             <div class="dashboard-card" style="max-width: 600px; border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 30px;">
                 <div class="card-header">
                     <h3 style="color: var(--emerald-green);"><i class="fas fa-key"></i> Ubah Password Admin</h3>
                 </div>
-                <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 0.9rem;">Ganti password login Anda secara berkala demi keamanan.</p>
+                <p style="color: var(--text-dim); margin-bottom: 25px; font-size: 0.9rem;">Ganti password login Anda secara berkala demi keamanan.</p>
                 
                 <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <input type="password" id="old-pass" class="dash-input" placeholder="Password Lama" style="width: 100%;">
-                    <input type="password" id="new-pass" class="dash-input" placeholder="Password Baru (Min. 6 Karakter)" style="width: 100%;">
-                    <input type="password" id="confirm-pass" class="dash-input" placeholder="Konfirmasi Password Baru" style="width: 100%;">
+                    <div class="pass-input-wrapper" style="position: relative;">
+                        <input type="password" id="old-pass" class="dash-input" placeholder="Password Lama" style="padding-right: 50px;">
+                        <i class="fas fa-eye toggle-pass-icon" onclick="togglePassVisibility('old-pass', this)" style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-dim); transition: 0.3s;"></i>
+                    </div>
+
+                    <div class="pass-input-wrapper" style="position: relative;">
+                        <input type="password" id="new-pass" class="dash-input" placeholder="Password Baru (Min. 6 Karakter)" style="padding-right: 50px;">
+                        <i class="fas fa-eye toggle-pass-icon" onclick="togglePassVisibility('new-pass', this)" style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-dim); transition: 0.3s;"></i>
+                    </div>
+
+                    <div class="pass-input-wrapper" style="position: relative;">
+                        <input type="password" id="confirm-pass" class="dash-input" placeholder="Konfirmasi Password Baru" style="padding-right: 50px;">
+                        <i class="fas fa-eye toggle-pass-icon" onclick="togglePassVisibility('confirm-pass', this)" style="position: absolute; right: 18px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-dim); transition: 0.3s;"></i>
+                    </div>
                     
-                    <button class="btn-dash btn-dash-primary" id="btn-change-pass" onclick="changePassword()" style="justify-content: center; padding: 15px;">
+                    <button class="btn-dash btn-dash-primary" id="btn-change-pass" onclick="changePassword()" style="justify-content: center; padding: 15px; margin-top: 10px;">
                         <i class="fas fa-shield-check"></i> Simpan Password Baru
                     </button>
                 </div>
@@ -97,6 +106,21 @@
         if (user.full_name) {
             document.querySelector('.user-profile span').innerText = user.full_name;
             document.querySelector('.user-profile img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=10b981&color=fff`;
+        }
+
+        function togglePassVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+                icon.style.color = 'var(--accent-green)';
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+                icon.style.color = 'var(--text-dim)';
+            }
         }
 
         async function loadSettings() {
