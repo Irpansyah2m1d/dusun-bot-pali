@@ -16,18 +16,35 @@ module.exports = async (req, res) => {
         if (!decoded) return res.status(401).json({ success: false, message: 'Unauthorized.' });
 
         if (req.method === 'GET') {
-            const knowledgePath = path.join(process.cwd(), 'data', 'knowledge.json');
-            let knowledgeData = [];
-            if (fs.existsSync(knowledgePath)) knowledgeData = JSON.parse(fs.readFileSync(knowledgePath, 'utf8'));
-            return res.status(200).json({ success: true, data: knowledgeData });
+            const { data, error } = await supabase.from('pali_ai_knowledge').select('*').order('id', { ascending: true });
+            if (error) return res.status(200).json({ success: true, data: [] });
+            return res.status(200).json({ success: true, data });
         }
 
         if (req.method === 'POST') {
             const { knowledge } = req.body;
             if (!Array.isArray(knowledge)) return res.status(400).json({ success: false, message: 'Format invalid.' });
-            const knowledgePath = path.join(process.cwd(), 'data', 'knowledge.json');
-            fs.writeFileSync(knowledgePath, JSON.stringify(knowledge, null, 2));
-            return res.status(200).json({ success: true, message: 'Berhasil update knowledge base.' });
+            
+            try {
+                // Delete existing manual entries to handle deletions properly
+                await supabase.from('pali_ai_knowledge').delete().eq('source', 'manual');
+
+                // Bulk insert the new list
+                if (knowledge.length > 0) {
+                    const insertData = knowledge.map(item => ({
+                        topic: item.topic.trim(),
+                        content: item.content.trim(),
+                        source: 'manual',
+                        updated_at: new Date().toISOString()
+                    }));
+                    const { error } = await supabase.from('pali_ai_knowledge').insert(insertData);
+                    if (error) throw error;
+                }
+                
+                return res.status(200).json({ success: true, message: 'Berhasil update knowledge base di database.' });
+            } catch (err) {
+                return res.status(500).json({ success: false, message: err.message });
+            }
         }
     }
 

@@ -119,18 +119,24 @@ module.exports = async (req, res) => {
         }
 
         // 2. Fetch Knowledge from Supabase (RAG Pengetahuan)
-        const { data: knowledgeList, error: kbError } = await supabase
-            .from('pali_ai_knowledge')
-            .select('*');
+        const [kbResult, learnedResult] = await Promise.all([
+            supabase.from('pali_ai_knowledge').select('*'),
+            supabase.from('ai_learned').select('*')
+        ]);
+        
+        const knowledgeList = [
+            ...(kbResult.data || []),
+            ...(learnedResult.data || [])
+        ];
         
         let allKnowledge = "";
-        if (!kbError && knowledgeList) {
+        if (knowledgeList.length > 0) {
             const relevantKB = knowledgeList.filter(k => {
-                const t = k.topic.toLowerCase();
-                const c = k.content.toLowerCase();
+                const t = (k.topic || "").toLowerCase();
+                const c = (k.content || "").toLowerCase();
                 return keywords.some(kw => t.includes(kw) || c.includes(kw));
             });
-            const displayKB = relevantKB.length > 0 ? relevantKB : knowledgeList.slice(0, 8);
+            const displayKB = relevantKB.length > 0 ? relevantKB : knowledgeList.slice(0, 10);
             allKnowledge = displayKB.map(k => `Topik: ${k.topic}\nInfo: ${k.content}`).join("\n\n");
         }
 
