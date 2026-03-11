@@ -34,6 +34,7 @@
     <meta name="twitter:image:alt" content="Dusun Bot PALI Logo">
 
     <link rel="stylesheet" href="style.css?v=1.4">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -636,17 +637,28 @@
                             
                             html += `
                                 <div class="result-item">
-                                    <div class="result-main">
-                                        <div class="word-group">
-                                            <span class="from">${word}</span>
-                                            <span class="arrow">➔</span>
-                                            <span class="to">${translation}</span>
+                                    <div class="result-main-row">
+                                        <div class="word-content">
+                                            <div class="word-pair">
+                                                <span class="from">${word}</span>
+                                                <span class="arrow"><i class="fas fa-long-arrow-alt-right"></i></span>
+                                                <span class="to">${translation}</span>
+                                            </div>
+                                            ${(res.contoh_id || res.contoh_dusun) ? `
+                                                <div class="example-text">
+                                                    <i class="far fa-comment-dots"></i>
+                                                    <div style="flex: 1;">
+                                                        ${res.contoh_id ? `<div><b>ID:</b> ${res.contoh_id}</div>` : ''}
+                                                        ${res.contoh_dusun ? `<div><b>PALI:</b> ${res.contoh_dusun}</div>` : ''}
+                                                    </div>
+                                                </div>
+                                            ` : ''}
                                         </div>
-                                    </div>
-                                    <div class="result-examples-dual">
-                                        ${(res.contoh_id || res.contoh_dusun) ? `<span class="ex-label">Contoh dalam Kalimat:</span>` : ''}
-                                        ${res.contoh_id ? `<span class="ex-text"><b>ID:</b> ${res.contoh_id}</span>` : ''}
-                                        ${res.contoh_dusun ? `<span class="ex-text"><b>PALI:</b> ${res.contoh_dusun}</span>` : ''}
+                                        ${res.audio_url ? `
+                                            <button class="btn-audio" onclick="playAudio(this, '${res.audio_url}')" title="Putar Suara">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                        ` : ''}
                                     </div>
                                 </div>
                             `;
@@ -1536,5 +1548,32 @@
     <div id="tour-vignette" class="tour-vignette"></div>
     <div id="tour-speech-bubble" class="tour-speech-bubble"></div>
     <button class="btn-avatar-toggle" onclick="toggleAvatar()">🤖</button>
+
+    <script>
+        function playAudio(btn, url) {
+            const icon = btn.querySelector('i');
+            
+            // Revert all other playing buttons
+            document.querySelectorAll('.btn-audio.playing').forEach(b => {
+                b.classList.remove('playing');
+                if(b.querySelector('i')) b.querySelector('i').className = 'fas fa-play';
+            });
+
+            const audio = new Audio(url);
+            btn.classList.add('playing');
+            if(icon) icon.className = 'fas fa-volume-up';
+
+            audio.play().catch(e => {
+                btn.classList.remove('playing');
+                if(icon) icon.className = 'fas fa-play';
+                console.error("Gagal memutar audio:", e);
+            });
+
+            audio.onended = () => {
+                btn.classList.remove('playing');
+                if(icon) icon.className = 'fas fa-play';
+            };
+        }
+    </script>
 </body>
 </html>

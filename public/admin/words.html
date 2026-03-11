@@ -59,6 +59,13 @@
 
                 <!-- Section: Kamus Utama -->
                 <div id="kamusSection" class="hidden">
+                    <div style="margin-bottom: 20px; display: flex; gap: 15px;">
+                        <button class="add-box" onclick="openAddModal()" style="margin-bottom: 0; padding: 20px; flex: 1;">
+                            <i class="fas fa-plus-circle" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
+                            <p>Tambah Kosa Kata Manual</p>
+                        </button>
+                    </div>
+
                     <div style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid var(--glass-border);">
                         <h4 style="margin-bottom: 10px;"><i class="fas fa-file-import"></i> Tambah Data Massal (JSON)</h4>
                         <div class="input-group full">
@@ -73,6 +80,32 @@
                             </label>
                         </div>
                     </div>
+                    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+                        <div class="input-group" style="flex: 1; margin-bottom: 0;">
+                            <div style="position: relative;">
+                                <i class="fas fa-search" style="position: absolute; left: 15px; top: 18px; color: var(--text-dim);"></i>
+                                <input type="text" id="kamusSearch" class="dash-input" placeholder="Cari kosa kata (Indo/Dusun)..." style="padding-left: 45px;" onkeyup="filterKamus()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="kamusSummary" style="margin-bottom: 20px; display: none; gap: 15px; flex-wrap: wrap;">
+                        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); padding: 12px 20px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-volume-up" style="color: var(--accent-green);"></i>
+                            <div>
+                                <div style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px;">Ada Audio</div>
+                                <div id="stats-audio-yes" style="font-weight: 800; font-size: 1.1rem; color: white;">0</div>
+                            </div>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 12px 20px; border-radius: 12px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-microphone-slash" style="color: #ef4444;"></i>
+                            <div>
+                                <div style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px;">Tanpa Audio</div>
+                                <div id="stats-audio-no" style="font-weight: 800; font-size: 1.1rem; color: white;">0</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="kamusTableContainer" class="loading-state">Sedang memuat database kamus...</div>
                 </div>
             </div>
@@ -82,7 +115,7 @@
     <!-- Modal Edit Kosa Kata -->
     <div id="editModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; padding: 20px;">
         <div class="modal-content" style="background:#1e293b; padding:30px; border-radius:30px; width:100%; max-width:600px; border:1px solid rgba(255,255,255,0.1); max-height: 90vh; overflow-y: auto;">
-            <h2 style="margin-bottom: 25px;"><i class="fas fa-edit"></i> Edit Kosa Kata</h2>
+            <h2 style="margin-bottom: 25px;" id="modalTitle"><i class="fas fa-edit"></i> Edit Kosa Kata</h2>
             <input type="hidden" id="edit-id">
             <div class="input-group">
                 <label>Bahasa Indonesia</label>
@@ -101,12 +134,59 @@
                 <input type="text" id="edit-contoh-dusun" class="dash-input" placeholder="Contoh Dusun">
             </div>
             <div class="input-group">
-                <label>Update Audio (MP3)</label>
-                <input type="file" id="edit-audio" class="dash-input" accept="audio/mpeg,audio/mp3">
-                <small id="current-audio" style="color: var(--text-dim);"></small>
+                <label>Audio Pengucapan (File/Record)</label>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="file" id="edit-audio" class="dash-input" accept="audio/mpeg,audio/mp3" style="flex: 1;">
+                    <button id="btn-record" class="btn-dash btn-dash-primary" onclick="toggleRecording()" style="min-width: 50px;" title="Rekam Suara">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+                <div id="recording-status" style="display: none; margin-top: 10px; align-items: center; gap: 10px; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px;">
+                    <span class="recording-dot"></span>
+                    <span id="recording-timer" style="color: #ef4444; font-weight: 700; font-family: monospace;">00:00</span>
+                    <button class="btn-dash btn-dash-delete" onclick="stopRecording()" style="padding: 5px 12px; font-size: 0.8rem;">Stop</button>
+                </div>
+                <div id="recorded-audio-preview" style="display: none; margin-top: 10px; align-items: center; gap: 10px; background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 8px;">
+                    <button onclick="playRecordedAudio()" class="btn-dash btn-dash-edit" style="width: 40px; height: 40px; border-radius: 50%;"><i class="fas fa-play"></i></button>
+                    <span style="font-size: 0.8rem; color: var(--accent-green);">Rekaman Tersimpan</span>
+                    <button onclick="discardRecording()" class="btn-dash btn-dash-delete" style="padding: 5px 12px; font-size: 0.8rem;">Hapus</button>
+                </div>
+                <small id="current-audio" style="color: var(--text-dim); margin-top: 5px; display: block;"></small>
+                <div id="existing-audio-preview" style="display: none; margin-top: 10px; align-items: center; gap: 10px; background: rgba(59, 130, 246, 0.1); padding: 10px; border-radius: 8px;">
+                    <button onclick="playExistingAudio(this)" class="btn-dash btn-dash-primary" style="width: 40px; height: 40px; border-radius: 50%;"><i class="fas fa-volume-up"></i></button>
+                    <span style="font-size: 0.8rem; color: var(--accent-color);">Audio Saat Ini</span>
+                </div>
             </div>
+            
+            <style>
+                .recording-dot {
+                    width: 12px;
+                    height: 12px;
+                    background: #ef4444;
+                    border-radius: 50%;
+                    animation: blink 1s infinite;
+                }
+                @keyframes blink {
+                    0% { opacity: 1; }
+                    50% { opacity: 0.3; }
+                    100% { opacity: 1; }
+                }
+
+                .btn-dash.playing {
+                    background: #10b981 !important;
+                    color: #0f172a !important;
+                    animation: pulse-green 1s infinite;
+                }
+
+                @keyframes pulse-green {
+                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+                    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+                }
+            </style>
+
             <div style="display:flex; gap:12px; margin-top:30px;">
-                <button class="btn-dash btn-dash-primary" onclick="saveEdit()" style="flex:1; justify-content:center; padding: 15px;">Simpan Perubahan</button>
+                <button id="btn-save-edit" class="btn-dash btn-dash-primary" onclick="saveEdit()" style="flex:1; justify-content:center; padding: 15px;">Simpan Perubahan</button>
                 <button class="btn-dash btn-dash-secondary" onclick="closeEditModal()" style="padding: 15px;">Batal</button>
             </div>
         </div>
@@ -167,7 +247,7 @@
                                     <td><span style="color: var(--accent-green); font-weight: 700;">${item.dusun}</span></td>
                                     <td>${item.nama || 'Anonim'}</td>
                                     <td style="display: flex; gap: 8px;">
-                                        <button class="btn-dash btn-dash-primary" onclick='approveWord(${JSON.stringify(item)})'>Approve</button>
+                                        <button class="btn-dash btn-dash-primary" onclick='approveWord(this, ${JSON.stringify(item)})'>Approve</button>
                                         <button class="btn-dash btn-dash-delete" onclick="deleteWord(${item.id})">Hapus</button>
                                     </td>
                                 </tr>
@@ -179,6 +259,8 @@
             } catch (err) { console.error(err); }
         }
 
+        let kamusDataGlobal = [];
+
         async function loadKamus() {
             try {
                 const res = await fetch('/api/admin-usulan?type=kamus', { 
@@ -187,72 +269,318 @@
                 const result = await res.json();
                 if(!result.success) return;
 
-                const container = document.getElementById('kamusTableContainer');
-                const tableHTML = `
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Indonesia</th>
-                                <th>Dusun</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${result.data.map(item => `
-                                <tr>
-                                    <td style="font-size: 0.7rem; color: var(--text-dim);">${item.id}</td>
-                                    <td><strong>${item.indonesia}</strong></td>
-                                    <td><span style="color: var(--accent-green); font-weight: 700;">${item.dusun}</span></td>
-                                    <td>
-                                        <div style="display: flex; gap: 8px;">
-                                            <button class="btn-dash btn-dash-edit" onclick='openEditModal(${JSON.stringify(item)})' title="Edit Kosa Kata">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-dash btn-dash-delete" onclick="deleteKamusItem(${item.id})" title="Hapus dari Kamus Utama">
-                                                <i class="fas fa-trash-can"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-                container.innerHTML = tableHTML;
+                kamusDataGlobal = result.data || [];
+                renderKamusTable(kamusDataGlobal);
             } catch (err) { console.error(err); }
+        }
+
+        function renderKamusTable(data) {
+            const container = document.getElementById('kamusTableContainer');
+            const summary = document.getElementById('kamusSummary');
+            
+            // Calculate stats
+            const withAudio = kamusDataGlobal.filter(i => i.audio_url).length;
+            const withoutAudio = kamusDataGlobal.length - withAudio;
+            
+            document.getElementById('stats-audio-yes').innerText = withAudio;
+            document.getElementById('stats-audio-no').innerText = withoutAudio;
+            summary.style.display = 'flex';
+
+            if (data.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-dim);">Data tidak ditemukan.</div>';
+                return;
+            }
+
+            const tableHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Indonesia</th>
+                            <th>Dusun</th>
+                            <th>Audio</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map((item) => {
+                            // Find original index in global data
+                            const globalIndex = kamusDataGlobal.findIndex(g => g.id === item.id);
+                            return `
+                            <tr>
+                                <td style="font-size: 0.7rem; color: var(--text-dim);">${item.id}</td>
+                                <td>
+                                    <strong>${item.indonesia}</strong>
+                                    ${item.contoh_id ? `<br><small style="color: var(--text-dim); font-style: italic;">"${item.contoh_id}"</small>` : ''}
+                                </td>
+                                <td>
+                                    <span style="color: var(--accent-green); font-weight: 700;">${item.dusun}</span>
+                                    ${item.contoh_dusun ? `<br><small style="color: var(--text-dim); font-style: italic;">"${item.contoh_dusun}"</small>` : ''}
+                                </td>
+                                <td style="text-align: center;">
+                                    ${item.audio_url ? `
+                                        <button class="btn-dash btn-dash-primary" onclick="playAudioInTable(this, '${item.audio_url}')" style="width: 36px; height: 36px; border-radius: 50%; padding: 0; display: inline-flex; align-items: center; justify-content: center;" title="Putar Suara">
+                                            <i class="fas fa-play" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                    ` : '<span style="color: var(--text-dim); font-size: 0.7rem;">-</span>'}
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn-dash btn-dash-edit" onclick="openEditModalFromIndex(${globalIndex})" title="Edit Kosa Kata">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-dash btn-dash-delete" onclick="deleteKamusItem(${item.id})" title="Hapus dari Kamus Utama">
+                                            <i class="fas fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `}).join('')}
+                    </tbody>
+                </table>
+            `;
+            container.innerHTML = tableHTML;
+        }
+
+        function filterKamus() {
+            const query = document.getElementById('kamusSearch').value.toLowerCase().trim();
+            if (!query) {
+                renderKamusTable(kamusDataGlobal);
+                return;
+            }
+            const filtered = kamusDataGlobal.filter(item => 
+                item.indonesia.toLowerCase().includes(query) || 
+                item.dusun.toLowerCase().includes(query)
+            );
+            renderKamusTable(filtered);
+        }
+
+        function playAudioInTable(btn, url) {
+            const icon = btn.querySelector('i');
+            
+            // Revert all other playing buttons
+            document.querySelectorAll('.btn-dash.playing').forEach(b => {
+                b.classList.remove('playing');
+                b.querySelector('i').className = 'fas fa-play';
+            });
+
+            const audio = new Audio(url);
+            btn.classList.add('playing');
+            icon.className = 'fas fa-volume-up';
+
+            audio.play().catch(e => {
+                btn.classList.remove('playing');
+                icon.className = 'fas fa-play';
+                alert("Gagal memutar audio.");
+            });
+
+            audio.onended = () => {
+                btn.classList.remove('playing');
+                icon.className = 'fas fa-play';
+            };
+        }
+
+        function openEditModalFromIndex(index) {
+            const item = kamusDataGlobal[index];
+            openEditModal(item);
+        }
+
+        // --- Audio Recording Logic ---
+        let mediaRecorder;
+        let audioChunks = [];
+        let recordedBlob = null;
+        let recordingInterval;
+        let startTime;
+        let currentEditItem = null;
+        let isAddMode = false;
+
+        function openAddModal() {
+            isAddMode = true;
+            currentEditItem = null;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Tambah Kosa Kata Manual';
+            document.getElementById('edit-id').value = '';
+            document.getElementById('edit-indo').value = '';
+            document.getElementById('edit-dusun').value = '';
+            document.getElementById('edit-contoh-id').value = '';
+            document.getElementById('edit-contoh-dusun').value = '';
+            document.getElementById('current-audio').innerText = '';
+            discardRecording();
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        async function toggleRecording() {
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        async function startRecording() {
+            try {
+                // Tambahkan filter noise suppression dan echo cancellation bawaan browser
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    } 
+                });
+
+                // Gunakan format yang paling stabil di browser (WebM/Opus) dengan bitrate tinggi
+                const options = { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 128000 };
+                
+                // Cek apakah browser support mimeType (jaga-jaga)
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                    delete options.mimeType;
+                }
+
+                mediaRecorder = new MediaRecorder(stream, options);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    // Simpan sebagai webm tapi label mp3 (Supabase akan simpan sebagai binary)
+                    recordedBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    document.getElementById('recorded-audio-preview').style.display = 'flex';
+                    document.getElementById('recording-status').style.display = 'none';
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                mediaRecorder.start();
+                document.getElementById('recording-status').style.display = 'flex';
+                document.getElementById('recorded-audio-preview').style.display = 'none';
+                
+                startTime = Date.now();
+                updateTimer();
+                recordingInterval = setInterval(updateTimer, 1000);
+            } catch (err) {
+                console.error(err);
+                alert("Tidak dapat mengakses mikrofon. Pastikan izin diberikan.");
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== "inactive") {
+                mediaRecorder.stop();
+                clearInterval(recordingInterval);
+            }
+        }
+
+        function updateTimer() {
+            const now = Date.now();
+            const diff = Math.floor((now - startTime) / 1000);
+            const mins = String(Math.floor(diff / 60)).padStart(2, '0');
+            const secs = String(diff % 60).padStart(2, '0');
+            document.getElementById('recording-timer').innerText = `${mins}:${secs}`;
+        }
+
+        function playRecordedAudio() {
+            if (recordedBlob) {
+                const url = URL.createObjectURL(recordedBlob);
+                const audio = new Audio(url);
+                audio.play();
+            }
+        }
+
+        // Helper untuk loading state
+        function setBtnLoading(btnId, isLoading, text) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            if (isLoading) {
+                btn.disabled = true;
+                btn.style.opacity = '0.7';
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Memproses...`;
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.innerHTML = text;
+            }
+        }
+
+        function discardRecording() {
+            recordedBlob = null;
+            audioChunks = [];
+            document.getElementById('recorded-audio-preview').style.display = 'none';
+            document.getElementById('recording-status').style.display = 'none';
         }
 
         // --- Edit Modal Logic ---
         function openEditModal(item) {
+            isAddMode = false;
             currentEditItem = item;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Kosa Kata';
             document.getElementById('edit-id').value = item.id;
             document.getElementById('edit-indo').value = item.indonesia;
             document.getElementById('edit-dusun').value = item.dusun;
             document.getElementById('edit-contoh-id').value = item.contoh_id || '';
             document.getElementById('edit-contoh-dusun').value = item.contoh_dusun || '';
             document.getElementById('current-audio').innerText = item.audio_url ? 'Sudah ada audio' : 'Belum ada audio';
+            
+            // Show existing audio preview if available
+            if (item.audio_url) {
+                document.getElementById('existing-audio-preview').style.display = 'flex';
+            } else {
+                document.getElementById('existing-audio-preview').style.display = 'none';
+            }
+
+            discardRecording();
             document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function playExistingAudio(btn) {
+            if (currentEditItem && currentEditItem.audio_url) {
+                const icon = btn.querySelector('i');
+                const audio = new Audio(currentEditItem.audio_url);
+                
+                btn.classList.add('playing');
+                icon.className = 'fas fa-volume-up';
+
+                audio.play();
+
+                audio.onended = () => {
+                    btn.classList.remove('playing');
+                    icon.className = 'fas fa-volume-up';
+                };
+            }
         }
 
         function closeEditModal() {
             document.getElementById('editModal').style.display = 'none';
+            stopRecording();
         }
 
         async function saveEdit() {
+            const btnId = 'btn-save-edit';
+            const defaultText = 'Simpan Perubahan';
+            
             const id = document.getElementById('edit-id').value;
-            const indonesia = document.getElementById('edit-indo').value;
-            const dusun = document.getElementById('edit-dusun').value;
-            const contoh_id = document.getElementById('edit-contoh-id').value;
-            const contoh_dusun = document.getElementById('edit-contoh-dusun').value;
-            const audioFile = document.getElementById('edit-audio').files[0];
+            const indonesia = document.getElementById('edit-indo').value.trim();
+            const dusun = document.getElementById('edit-dusun').value.trim();
+            const contoh_id = document.getElementById('edit-contoh-id').value.trim();
+            const contoh_dusun = document.getElementById('edit-contoh-dusun').value.trim();
+            const audioFileInput = document.getElementById('edit-audio');
+            
+            if (!indonesia || !dusun) return alert("Indonesia dan Dusun wajib diisi.");
 
-            let audioUrl = currentEditItem.audio_url;
+            setBtnLoading(btnId, true);
 
-            // If there's a new audio file, upload it first
-            if (audioFile) {
+            let audioUrl = isAddMode ? null : currentEditItem.audio_url;
+
+            // Handle Audio Upload (File or Recording)
+            let audioToUpload = null;
+            if (audioFileInput.files[0]) {
+                audioToUpload = audioFileInput.files[0];
+            } else if (recordedBlob) {
+                audioToUpload = new File([recordedBlob], `record_${Date.now()}.mp3`, { type: 'audio/mpeg' });
+            }
+
+            if (audioToUpload) {
                 const formData = new FormData();
-                formData.append('audio', audioFile);
+                formData.append('audio', audioToUpload);
                 
                 try {
                     const uploadRes = await fetch('/api/admin-upload-audio', {
@@ -264,38 +592,52 @@
                     if(uploadData.success) {
                         audioUrl = uploadData.audio_url;
                     } else {
+                        setBtnLoading(btnId, false, defaultText);
                         return alert("Gagal upload audio: " + uploadData.message);
                     }
                 } catch (e) {
+                    setBtnLoading(btnId, false, defaultText);
                     return alert("Error upload audio.");
                 }
             }
 
             // Save to DB
-            const res = await fetch('/api/admin-usulan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
-                body: JSON.stringify({ 
-                    action: 'UPDATE_KAMUS_ITEM', 
-                    payload: { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url: audioUrl } 
-                })
-            });
-            const data = await res.json();
-            if(data.success) {
-                alert("Berhasil update!");
-                closeEditModal();
-                loadKamus();
-            } else {
-                alert("Gagal: " + data.message);
+            try {
+                const action = isAddMode ? 'ADD_KAMUS_ITEM' : 'UPDATE_KAMUS_ITEM';
+                const payload = { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url: audioUrl };
+
+                const res = await fetch('/api/admin-usulan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                    body: JSON.stringify({ action, payload })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert(isAddMode ? "Berhasil menambah kosa kata!" : "Berhasil update!");
+                    closeEditModal();
+                    loadKamus();
+                } else {
+                    alert("Gagal: " + data.message);
+                }
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                setBtnLoading(btnId, false, defaultText);
             }
         }
 
         async function importJSON() {
+            const btn = event.target.closest('button');
+            const originalHTML = btn.innerHTML;
+            
             try {
                 const jsonStr = document.getElementById('jsonInput').value;
                 if(!jsonStr) return alert("Paste dulu JSON-nya mas.");
                 const jsonData = JSON.parse(jsonStr);
                 
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait...`;
+
                 const res = await fetch('/api/admin-usulan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
@@ -311,6 +653,9 @@
                 }
             } catch (err) {
                 alert("Format JSON kayaknya salah: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
             }
         }
 
@@ -325,14 +670,25 @@
             reader.readAsText(file);
         });
 
-        async function approveWord(item) {
-            const res = await fetch('/api/admin-usulan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
-                body: JSON.stringify({ action: 'APPROVE_USULAN', payload: item })
-            });
-            const data = await res.json();
-            loadWords();
+        async function approveWord(btn, item) {
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+
+            try {
+                const res = await fetch('/api/admin-usulan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                    body: JSON.stringify({ action: 'APPROVE_USULAN', payload: item })
+                });
+                const data = await res.json();
+                loadWords();
+                if(currentTab === 'kamus') loadKamus();
+            } catch (err) {
+                alert("Gagal approve.");
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            }
         }
 
         async function deleteWord(id) {

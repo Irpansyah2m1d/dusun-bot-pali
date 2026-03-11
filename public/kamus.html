@@ -28,6 +28,7 @@
     <meta name="twitter:image" content="https://dusun-bot-pali.vercel.app/dusun-bot.png">
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -317,18 +318,28 @@
 
                             html += `
                                 <div class="result-item">
-                                    <div class="result-main">
-                                        <div class="word-group">
-                                            <span class="from">${word}</span>
-                                            <span class="arrow">➔</span>
-                                            <span class="to">${translation}</span>
-                                            ${res.audio_url ? `<button class="btn-audio" onclick="playAudio('${res.audio_url}')" title="Putar Suara"><i class="fas fa-volume-up"></i></button>` : ''}
+                                    <div class="result-main-row">
+                                        <div class="word-content">
+                                            <div class="word-pair">
+                                                <span class="from">${word}</span>
+                                                <span class="arrow"><i class="fas fa-long-arrow-alt-right"></i></span>
+                                                <span class="to">${translation}</span>
+                                            </div>
+                                            ${(res.contoh_id || res.contoh_dusun) ? `
+                                                <div class="example-text">
+                                                    <i class="far fa-comment-dots"></i>
+                                                    <div style="flex: 1;">
+                                                        ${res.contoh_id ? `<div><b>ID:</b> ${res.contoh_id}</div>` : ''}
+                                                        ${res.contoh_dusun ? `<div><b>PALI:</b> ${res.contoh_dusun}</div>` : ''}
+                                                    </div>
+                                                </div>
+                                            ` : ''}
                                         </div>
-                                    </div>
-                                    <div class="result-examples-dual">
-                                        ${(res.contoh_id || res.contoh_dusun) ? `<span class="ex-label">Contoh dalam Kalimat:</span>` : ''}
-                                        ${res.contoh_id ? `<span class="ex-text"><b>ID:</b> ${res.contoh_id}</span>` : ''}
-                                        ${res.contoh_dusun ? `<span class="ex-text"><b>PALI:</b> ${res.contoh_dusun}</span>` : ''}
+                                        ${res.audio_url ? `
+                                            <button class="btn-audio" onclick="playAudio(this, '${res.audio_url}')" title="Putar Suara">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                        ` : ''}
                                     </div>
                                 </div>
                             `;
@@ -488,9 +499,29 @@
             document.getElementById('contributors-modal').classList.remove('active');
         }
 
-        function playAudio(url) {
+        function playAudio(btn, url) {
+            const icon = btn.querySelector('i');
+            
+            // Revert all other playing buttons
+            document.querySelectorAll('.btn-audio.playing').forEach(b => {
+                b.classList.remove('playing');
+                b.querySelector('i').className = 'fas fa-play';
+            });
+
             const audio = new Audio(url);
-            audio.play().catch(e => console.error("Gagal memutar audio:", e));
+            btn.classList.add('playing');
+            icon.className = 'fas fa-volume-up';
+
+            audio.play().catch(e => {
+                btn.classList.remove('playing');
+                icon.className = 'fas fa-play';
+                console.error("Gagal memutar audio:", e);
+            });
+
+            audio.onended = () => {
+                btn.classList.remove('playing');
+                icon.className = 'fas fa-play';
+            };
         }
 
         // Load awal

@@ -1,13 +1,16 @@
+const { createClient } = require('@supabase/supabase-js');
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const pdf = require("pdf-parse-fork");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 // Multer setup for temporary storage
 const upload = multer({ dest: "tmp/uploads/" });
-
-const knowledgePath = path.join(process.cwd(), "data", "knowledge.json");
 
 // Helper function to call Groq for extraction
 const callGroqForExtraction = async (keys, text) => {
@@ -41,7 +44,6 @@ const callGroqForExtraction = async (keys, text) => {
 
             const data = await response.json();
             let aiText = data.choices[0].message.content;
-            // Extract JSON array from response if there's junk
             const match = aiText.match(/\[[\s\S]*\]/);
             if (match) return JSON.parse(match[0]);
             return JSON.parse(aiText);
@@ -66,7 +68,6 @@ module.exports = async (req, res) => {
         }
 
         try {
-            // 1. Extract Text from PDF
             const dataBuffer = fs.readFileSync(req.file.path);
             const pdfData = await pdf(dataBuffer);
             const fullText = pdfData.text;
@@ -83,10 +84,8 @@ module.exports = async (req, res) => {
                 process.env.GROQ_API_KEY_3
             ].filter(k => !!k);
 
-            // 2. Try Gemini first
             try {
                 const genAI = new GoogleGenerativeAI((process.env.GEMINI_API_KEY || "").trim());
-                // We try a very generic model name if others fail
                 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
                 const prompt = `
@@ -107,27 +106,42 @@ module.exports = async (req, res) => {
                 newKnowledge = await callGroqForExtraction(groqKeys, fullText);
             }
 
-            // 3. Save to knowledge.json
-            let existingKnowledge = [];
-            if (fs.existsSync(knowledgePath)) {
-                existingKnowledge = JSON.parse(fs.readFileSync(knowledgePath, "utf-8"));
+            // 3. Save to Supabase
+            // Kita proses satu per satu untuk upsert logic (topic as unique constraint logic)
+            for (const item of newKnowledge) {
+                if (!item.topic || !item.content) continue;
+                
+                // Cari apakah topik sudah ada
+                const { data: existing } = await supabase
+                    .from('pali_ai_knowledge')
+                    .select('id')
+                    .ilike('topic', item.topic.trim())
+                    .limit(1)
+                    .single();
+
+                if (existing) {
+                    await supabase
+                        .from('pali_ai_knowledge')
+                        .update({ 
+                            content: item.content.trim(), 
+                            updated_at: new Date().toISOString(),
+                            source: 'manual' 
+                        })
+                        .eq('id', existing.id);
+                } else {
+                    await supabase
+                        .from('pali_ai_knowledge')
+                        .insert([{
+                            topic: item.topic.trim(),
+                            content: item.content.trim(),
+                            source: 'manual',
+                            updated_at: new Date().toISOString()
+                        }]);
+                }
             }
 
-            const merged = [...existingKnowledge];
-            newKnowledge.forEach(newItem => {
-                if (!newItem.topic || !newItem.content) return;
-                const index = merged.findIndex(e => e.topic.toLowerCase() === newItem.topic.toLowerCase());
-                if (index > -1) {
-                    merged[index] = newItem;
-                } else {
-                    merged.push(newItem);
-                }
-            });
-
-            fs.writeFileSync(knowledgePath, JSON.stringify(merged, null, 2), "utf-8");
             if (req.file) fs.unlinkSync(req.file.path);
-
-            return res.status(200).json({ success: true, message: "Berhasil! Pengetahuan baru telah dipelajari bot." });
+            return res.status(200).json({ success: true, message: "Berhasil! Pengetahuan baru dari PDF telah disimpan ke database." });
 
         } catch (error) {
             console.error("PDF Process Error:", error);

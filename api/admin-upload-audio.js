@@ -20,17 +20,24 @@ module.exports = async (req, res) => {
 
         try {
             const fileBuffer = fs.readFileSync(req.file.path);
-            const fileName = `audio_${Date.now()}.mp3`;
+            const mimeType = req.file.mimetype || 'audio/mpeg';
+            const ext = mimeType.includes('webm') ? 'webm' : 'mp3';
+            const fileName = `audio_${Date.now()}.${ext}`;
 
             // Upload to Supabase Storage Bucket 'audio-kamus'
             const { data, error } = await supabase.storage
                 .from('audio-kamus')
                 .upload(fileName, fileBuffer, {
-                    contentType: 'audio/mpeg',
+                    contentType: mimeType,
                     upsert: true
                 });
 
-            if (error) throw error;
+            if (error) {
+                if (error.message.includes('not found')) {
+                    throw new Error("Bucket 'audio-kamus' belum dibuat di Supabase Storage. Silakan buat bucket tersebut dan atur ke 'Public'.");
+                }
+                throw error;
+            }
 
             // Get Public URL
             const { data: { publicUrl } } = supabase.storage
@@ -38,12 +45,12 @@ module.exports = async (req, res) => {
                 .getPublicUrl(fileName);
 
             // Clean up
-            fs.unlinkSync(req.file.path);
+            if (fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
 
             return res.status(200).json({ success: true, audio_url: publicUrl });
 
         } catch (error) {
-            if (req.file) fs.unlinkSync(req.file.path);
+            if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
             return res.status(500).json({ success: false, message: error.message });
         }
     });

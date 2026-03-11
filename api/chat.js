@@ -92,52 +92,61 @@ module.exports = async (req, res) => {
         const promptLower = prompt.toLowerCase();
         const keywords = promptLower.split(/\s+/).filter(k => k.length > 2);
 
-        // 1. RAG Kamus (untuk Dusun Mode atau referensi kata)
-        const relatedData = kamusData
-            .filter((item) => {
-                const i = item.indonesia.toLowerCase();
-                const d = item.dusun.toLowerCase();
-                return keywords.some(kw => i.includes(kw) || d.includes(kw));
-            })
-            .slice(0, 15);
+        // 1. RAG Kamus (Kamus Utama dari Supabase)
+        let dictionaryContext = "Gunakan dialek PALI.";
+        try {
+            // Kita cari kata yang mirip di kolom indonesia atau dusun
+            const searchPromises = keywords.map(kw => 
+                supabase
+                    .from('kamus_utama')
+                    .select('indonesia, dusun')
+                    .or(`indonesia.ilike.%${kw}%,dusun.ilike.%${kw}%`)
+                    .limit(5)
+            );
+            
+            const searchResults = await Promise.all(searchPromises);
+            const flatResults = searchResults
+                .flatMap(r => r.data || [])
+                .filter((v, i, a) => a.findIndex(t => (t.indonesia === v.indonesia)) === i) // unique
+                .slice(0, 15);
 
-        const dictionaryContext = relatedData.length > 0
-            ? relatedData.map(item => `- ID: ${item.indonesia} | DSN: ${item.dusun}`).join("\n")
-            : "Gunakan dialek PALI.";
+            if (flatResults.length > 0) {
+                dictionaryContext = "REFERENSI KAMUS PALI-INDONESIA:\n" + 
+                    flatResults.map(item => `- Dusun: ${item.dusun} | Indonesia: ${item.indonesia}`).join("\n");
+            }
+        } catch (err) {
+            console.error("Gagal search kamus:", err.message);
+        }
 
         // 2. Fetch Knowledge from Supabase (RAG Pengetahuan)
-        // Kita ambil semua pengetahuan lalu filter sederhana (untuk dataset kecil)
-        // Atau gunakan eq('topic', ...) jika sudah di-normalize
         const { data: knowledgeList, error: kbError } = await supabase
             .from('pali_ai_knowledge')
             .select('*');
         
         let allKnowledge = "";
         if (!kbError && knowledgeList) {
-            // Filter pengetahuan yang relevan dengan keyword
             const relevantKB = knowledgeList.filter(k => {
                 const t = k.topic.toLowerCase();
                 const c = k.content.toLowerCase();
                 return keywords.some(kw => t.includes(kw) || c.includes(kw));
             });
-
-            // Jika tidak ada yang relevan lewat keyword, ambil 5 terbaru saja sebagai context general
-            const displayKB = relevantKB.length > 0 ? relevantKB : knowledgeList.slice(0, 10);
+            const displayKB = relevantKB.length > 0 ? relevantKB : knowledgeList.slice(0, 8);
             allKnowledge = displayKB.map(k => `Topik: ${k.topic}\nInfo: ${k.content}`).join("\n\n");
         }
 
         const systemInstruction = mode === 'id'
-            ? `Kamu Sagarurung BOT, asisten cerdas kabupaten PALI (Penukal Abab Lematang Ilir). Jawablah dalam Bahasa Indonesia yang ramah, sopan, dan informatif.
+            ? `Kamu Sagarurung BOT, asisten cerdas PALI. Jawablah dlm Bahasa Indonesia yang ramah & singkat.
             
-            PENGETAHUAN REFERENSI (WAJIB DIBACA):
+            ${dictionaryContext}
+
+            PENGETAHUAN REFERENSI:
             ${allKnowledge}
 
-            ATURAN JAWABAN:
-            1. Jika user bertanya tentang topik yang ada di PENGETAHUAN REFERENSI di atas, kamu WAJIB menjawab berdasarkan informasi tersebut. Jangan pura-pura tidak tahu.
-            2. Jika topik tersebut TIDAK ADA sama sekali di referensi, jawablah dengan jujur bahwa kamu belum mempelajarinya, lalu tanya user apakah mereka bisa memberikan penjelasan singkat.
-            3. Jika benar-benar tidak tahu, sertakan tag [BELUM_TAHU:istilah] di akhir kalimat agar aku bisa belajar. Contoh: 'Waduh, aku belum tahu tentang itu. Boleh kasih tahu artinya? [BELUM_TAHU:senjang]'
-            4. Prioritaskan kebenaran data dari referensi.`
-            : `Kamu ahli dialek PALI. Jawab HANYA dalam dialek PALI kental. Referensi Pengetahuan: ${allKnowledge}. Kamus: ${dictionaryContext}`;
+            ATURAN:
+            1. Jika user bertanya arti kata (terjemahan), gunakan REFERENSI KAMUS di atas. Jawab dengan format singkat, misal: 'Arti [kata] dalam bahasa Dusun adalah [arti].'
+            2. Jika topik ada di PENGETAHUAN REFERENSI, jawab berdasarkan itu.
+            3. Jika benar-benar tidak ada di kamus maupun pengetahuan, tanyakan ke user dengan menyertakan tag [BELUM_TAHU:istilah].`
+            : `Kamu ahli dialek PALI. Jawab HANYA dlm dialek PALI kental. Referensi Pengetahuan: ${allKnowledge}. Kamus: ${dictionaryContext}`;
 
         let aiAnswer = "";
 

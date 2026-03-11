@@ -55,13 +55,15 @@ module.exports = async (req, res) => {
                 updated_at: new Date().toISOString()
             }));
 
-            const { error: insertError } = await supabase
-                .from('pali_ai_knowledge')
-                .insert(rows);
+            if (rows.length > 0) {
+                const { error: insertError } = await supabase
+                    .from('pali_ai_knowledge')
+                    .insert(rows);
 
-            if (insertError) throw insertError;
+                if (insertError) throw insertError;
+            }
 
-            return res.status(200).json({ success: true, message: "Knowledge updated successfully in Supabase" });
+            return res.status(200).json({ success: true, message: "Manual knowledge fully synced with database" });
         } catch (error) {
             return res.status(500).json({ success: false, message: error.message });
         }

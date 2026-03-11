@@ -10,10 +10,11 @@ module.exports = async (req, res) => {
     // GET: Ambil semua data (hasil belajar AI)
     if (req.method === 'GET') {
         try {
+            // Ambil semua yang BUKAN manual (berarti hasil belajar chatbot/user)
             const { data, error } = await supabase
                 .from('pali_ai_knowledge')
                 .select('*')
-                .eq('source', 'chatbot')
+                .neq('source', 'manual')
                 .order('updated_at', { ascending: false });
 
             if (error) throw error;
@@ -26,10 +27,13 @@ module.exports = async (req, res) => {
     // POST: Simpan atau update pengetahuan baru dari user (upsert by topic)
     if (req.method === 'POST') {
         try {
-            const { topic, content, source = "chatbot" } = req.body;
+            let { topic, content, source = "chatbot" } = req.body;
             if (!topic || !content) {
                 return res.status(400).json({ success: false, message: "Topic dan content wajib diisi." });
             }
+
+            // Standarisasi source: Semua hasil belajar bot/user kita labeli 'chatbot' agar seragam di dashboard
+            if (source === 'user-chat') source = 'chatbot';
 
             const normalizedTopic = topic.trim().toLowerCase();
             const now = new Date().toISOString();

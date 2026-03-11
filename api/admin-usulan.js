@@ -150,13 +150,37 @@ module.exports = async (req, res) => {
             }
 
             if (action === 'UPDATE_KAMUS_ITEM') {
+                if (!payload) return res.status(400).json({ success: false, message: 'Payload needed.' });
                 const { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url } = payload;
-                const { error } = await supabase.from('kamus_utama').update({
-                    indonesia, dusun, contoh_id, contoh_dusun, audio_url
-                }).eq('id', id);
+                if (!id) return res.status(400).json({ success: false, message: 'ID (ID kosa kata) wajib ada untuk update.' });
 
-                if (error) return res.status(500).json({ success: false, message: 'Gagal update kosa kata.' });
+                const { error: updateError } = await supabase
+                    .from('kamus_utama')
+                    .update({ 
+                        indonesia: indonesia?.trim(), 
+                        dusun: dusun?.trim(), 
+                        contoh_id: contoh_id?.trim(), 
+                        contoh_dusun: contoh_dusun?.trim(), 
+                        audio_url: audio_url 
+                    })
+                    .eq('id', id);
+
+                if (updateError) {
+                    console.error("Supabase Update Error:", updateError);
+                    return res.status(500).json({ success: false, message: 'Database error: ' + updateError.message });
+                }
+                
                 return res.status(200).json({ success: true, message: 'Berhasil update kosa kata!' });
+            }
+
+            if (action === 'ADD_KAMUS_ITEM') {
+                const { indonesia, dusun, contoh_id, contoh_dusun, audio_url } = payload;
+                const { error } = await supabase.from('kamus_utama').insert([
+                    { indonesia, dusun, contoh_id, contoh_dusun, audio_url }
+                ]);
+
+                if (error) return res.status(500).json({ success: false, message: 'Gagal menambah kosa kata.' });
+                return res.status(200).json({ success: true, message: 'Berhasil menambah kosa kata!' });
             }
 
             return res.status(400).json({ success: false, message: `Action ${action} tidak dikenali.` });
