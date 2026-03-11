@@ -2,6 +2,7 @@ const { createClient } = require('@supabase/supabase-js');
 const multer = require('multer');
 const fs = require('fs');
 
+const authCheck = require('./_utils/auth');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const upload = multer({ dest: 'tmp/uploads/' });
 
@@ -9,9 +10,9 @@ module.exports = async (req, res) => {
     upload.single('audio')(req, res, async (err) => {
         if (err) return res.status(500).json({ success: false, message: "Upload error" });
 
-        const adminPassword = req.headers['x-admin-password'];
-        if (adminPassword !== process.env.ADMIN_PASSWORD) {
-            return res.status(401).json({ success: false, message: "Unauthorized" });
+        const decoded = authCheck(req);
+        if (!decoded) {
+            return res.status(401).json({ success: false, message: "Harap login kembali." });
         }
 
         if (!req.file) {

@@ -71,17 +71,82 @@
         </main>
     </div>
 
+            <div class="dashboard-card" style="max-width: 600px; border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 30px;">
+                <div class="card-header">
+                    <h3 style="color: var(--emerald-green);"><i class="fas fa-key"></i> Ubah Password Admin</h3>
+                </div>
+                <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 0.9rem;">Ganti password login Anda secara berkala demi keamanan.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <input type="password" id="old-pass" class="dash-input" placeholder="Password Lama" style="width: 100%;">
+                    <input type="password" id="new-pass" class="dash-input" placeholder="Password Baru (Min. 6 Karakter)" style="width: 100%;">
+                    <input type="password" id="confirm-pass" class="dash-input" placeholder="Konfirmasi Password Baru" style="width: 100%;">
+                    
+                    <button class="btn-dash btn-dash-primary" id="btn-change-pass" onclick="changePassword()" style="justify-content: center; padding: 15px;">
+                        <i class="fas fa-shield-check"></i> Simpan Password Baru
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
     <script>
-        const password = localStorage.getItem('admin_password');
+        const token = localStorage.getItem('admin_token');
+        const user = JSON.parse(localStorage.getItem('admin_user') || '{}');
+
+        if (user.full_name) {
+            document.querySelector('.user-profile span').innerText = user.full_name;
+            document.querySelector('.user-profile img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=10b981&color=fff`;
+        }
 
         async function loadSettings() {
             try {
-                const res = await fetch('/api/admin-usulan?type=settings', { headers: { 'x-admin-password': password } });
+                const res = await fetch('/api/admin-usulan?type=settings', { 
+                    headers: { 'Authorization': `Bearer ${token}` } 
+                });
                 const data = await res.json();
                 if(!data.success) return logout();
                 
                 updateSourceButtons(data.source);
             } catch (err) { console.error(err); }
+        }
+
+        async function changePassword() {
+            const oldPass = document.getElementById('old-pass').value;
+            const newPass = document.getElementById('new-pass').value;
+            const confirmPass = document.getElementById('confirm-pass').value;
+
+            if(!oldPass || !newPass || !confirmPass) return alert("Semua kolom harus diisi.");
+            if(newPass.length < 6) return alert("Password baru minimal 6 karakter.");
+            if(newPass !== confirmPass) return alert("Konfirmasi password baru tidak cocok.");
+
+            const btn = document.getElementById('btn-change-pass');
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
+            try {
+                const res = await fetch('/api/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
+                });
+                const data = await res.json();
+                
+                if(data.success) {
+                    alert("✅ Berhasil!\n" + data.message);
+                    document.getElementById('old-pass').value = "";
+                    document.getElementById('new-pass').value = "";
+                    document.getElementById('confirm-pass').value = "";
+                } else {
+                    alert("❌ Gagal!\n" + data.message);
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan sistem.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            }
         }
 
         function updateSourceButtons(source) {
@@ -98,7 +163,7 @@
         async function setSource(val) {
             const res = await fetch('/api/admin-usulan', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ action: 'UPDATE_SETTING', key: 'data_source', value: val })
             });
             const data = await res.json();
@@ -114,7 +179,7 @@
             try {
                 const res = await fetch('/api/admin-usulan', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                     body: JSON.stringify({ action: 'MIGRATE_KAMUS' })
                 });
                 const data = await res.json();

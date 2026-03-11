@@ -2,20 +2,18 @@ const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
 
+const authCheck = require('./_utils/auth');
+
 // Config Supabase dari Environment
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Custom Header Password for very simple security overlay
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
 module.exports = async (req, res) => {
-    // Verifikasi password admin terlebih dahulu
-    const clientPass = req.headers['x-admin-password'];
-
-    if (clientPass !== ADMIN_PASSWORD) {
-        return res.status(401).json({ success: false, message: 'Unauthorized. Password salah.' });
+    // Verifikasi Auth via JWT
+    const decoded = authCheck(req);
+    if (!decoded) {
+        return res.status(401).json({ success: false, message: 'Harap login kembali. Sesi habis atau tidak valid.' });
     }
 
     try {

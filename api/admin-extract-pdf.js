@@ -5,6 +5,8 @@ const multer = require("multer");
 const pdf = require("pdf-parse-fork");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
+const authCheck = require('./_utils/auth');
+
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -58,9 +60,9 @@ module.exports = async (req, res) => {
     upload.single("pdf")(req, res, async (err) => {
         if (err) return res.status(500).json({ success: false, message: "Upload error" });
 
-        const adminPassword = req.headers['x-admin-password'];
-        if (adminPassword !== process.env.ADMIN_PASSWORD) {
-            return res.status(401).json({ success: false, message: "Unauthorized" });
+        const decoded = authCheck(req);
+        if (!decoded) {
+            return res.status(401).json({ success: false, message: "Harap login kembali." });
         }
 
         if (!req.file) {

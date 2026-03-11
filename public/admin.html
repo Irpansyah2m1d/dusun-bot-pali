@@ -17,6 +17,10 @@
         <h2 style="margin-bottom: 10px; font-size: 1.8rem;">Dusun Admin</h2>
         <p style="color: var(--text-dim); margin-bottom: 40px;">Masukkan password untuk melanjutkan.</p>
         
+        <div class="input-group" style="margin-bottom: 15px;">
+            <input type="text" id="adminUser" class="dash-input" placeholder="Username Admin" style="text-align: center; width: 100%;">
+        </div>
+        
         <div class="input-group" style="position: relative;">
             <input type="password" id="adminPass" class="dash-input" placeholder="Password Admin" style="text-align: center; width: 100%;">
             <button type="button" onclick="togglePassword()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-dim); cursor: pointer; padding: 5px;">
@@ -34,8 +38,8 @@
     </div>
 
     <script>
-        // Check if already logged in
-        if (localStorage.getItem('admin_password')) {
+        // Check if already logged in via token
+        if (localStorage.getItem('admin_token')) {
             window.location.href = '/admin/index.html';
         }
 
@@ -54,24 +58,36 @@
         }
 
         async function login() {
+            const username = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
-            if(!pass) return alert("Silakan masukan password.");
+            
+            if(!username || !pass) return alert("Silakan masukan username dan password.");
 
-            // Verify password via API
+            const btn = document.querySelector('.btn-dash-primary');
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
             try {
-                const res = await fetch('/api/admin-usulan', { 
-                    headers: { 'x-admin-password': pass } 
+                const res = await fetch('/api/auth', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password: pass })
                 });
                 const result = await res.json();
                 
                 if(result.success) {
-                    localStorage.setItem('admin_password', pass);
+                    localStorage.setItem('admin_token', result.token);
+                    localStorage.setItem('admin_user', JSON.stringify(result.user));
                     window.location.href = '/admin/index.html';
                 } else {
-                    alert(result.message || "Password salah!");
+                    alert(result.message || "Login gagal!");
                 }
             } catch (err) {
                 alert("Terjadi kesalahan koneksi.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
             }
         }
     </script>

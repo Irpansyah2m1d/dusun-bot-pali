@@ -2,16 +2,17 @@ const { createClient } = require('@supabase/supabase-js');
 const fs = require("fs");
 const path = require("path");
 
+const authCheck = require('./_utils/auth');
+
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = async (req, res) => {
-    const adminPassword = req.headers['x-admin-password'];
-
-    // Auth Check
-    if (adminPassword !== process.env.ADMIN_PASSWORD) {
-        return res.status(401).json({ success: false, message: "Unauthorized" });
+    // Auth Check via JWT
+    const decoded = authCheck(req);
+    if (!decoded) {
+        return res.status(401).json({ success: false, message: "Harap login kembali. Sesi tidak valid." });
     }
 
     // GET: Ambil pengetahuan manual (input admin)
