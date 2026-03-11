@@ -327,11 +327,18 @@
                                             </div>
                                             ${(res.contoh_id || res.contoh_dusun) ? `
                                                 <div class="example-text">
-                                                    <i class="far fa-comment-dots"></i>
-                                                    <div style="flex: 1;">
-                                                        ${res.contoh_id ? `<div><b>ID:</b> ${res.contoh_id}</div>` : ''}
-                                                        ${res.contoh_dusun ? `<div><b>PALI:</b> ${res.contoh_dusun}</div>` : ''}
-                                                    </div>
+                                                    ${res.contoh_id ? `
+                                                        <div class="ex-row">
+                                                            <div class="ex-label">ID</div>
+                                                            <div class="ex-val">${res.contoh_id}</div>
+                                                        </div>
+                                                    ` : ''}
+                                                    ${res.contoh_dusun ? `
+                                                        <div class="ex-row">
+                                                            <div class="ex-label">PALI</div>
+                                                            <div class="ex-val">${res.contoh_dusun}</div>
+                                                        </div>
+                                                    ` : ''}
                                                 </div>
                                             ` : ''}
                                         </div>
