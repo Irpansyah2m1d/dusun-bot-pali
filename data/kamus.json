@@ -1134,7 +1134,7 @@
     "contoh_dusun": ""
   },
   {
-    "indonesia": "bundar",
+    "indonesia": "bundar/bulat",
     "dusun": "buntok",
     "contoh_id": "",
     "contoh_dusun": ""
@@ -3418,6 +3418,198 @@
     "dusun": "bekarang",
     "contoh_id": "",
     "contoh_dusun": ""
+  },
+  {
+    "indonesia": "leher",
+    "dusun": "teliok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "dapur",
+    "dusun": "dapo",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "piring",
+    "dusun": "pinggon",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cucu",
+    "dusun": "cocong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "menikah untuk laki-laki",
+    "dusun": "bebini",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "pasir",
+    "dusun": "paser",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lumpur",
+    "dusun": "lompor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "akar",
+    "dusun": "ako",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "halus",
+    "dusun": "alos",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "mentah",
+    "dusun": "matah",
+    "contoh_id": "buah ini masih mentah",
+    "contoh_dusun": "buoh ikk masih matah"
+  },
+  {
+    "indonesia": "berbisik-bisik",
+    "dusun": "esek an",
+    "contoh_id": "jangan berbisik-bisik",
+    "contoh_dusun": "jangon esek an"
+  },
+  {
+    "indonesia": "memeluk/peluk",
+    "dusun": "ngepet/kepet",
+    "contoh_id": "jangan peluk aku",
+    "contoh_dusun": "jangon kepet aku"
+  },
+  {
+    "indonesia": "pelukan",
+    "dusun": "kepetan",
+    "contoh_id": "mereka berpelukan",
+    "contoh_dusun": "wang situ kepetan"
+  },
+  {
+    "indonesia": "jalan raya",
+    "dusun": "jalon besok",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "parit",
+    "dusun": "laren",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "ikat/mengikat",
+    "dusun": "kujut",
+    "contoh_id": "tolong bantu saya mengikat tali ini",
+    "contoh_dusun": "tolong bantu aku kujutke tali ikk"
+  },
+  {
+    "indonesia": "sudut/pojok",
+    "dusun": "becu",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tawar,hambar (tidak ada rasa)",
+    "dusun": "dak getek abe",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "hangus (makanan)",
+    "dusun": "motong",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "lengket",
+    "dusun": "melekat",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tuli (tidak bisa mendengar)",
+    "dusun": "pekak",
+    "contoh_id": "kamu tuli ya",
+    "contoh_dusun": "dengo/nga pekak yex"
+  },
+  {
+    "indonesia": "tradisi lisan berupa seni sastra berbentuk puisi lama",
+    "dusun": "senjang",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "tikar",
+    "dusun": "tiko",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "gelap gulita",
+    "dusun": "kelman akap",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "duluan",
+    "dusun": "nulu",
+    "contoh_id": "kamu duluan sana",
+    "contoh_dusun": "kamu nulu lah kesitu"
+  },
+  {
+    "indonesia": "sumur",
+    "dusun": "somor",
+    "contoh_id": "",
+    "contoh_dusun": ""
+  },
+  {
+    "indonesia": "cemas/khawatir/mencemaskan",
+    "dusun": "ripal / meripalke",
+    "contoh_id": "kamu itu sering kali membuat saya cemas",
+    "contoh_dusun": "dengo ikak neman nian muot wang ripal"
+  },
+  {
+    "indonesia": "membayangkan/bayangkan",
+    "dusun": "mayongke/bayongke",
+    "contoh_id": "coba kamu bayangkan",
+    "contoh_dusun": "cuka dengo bayongke"
+  },
+  {
+    "indonesia": "bermimpi",
+    "dusun": "mimpian",
+    "contoh_id": "semalam aku bermimpi ketemu kamu",
+    "contoh_dusun": "malam nih aku mimpian popok ngak dengo"
+  },
+  {
+    "indonesia": "mengigau (ngigo)",
+    "dusun": "pukauan",
+    "contoh_id": "semalam dia mengigau",
+    "contoh_dusun": "malam nih nye pukauan"
+  },
+  {
+    "indonesia": "mendengkur (ngorok)",
+    "dusun": "bekeru",
+    "contoh_id": "bapakku semalam mendengkur",
+    "contoh_dusun": "bok ku malamnih tidok bekeru"
+  },
+  {
+    "indonesia": "berhentilah (ekspresi kesal nyuruh stop)",
+    "dusun": "perilah/bedaduh",
+    "contoh_id": "berhentilah kamu itu",
+    "contoh_dusun": "bedadu pulek dengo/nga kak"
   },
   {
     "indonesia": "simbol dalam pernikahan antara bujang dan gadis dengan bahan utama kelapa.",

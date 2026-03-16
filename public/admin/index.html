@@ -48,19 +48,27 @@
             <div class="stats-row">
                 <div class="stat-card" style="border-bottom: 3px solid #10b981;">
                     <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fas fa-users"></i></div>
-                    <div class="stat-info"><span class="val" id="stats-visitors">...</span><span class="label">Total Pengunjung</span></div>
+                    <div class="stat-info"><span class="val skeleton-block" id="stats-visitors" style="width: 60px; height: 30px; display: inline-block;"></span><span class="label">Total Pengunjung</span></div>
+                </div>
+                <div class="stat-card" style="border-bottom: 3px solid #3b82f6;">
+                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fas fa-search"></i></div>
+                    <div class="stat-info"><span class="val skeleton-block" id="stats-searches-total" style="width: 60px; height: 30px; display: inline-block;"></span><span class="label">Total Pencarian</span></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-inbox"></i></div>
-                    <div class="stat-info"><span class="val" id="stats-pending">...</span><span class="label">Usulan Baru</span></div>
+                    <div class="stat-info"><span class="val skeleton-block" id="stats-pending" style="width: 40px; height: 30px; display: inline-block;"></span><span class="label">Usulan Baru</span></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-book-open"></i></div>
-                    <div class="stat-info"><span class="val" id="stats-total">...</span><span class="label">Total Kamus</span></div>
+                    <div class="stat-info"><span class="val skeleton-block" id="stats-total" style="width: 80px; height: 30px; display: inline-block;"></span><span class="label">Total Kamus</span></div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon"><i class="fas fa-feather-pointed"></i></div>
-                    <div class="stat-info"><span class="val" id="stats-folklore-count">...</span><span class="label">Cerita Rakyat</span></div>
+                    <div class="stat-info"><span class="val skeleton-block" id="stats-folklore-count" style="width: 40px; height: 30px; display: inline-block;"></span><span class="label">Cerita Rakyat</span></div>
+                </div>
+                <div class="stat-card" style="border-bottom: 3px solid #f59e0b;">
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="stat-info"><span class="val skeleton-block" id="stats-learned" style="width: 40px; height: 30px; display: inline-block;"></span><span class="label">Topik Dipelajari</span></div>
                 </div>
             </div>
 
@@ -141,21 +149,39 @@
                 const statsData = await resStats.json();
                 
                 if (statsData.success) {
-                    document.getElementById('stats-total').innerText = statsData.counts.kamus.toLocaleString();
-                    document.getElementById('stats-folklore-count').innerText = statsData.counts.cerita;
+                    // Update stats and remove skeletons
+                    const updateStat = (id, val) => {
+                        const el = document.getElementById(id);
+                        if(el) {
+                            el.innerText = val.toLocaleString();
+                            el.classList.remove('skeleton-block');
+                            el.style.width = 'auto';
+                            el.style.height = 'auto';
+                        }
+                    };
+
+                    updateStat('stats-total', statsData.counts.kamus);
+                    updateStat('stats-folklore-count', statsData.counts.cerita);
+                    updateStat('stats-pending', result.data.length);
                     
-                    // Hitung total pengunjung unik dari data analytics (30 hari)
+                    // Hitung statistik dari data analytics (30 hari)
                     let totalV = 0;
+                    let totalS = 0;
                     if(statsData.analytics) {
-                        const recordedIds = new Set();
                         statsData.analytics.forEach(item => {
                             if(item.event_type === 'visitor' && item.metadata && Array.isArray(item.metadata.visitors)) {
-                                item.metadata.visitors.forEach(id => recordedIds.add(id));
+                                totalV += item.metadata.visitors.length;
+                            } else if(item.event_type === 'search') {
+                                if(item.metadata && Array.isArray(item.metadata.queries)) {
+                                    totalS += item.metadata.queries.length;
+                                } else if (item.query && item.query !== 'daily_summary') {
+                                    totalS += 1;
+                                }
                             }
                         });
-                        totalV = recordedIds.size;
                     }
-                    document.getElementById('stats-visitors').innerText = totalV.toLocaleString();
+                    updateStat('stats-visitors', totalV);
+                    updateStat('stats-searches-total', totalS);
                     
                     // Render Charts
                     renderAnalyticsCharts(statsData.analytics);
@@ -165,7 +191,12 @@
                 const resL = await fetch('/api/ai-learned');
                 const dataL = await resL.json();
                 const learnedItems = dataL.data || [];
-                document.getElementById('stats-learned').innerText = learnedItems.length;
+                const learnedStatsEl = document.getElementById('stats-learned');
+                if(learnedStatsEl) {
+                    learnedStatsEl.innerText = learnedItems.length;
+                    learnedStatsEl.classList.remove('skeleton-block');
+                    learnedStatsEl.style.width = 'auto';
+                }
 
                 // Render AI learned feed
                 const feed = document.getElementById('ai-learned-feed');

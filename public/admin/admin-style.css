@@ -273,7 +273,9 @@ body {
 }
 .skeleton-text {
     height: 15px;
-    background: rgba(255,255,255,0.1);
+    background: linear-gradient(to right, rgba(255,255,255,0.02) 4%, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.02) 36%) !important;
+    background-size: 1000px 100% !important;
+    animation: shimmer 1.5s infinite linear;
     border-radius: 4px;
     display: inline-block;
 }
