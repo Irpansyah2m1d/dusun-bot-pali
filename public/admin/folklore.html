@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com; connect-src 'self';">
     <title>Kelola Cerita Rakyat | Admin Dusun PALI</title>
     <link rel="icon" type="image/png" href="/dusun-bot.png">
     <link rel="stylesheet" href="/admin/admin-style.css">
@@ -122,6 +123,17 @@
     </div>
 
     <script>
+        // Security Helper: Escape HTML to prevent XSS
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         const token = localStorage.getItem('admin_token');
         const user = JSON.parse(localStorage.getItem('admin_user') || '{}');
 
@@ -161,15 +173,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            ${stories.map(item => `
+                            ${stories.map((item, idx) => `
                                 <tr>
-                                    <td style="width: 80px;"><img src="${item.image_url || '/gallery/heritage.png'}" style="width: 60px; height: 40px; border-radius: 8px; object-fit: cover;"></td>
-                                    <td><strong>${item.title}</strong></td>
+                                    <td style="width: 80px;"><img src="${escapeHTML(item.image_url || '/gallery/heritage.png')}" style="width: 60px; height: 40px; border-radius: 8px; object-fit: cover;"></td>
+                                    <td><strong>${escapeHTML(item.title)}</strong></td>
                                     <td style="display: flex; gap: 8px;">
-                                        <button class="btn-dash btn-dash-edit" onclick='editFolklore(${JSON.stringify(item).replace(/'/g, "\\'")})'>
+                                        <button class="btn-dash btn-dash-edit" id="btnEdit-${idx}">
                                             <i class="fas fa-pen"></i> Edit
                                         </button>
-                                        <button class="btn-dash btn-dash-delete" onclick="deleteFolklore(${item.id})">
+                                        <button class="btn-dash btn-dash-delete" id="btnDelete-${idx}">
                                             <i class="fas fa-trash-can"></i> Hapus
                                         </button>
                                     </td>
@@ -178,12 +190,20 @@
                         </tbody>
                     </table>
                 `;
+                
+                // Safe event attachment
+                stories.forEach((item, idx) => {
+                    const btnEdit = document.getElementById(`btnEdit-${idx}`);
+                    const btnDelete = document.getElementById(`btnDelete-${idx}`);
+                    if (btnEdit) btnEdit.onclick = () => editFolklore(item);
+                    if (btnDelete) btnDelete.onclick = () => deleteFolklore(item.id);
+                });
             } catch (err) { console.error(err); }
         }
 
         function editFolklore(item) {
             editingFolkloreId = item.id;
-            document.getElementById('folklore-form-title').innerHTML = `<i class="fas fa-pen-to-square"></i> Mengubah: ${item.title}`;
+            document.getElementById('folklore-form-title').innerHTML = `<i class="fas fa-pen-to-square"></i> Mengubah: ${escapeHTML(item.title)}`;
             document.getElementById('folklore-title').value = item.title;
             document.getElementById('folklore-slug').value = item.slug || "";
             document.getElementById('folklore-excerpt').value = item.excerpt || "";

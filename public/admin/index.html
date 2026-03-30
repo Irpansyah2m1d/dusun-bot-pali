@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com; connect-src 'self';">
     <title>Dashboard Overview | Admin Dusun PALI</title>
     <link rel="icon" type="image/png" href="/dusun-bot.png">
     <link rel="stylesheet" href="/admin/admin-style.css">
@@ -117,6 +118,17 @@
     </div>
 
     <script>
+        // Security Helper: Escape HTML to prevent XSS
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         const token = localStorage.getItem('admin_token');
         const user = JSON.parse(localStorage.getItem('admin_user') || '{}');
 
@@ -212,12 +224,18 @@
                                 <span style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; text-transform: uppercase;">🎓 Hasil Belajar</span>
                                 <span style="color: rgba(255,255,255,0.3); font-size: 0.75rem;">${new Date(item.updated_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
-                            <strong style="color: #f59e0b;">${item.topic}</strong>
-                            <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 5px; line-height: 1.5;">${item.content.length > 120 ? item.content.substring(0, 120) + '...' : item.content}</p>
+                            <strong style="color: #f59e0b;">${escapeHTML(item.topic)}</strong>
+                            <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 5px; line-height: 1.5;">${escapeHTML(item.content.length > 120 ? item.content.substring(0, 120) + '...' : item.content)}</p>
                         </div>
                     `).join('');
                     if (learnedItems.length > 5) {
-                        feed.innerHTML += `<a href="/admin/ai-learned.html" style="color: #f59e0b; font-weight: 600; text-decoration: none;">Lihat semua (${learnedItems.length}) →</a>`;
+                        const moreLink = document.createElement('a');
+                        moreLink.href = "/admin/ai-learned.html";
+                        moreLink.style.color = "#f59e0b";
+                        moreLink.style.fontWeight = "600";
+                        moreLink.style.textDecoration = "none";
+                        moreLink.textContent = `Lihat semua (${learnedItems.length}) →`;
+                        feed.appendChild(moreLink);
                     }
                 }
             } catch (err) { console.error(err); }
@@ -274,9 +292,9 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <div>
                             <span style="display:inline-block; width: 24px; height: 24px; background: rgba(16,185,129,0.1); color: #10b981; text-align: center; border-radius: 50%; line-height: 24px; font-size: 0.8rem; margin-right: 10px;">${i+1}</span>
-                            <strong style="color: white; text-transform: capitalize;">${entry[0]}</strong>
+                            <strong style="color: white; text-transform: capitalize;">${escapeHTML(entry[0])}</strong>
                         </div>
-                        <span style="color: var(--emerald-green); font-weight: 700;">${entry[1]}x dicari</span>
+                        <span style="color: var(--emerald-green); font-weight: 700;">${parseInt(entry[1])}x dicari</span>
                     </div>
                 `).join('');
             } else {

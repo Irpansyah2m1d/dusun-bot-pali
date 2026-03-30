@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com; connect-src 'self' https://api.groq.com;">
     <title>Pengetahuan AI | Admin Dusun PALI</title>
     <link rel="icon" type="image/png" href="/dusun-bot.png">
     <link rel="stylesheet" href="/admin/admin-style.css">
@@ -348,8 +349,8 @@
                 const topicColor = k._type === 'ai-learned' ? '#f59e0b' : 'var(--emerald-green)';
                 const actionButtons = k._type === 'ai-learned'
                     ? `<a href="/admin/ai-learned.html" class="btn-dash btn-dash-secondary" style="padding: 8px 12px; text-decoration: none; font-size: 0.8rem;"><i class="fas fa-external-link-alt"></i> Kelola</a>`
-                    : `<button class="btn-dash btn-dash-secondary" onclick="editKnowledge(${k._index})" style="padding: 8px 12px;"><i class="fas fa-edit"></i></button>
-                       <button class="btn-dash btn-dash-secondary" onclick="deleteKnowledge(${k._index})" style="padding: 8px 12px; color: #ef4444;"><i class="fas fa-trash"></i></button>`;
+                    : `<button class="btn-dash btn-dash-secondary" id="btnEditKnow-${k._index}" style="padding: 8px 12px;"><i class="fas fa-edit"></i></button>
+                       <button class="btn-dash btn-dash-secondary" id="btnDeleteKnow-${k._index}" style="padding: 8px 12px; color: #ef4444;"><i class="fas fa-trash"></i></button>`;
 
                 return `
                     <div class="knowledge-item" style="border-color: ${borderColor};">
@@ -362,6 +363,23 @@
                     </div>
                 `;
             }).join('');
+
+            // Safe event attachment
+            combinedItems.forEach((k, i) => {
+                const uid = k._type === 'ai-learned' ? `ai-${k.id}` : `m-${k._index}`;
+                
+                // Detail toggle
+                const btnDetail = document.getElementById(`btn-${uid}`);
+                if (btnDetail) btnDetail.onclick = () => toggleDetail(uid);
+
+                // Edit/Delete for manual
+                if (k._type === 'manual') {
+                    const btnEdit = document.getElementById(`btnEditKnow-${k._index}`);
+                    const btnDel = document.getElementById(`btnDeleteKnow-${k._index}`);
+                    if (btnEdit) btnEdit.onclick = () => editKnowledge(k._index);
+                    if (btnDel) btnDel.onclick = () => deleteKnowledge(k._index);
+                }
+            });
         }
 
         function escapeHtml(text) {

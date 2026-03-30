@@ -72,16 +72,27 @@ module.exports = async (req, res) => {
             });
         }
 
+        // Security: Escape HTML to avoid XSS before storing
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         // 3. Masukkan data ke Database Supabase
         const { error: insertError } = await supabase
             .from('usulan_kosakata')
             .insert([
                 {
-                    nama: nama.trim(),
-                    indonesia: indonesia.trim(),
-                    dusun: dusun.trim(),
-                    contoh_id: (contoh_id || "").trim(),
-                    contoh_dusun: (contoh_dusun || "").trim()
+                    nama: escapeHTML(nama.trim()),
+                    indonesia: escapeHTML(indonesia.trim()),
+                    dusun: escapeHTML(dusun.trim()),
+                    contoh_id: escapeHTML((contoh_id || "").trim()),
+                    contoh_dusun: escapeHTML((contoh_dusun || "").trim())
                 }
             ]);
 

@@ -11,6 +11,7 @@
     <meta name="googlebot" content="index, follow">
     <meta name="theme-color" content="#0a0f1c">
     <link rel="canonical" href="https://dusun-bot-pali.vercel.app/kamus.html">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com; connect-src 'self';">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -252,6 +253,17 @@
     </footer>
 
     <script>
+        // Security Helper: Escape HTML to prevent XSS
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         // Hamburger Menu Toggle
         const mobileMenu = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('nav-links');
@@ -308,44 +320,42 @@
                     if (kamusInput.value.trim().length < 2) return;
 
                     if (data.success && data.results.length > 0) {
-                        totalStats.innerText = `Ditemukan ${data.totalResults} hasil kosa kata`;
+                        totalStats.textContent = `Ditemukan ${data.totalResults} hasil kosa kata`;
                         totalStats.style.display = 'block';
 
                         let html = '<div class="result-grid">';
-                        data.results.forEach(res => {
+                        data.results.forEach((res, idx) => {
                             const word = currentDir === 'id-to-dusun' ? res.indonesia : res.dusun;
                             const translation = currentDir === 'id-to-dusun' ? res.dusun : res.indonesia;
-                            let example = currentDir === 'id-to-dusun' ? res.contoh_dusun : res.contoh_id;
-                            if (!example) example = res.contoh_dusun || res.contoh_id;
 
                             html += `
                                 <div class="result-item">
                                     <div class="result-main-row">
                                         <div class="word-content">
                                             <div class="word-pair">
-                                                <span class="from">${word}</span>
+                                                <span class="from">${escapeHTML(word)}</span>
                                                 <span class="arrow"><i class="fas fa-long-arrow-alt-right"></i></span>
-                                                <span class="to">${translation}</span>
+                                                <span class="to">${escapeHTML(translation)}</span>
                                             </div>
                                             ${(res.contoh_id || res.contoh_dusun) ? `
                                                 <div class="example-text">
                                                     ${res.contoh_id ? `
                                                         <div class="ex-row">
                                                             <div class="ex-label">ID</div>
-                                                            <div class="ex-val">${res.contoh_id}</div>
+                                                            <div class="ex-val">${escapeHTML(res.contoh_id)}</div>
                                                         </div>
                                                     ` : ''}
                                                     ${res.contoh_dusun ? `
                                                         <div class="ex-row">
                                                             <div class="ex-label">PALI</div>
-                                                            <div class="ex-val">${res.contoh_dusun}</div>
+                                                            <div class="ex-val">${escapeHTML(res.contoh_dusun)}</div>
                                                         </div>
                                                     ` : ''}
                                                 </div>
                                             ` : ''}
                                         </div>
                                         ${res.audio_url ? `
-                                            <button class="btn-audio" onclick="playAudio(this, '${res.audio_url}')" title="Putar Suara">
+                                            <button class="btn-audio" id="btnAudio-${idx}" title="Putar Suara">
                                                 <i class="fas fa-play"></i>
                                             </button>
                                         ` : ''}
@@ -355,14 +365,28 @@
                         });
                         html += '</div>';
                         kamusResult.innerHTML = html;
+
+                        // Attach events safely
+                        data.results.forEach((res, idx) => {
+                            if (res.audio_url) {
+                                const btn = document.getElementById(`btnAudio-${idx}`);
+                                if (btn) {
+                                    btn.onclick = (e) => playAudio(e.currentTarget, res.audio_url);
+                                }
+                            }
+                        });
                     } else {
                         totalStats.style.display = 'none';
                         kamusResult.innerHTML = `
                             <div class="no-result" style="margin-bottom: 20px; text-align: center;">Kata tidak ditemukan dalam kamus.</div>
                             <div style="text-align: center;">
-                                <button onclick="openUsulanModal('${query.replace(/'/g, "\\'")}')" class="btn-secondary" style="background: transparent; cursor: pointer; border-color: var(--emerald-green); color: var(--emerald-green); padding: 10px 20px; font-size: 0.9rem; display: inline-flex;">+ Usulkan "${query}" ke Kamus</button>
+                                <button id="btnUsul" class="btn-secondary" style="background: transparent; cursor: pointer; border-color: var(--emerald-green); color: var(--emerald-green); padding: 10px 20px; font-size: 0.9rem; display: inline-flex;">+ Usulkan "${escapeHTML(query)}" ke Kamus</button>
                             </div>
                         `;
+                        const btnUsul = document.getElementById('btnUsul');
+                        if (btnUsul) {
+                            btnUsul.onclick = () => openUsulanModal(query);
+                        }
                     }
                 } catch (err) {
                     kamusResult.innerHTML = '<div class="no-result">Terjadi kesalahan saat mencari.</div>';
@@ -483,9 +507,9 @@
 
         function renderContributorsPreview(data) {
             const preview = document.getElementById('collab-preview');
-            // Ambil 3 pertama
-            const top3 = data.slice(0, 3).map(c => c.name).join(", ");
-            const more = data.length > 3 ? `<span class="collab-more">+${data.length - 3}</span>` : '';
+            const top3Arr = data.slice(0, 3).map(c => escapeHTML(c.name));
+            const top3 = top3Arr.join(", ");
+            const more = data.length > 3 ? `<span class="collab-more">+${parseInt(data.length - 3)}</span>` : '';
             
             preview.innerHTML = `<span class="collab-names">${top3}</span>${more}`;
         }
@@ -494,8 +518,8 @@
             const list = document.getElementById('contributor-list');
             list.innerHTML = data.map(c => `
                 <div class="contributor-item">
-                    <span class="contributor-name">${c.name}</span>
-                    <span class="contributor-count">${c.count} Kata</span>
+                    <span class="contributor-name">${escapeHTML(c.name)}</span>
+                    <span class="contributor-count">${parseInt(c.count)} Kata</span>
                 </div>
             `).join('');
         }

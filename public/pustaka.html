@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/png" href="/dusun-bot.png">
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com; connect-src 'self';">
     <style>
         .pustaka-page { padding: 80px 5% 60px; max-width: 1200px; margin: 0 auto; }
         .pustaka-header { text-align: center; margin-bottom: 50px; }
@@ -60,6 +62,17 @@
     </main>
 
     <script>
+        // Security Helper: Escape HTML to prevent XSS
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         let allStories = [];
         async function loadPustaka() {
             const grid = document.getElementById('pustaka-grid');
@@ -96,21 +109,31 @@
                 return;
             }
 
-            grid.innerHTML = filtered.map(item => `
-                <article class="folklore-card" onclick="location.href='/cerita.html?slug=${item.slug || item.id}'" style="position:relative;">
-                    <div class="category-badge">${item.category || 'Sejarah'}</div>
-                    <img src="${item.image_url || '/gallery/heritage.png'}" class="folklore-img" alt="${item.title}">
+            grid.innerHTML = filtered.map((item, idx) => `
+                <article class="folklore-card" id="card-${idx}" style="position:relative; cursor:pointer;">
+                    <div class="category-badge">${escapeHTML(item.category || 'Sejarah')}</div>
+                    <img src="${escapeHTML(item.image_url || '/gallery/heritage.png')}" class="folklore-img" alt="${escapeHTML(item.title)}">
                     <div class="folklore-card-body">
-                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;">${item.title}</h3>
+                        <h3 style="font-size: 1.1rem; margin-bottom: 5px;">${escapeHTML(item.title)}</h3>
                         <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">
-                            ${item.penulis ? `<span style="font-size: 0.75rem; color: #10b981;"><i class="fas fa-pen-nib" style="margin-right: 4px;"></i>${item.penulis}</span>` : ''}
-                            ${item.asal ? `<span style="font-size: 0.7rem; color: var(--text-dim); font-style: italic;"><i class="fas fa-map-marker-alt" style="margin-right: 4px;"></i>${item.asal}</span>` : ''}
+                            ${item.penulis ? `<span style="font-size: 0.75rem; color: #10b981;"><i class="fas fa-pen-nib" style="margin-right: 4px;"></i>${escapeHTML(item.penulis)}</span>` : ''}
+                            ${item.asal ? `<span style="font-size: 0.7rem; color: var(--text-dim); font-style: italic;"><i class="fas fa-map-marker-alt" style="margin-right: 4px;"></i>${escapeHTML(item.asal)}</span>` : ''}
                         </div>
-                        <p style="font-size: 0.85rem; margin-top: 5px;">${item.excerpt ? item.excerpt.split('.')[0] + '...' : 'Klik untuk membaca...'}</p>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">${item.excerpt ? escapeHTML(item.excerpt.split('.')[0]) + '...' : 'Klik untuk membaca...'}</p>
                         <span class="read-more" style="font-size: 0.8rem; margin-top: 10px; display: inline-block;">Baca ➔</span>
                     </div>
                 </article>
             `).join('');
+
+            // Attach events safely
+            filtered.forEach((item, idx) => {
+                const card = document.getElementById(`card-${idx}`);
+                if (card) {
+                    card.onclick = () => {
+                        window.location.href = `/cerita.html?slug=${encodeURIComponent(item.slug || item.id)}`;
+                    };
+                }
+            });
         }
 
         function filterFolklore(category, btn) {

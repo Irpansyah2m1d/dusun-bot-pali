@@ -13,6 +13,8 @@
     <meta property="og:url" content="" id="og-url">
     <meta property="og:type" content="article">
     <meta name="twitter:card" content="summary_large_image">
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com; connect-src 'self';">
     
     <style>
         .story-page { padding-top: 120px; padding-bottom: 100px; }
@@ -72,6 +74,17 @@
     </main>
 
     <script>
+        // Security Helper: Escape HTML to prevent XSS
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const slug = urlParams.get('slug');
@@ -90,22 +103,22 @@
                     const story = result.data;
                     document.title = `${story.title} - Cerita Rakyat PALI`;
                     
-                    // Render content with HTML support
+                    // Render content with HTML support (Assuming content is sanitized at source)
                     container.innerHTML = `
                         <div class="story-header">
                             <span class="story-meta">Koleksi Pustaka Rakyat PALI</span>
-                            <h1 class="story-title">${story.title}</h1>
+                            <h1 class="story-title">${escapeHTML(story.title)}</h1>
                             <div style="height: 4px; width: 60px; background: #10b981; margin: 0 auto; border-radius: 2px;"></div>
                         </div>
-                        <img src="${story.image_url || '/gallery/heritage.png'}" class="story-cover" alt="${story.title}">
+                        <img src="${escapeHTML(story.image_url || '/gallery/heritage.png')}" class="story-cover" alt="${escapeHTML(story.title)}">
                         <div class="story-content">
-                            ${story.content}
+                            ${escapeHTML(story.content).replace(/\n/g, '<br>')}
                         </div>
                         
                         <div style="margin-top: 50px; padding: 25px; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 16px; display: flex; flex-direction: column; gap: 10px;">
                             <h3 style="margin-top:0; color: #10b981; font-weight: 700; font-size: 1.2rem;">Informasi Cerita</h3>
-                            ${story.penulis ? `<div style="color: rgba(255,255,255,0.8);"><strong>Narator / Penulis:</strong> ${story.penulis} ${story.instagram ? `<a href="https://instagram.com/${story.instagram}" target="_blank" style="color: #10b981; text-decoration: none; margin-left: 5px;"><i class="fab fa-instagram"></i> @${story.instagram}</a>` : ''}</div>` : ''}
-                            ${story.asal ? `<div style="color: rgba(255,255,255,0.8);"><strong>Asal Cerita:</strong> ${story.asal}</div>` : ''}
+                            ${story.penulis ? `<div style="color: rgba(255,255,255,0.8);"><strong>Narator / Penulis:</strong> ${escapeHTML(story.penulis)} ${story.instagram ? `<a href="https://instagram.com/${escapeHTML(story.instagram)}" target="_blank" style="color: #10b981; text-decoration: none; margin-left: 5px;"><i class="fab fa-instagram"></i> @${escapeHTML(story.instagram)}</a>` : ''}</div>` : ''}
+                            ${story.asal ? `<div style="color: rgba(255,255,255,0.8);"><strong>Asal Cerita:</strong> ${escapeHTML(story.asal)}</div>` : ''}
                         </div>
 
                         <div style="margin-top: 50px; padding: 30px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(6, 78, 59, 0.15)); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 20px; text-align: center;">
