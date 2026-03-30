@@ -9,6 +9,25 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Security Helper: Validate input for suspicious scripts or symbols
+function validateInput(text) {
+    if (!text) return { valid: true };
+    // Check for suspicious script tags or patterns
+    const scriptPattern = /<script|javascript:|onload=|onerror=|onclick=|onmouseover=|<\/script>|<a\s|href=/gi;
+    if (scriptPattern.test(text)) {
+        return { valid: false, reason: "Input mengandung script atau link mencurigakan!" };
+    }
+    
+    // Check for strange symbols that don't belong in a dictionary (allow common punc)
+    // Avoid characters like: < > [ ] { } \ / | ~ `
+    const restrictedPattern = /[<>\[\]{}\\|~`]/g;
+    if (restrictedPattern.test(text)) {
+        return { valid: false, reason: "Input mengandung simbol yang tidak diizinkan!" };
+    }
+    
+    return { valid: true };
+}
+
 module.exports = async (req, res) => {
     // Verifikasi Auth via JWT
     const decoded = authCheck(req);
@@ -141,6 +160,17 @@ module.exports = async (req, res) => {
                 const { jsonData } = payload;
                 if (!Array.isArray(jsonData)) return res.status(400).json({ success: false, message: 'Format JSON invalid.' });
 
+                // Backend Validation for each entry in JSON
+                for (const item of jsonData) {
+                    const fields = { indonesia: item.indonesia, dusun: item.dusun, contoh_id: item.contoh_id, contoh_dusun: item.contoh_dusun };
+                    for (const [key, val] of Object.entries(fields)) {
+                        if (val) {
+                            const validation = validateInput(val);
+                            if (!validation.valid) return res.status(400).json({ success: false, message: `Data JSON mengandung input tidak valid pada field ${key}: ${validation.reason}` });
+                        }
+                    }
+                }
+
                 const { error } = await supabase.from('kamus_utama').insert(jsonData).select();
                 if (error) {
                     return res.status(500).json({ success: false, message: 'Gagal import ke Supabase.', error: error.message });
@@ -150,6 +180,16 @@ module.exports = async (req, res) => {
 
             if (action === 'APPROVE_USULAN') {
                 const { id, indonesia, dusun, contoh_id, contoh_dusun } = payload;
+                
+                // Backend Validation before approval
+                const fieldsToValidate = { indonesia, dusun, contoh_id, contoh_dusun };
+                for (const [key, val] of Object.entries(fieldsToValidate)) {
+                    if (val) {
+                        const validation = validateInput(val);
+                        if (!validation.valid) return res.status(400).json({ success: false, message: `Data usulan tidak valid pada field ${key}: ${validation.reason}` });
+                    }
+                }
+
                 const { error: insertError } = await supabase.from('kamus_utama').insert([
                     { indonesia, dusun, contoh_id, contoh_dusun }
                 ]);
@@ -190,6 +230,15 @@ module.exports = async (req, res) => {
                 const { id, indonesia, dusun, contoh_id, contoh_dusun, audio_url, delete_audio } = payload;
                 if (!id) return res.status(400).json({ success: false, message: 'ID (ID kosa kata) wajib ada untuk update.' });
 
+                // Backend Validation
+                const fieldsToValidate = { indonesia, dusun, contoh_id, contoh_dusun };
+                for (const [key, val] of Object.entries(fieldsToValidate)) {
+                    if (val) {
+                        const validation = validateInput(val);
+                        if (!validation.valid) return res.status(400).json({ success: false, message: `Field ${key}: ${validation.reason}` });
+                    }
+                }
+
                 // Cek data lama jika diupdate/delete audio-nya
                 const { data: oldData } = await supabase.from('kamus_utama').select('audio_url').eq('id', id).single();
                 
@@ -222,6 +271,15 @@ module.exports = async (req, res) => {
 
             if (action === 'ADD_KAMUS_ITEM') {
                 const { indonesia, dusun, contoh_id, contoh_dusun, audio_url } = payload;
+
+                // Backend Validation
+                const fieldsToValidate = { indonesia, dusun, contoh_id, contoh_dusun };
+                for (const [key, val] of Object.entries(fieldsToValidate)) {
+                    if (val) {
+                        const validation = validateInput(val);
+                        if (!validation.valid) return res.status(400).json({ success: false, message: `Field ${key}: ${validation.reason}` });
+                    }
+                }
                 const { error } = await supabase.from('kamus_utama').insert([
                     { indonesia, dusun, contoh_id, contoh_dusun, audio_url }
                 ]);

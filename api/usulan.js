@@ -72,6 +72,34 @@ module.exports = async (req, res) => {
             });
         }
 
+        // Security: Validate input for suspicious scripts or symbols
+        function validateInput(text) {
+            if (!text) return { valid: true };
+            // Check for suspicious script tags or patterns
+            const scriptPattern = /<script|javascript:|onload=|onerror=|onclick=|onmouseover=|<\/script>|<a\s|href=/gi;
+            if (scriptPattern.test(text)) {
+                return { valid: false, reason: "Input mengandung script atau link mencurigakan!" };
+            }
+            
+            // Check for strange symbols that don't belong in a dictionary
+            const restrictedPattern = /[<>\[\]{}\\|~`]/g;
+            if (restrictedPattern.test(text)) {
+                return { valid: false, reason: "Input mengandung simbol yang tidak diizinkan!" };
+            }
+            
+            return { valid: true };
+        }
+
+        const fieldsToValidate = { nama, indonesia, dusun, contoh_id, contoh_dusun };
+        for (const [key, val] of Object.entries(fieldsToValidate)) {
+            if (val) {
+                const validation = validateInput(val);
+                if (!validation.valid) {
+                    return res.status(400).json({ success: false, message: `Input pada field ${key} tidak valid: ${validation.reason}` });
+                }
+            }
+        }
+
         // Security: Escape HTML to avoid XSS before storing
         function escapeHTML(str) {
             if (!str) return "";

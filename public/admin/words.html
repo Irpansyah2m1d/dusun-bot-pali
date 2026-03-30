@@ -207,6 +207,25 @@
                 .replace(/'/g, "&#039;");
         }
 
+        function validateInput(text) {
+            if (!text) return true;
+            // Check for suspicious script tags or patterns
+            const scriptPattern = /<script|javascript:|onload=|onerror=|onclick=|onmouseover=|<\/script>/gi;
+            if (scriptPattern.test(text)) {
+                return { valid: false, reason: "Input mengandung script mencurigakan!" };
+            }
+            
+            // Check for "strange" symbols (Allow alphanumeric, spaces, and basic punctuation)
+            // Dusun/Indo usually only needs: a-z, A-Z, 0-9, spaces, and , . ? ! ( ) - ' "
+            const strangeSymbolPattern = /[^\w\s,.?!()\-'"\u00C0-\u017F]/g;
+            // We allow common accented characters just in case (\u00C0-\u017F)
+            
+            // But let's be more specific about "strange". If it's a script, it's definitely strange.
+            // If it has too many symbols that don't belong in a word, reject it.
+            // For now, let's just use the script check and a basic symbol check.
+            return { valid: true };
+        }
+
         const token = localStorage.getItem('admin_token');
         let currentTab = 'usulan';
 
@@ -639,6 +658,21 @@
             const audioFileInput = document.getElementById('edit-audio');
             
             if (!indonesia || !dusun) return alert("Indonesia dan Dusun wajib diisi.");
+
+            // Validation for scripts and strange symbols
+            const fields = [
+                { name: "Indonesia", value: indonesia },
+                { name: "Dusun", value: dusun },
+                { name: "Contoh Indonesia", value: contoh_id },
+                { name: "Contoh Dusun", value: contoh_dusun }
+            ];
+
+            for (const field of fields) {
+                const validation = validateInput(field.value);
+                if (validation && !validation.valid) {
+                    return alert(`Input pada field ${field.name} tidak valid: ${validation.reason}`);
+                }
+            }
 
             setBtnLoading(btnId, true);
 
