@@ -4,7 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sertifikasi Bahasa Dusun PALI - Dusun Bot</title>
-    <link rel="stylesheet" href="style.css?v=1.5">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .kuis-rules li {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .kuis-rules li i {
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .review-item-card {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="/dusun-bot.png">
@@ -38,10 +65,10 @@
             <p>Uji seberapa luas pengetahuan Anda tentang kosa kata dan makna Bahasa Dusun PALI. Ujian ini terdiri dari <strong>20 Soal Pilihan Ganda</strong> yang diambil secara acak dari database kamus.</p>
             <div class="kuis-rules">
                 <ul>
-                    <li><i class="fas fa-clock"></i> Waktu pengerjaan: <strong>3 Menit</strong> (180 detik)</li>
-                    <li><i class="fas fa-random"></i> Soal diambil acak dari 2.800+ kosa kata.</li>
-                    <li><i class="fas fa-ban"></i> Dilarang keluar atau me-refresh halaman saat ujian berlangsung.</li>
-                    <li><i class="fas fa-certificate"></i> Mendapatkan <strong>Sertifikat Digital</strong> jika nilai di atas 70.</li>
+                    <li><i class="fas fa-clock text-cyan-accent"></i> <div>Waktu pengerjaan: <strong>3 Menit</strong> (180 detik)</div></li>
+                    <li><i class="fas fa-random text-cyan-accent"></i> <div>Soal diambil acak dari 2.800+ kosa kata.</div></li>
+                    <li><i class="fas fa-ban text-cyan-accent"></i> <div>Dilarang keluar atau me-refresh halaman saat ujian berlangsung.</div></li>
+                    <li><i class="fas fa-certificate text-cyan-accent"></i> <div>Mendapatkan <strong>Sertifikat Digital</strong> jika nilai di atas 70.</div></li>
                 </ul>
             </div>
             
@@ -113,35 +140,14 @@
                 <div id="answers-list" style="max-height: 400px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 15px;"></div>
             </div>
 
-            <!-- Ulasan Orang Lain -->
-            <div id="other-reviews-section" style="display: none; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-glass);">
-                <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--emerald-green);"><i class="fas fa-comments"></i> Ulasan Peserta Lainnya</h3>
-                
-                <div class="review-list" style="display: flex; flex-direction: column; gap: 15px;">
-                    <div class="review-item" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <strong style="color: var(--text-white);">Randi R.</strong>
-                            <div style="color: #ffbd2e; font-size: 0.9rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        </div>
-                        <p style="font-size: 0.95rem; color: var(--text-muted);">"Seru banget! Banyak kata-kata jadul yang aku udah lupa tapi ternyata masih ada di kamus ini. Bangga jadi wong PALI!"</p>
-                    </div>
-                    
-                    <div class="review-item" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <strong style="color: var(--text-white);">Siti M.</strong>
-                            <div style="color: #ffbd2e; font-size: 0.9rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
-                        </div>
-                        <p style="font-size: 0.95rem; color: var(--text-muted);">"Ujiannya lumayan menantang ya karena pakai waktu. Tapi bagus buat melestarikan bahasa daerah kita. Mantap Dusun Bot!"</p>
-                    </div>
+            </div>
+        </section>
 
-                    <div class="review-item" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <strong style="color: var(--text-white);">Dian F.</strong>
-                            <div style="color: #ffbd2e; font-size: 0.9rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        </div>
-                        <p style="font-size: 0.95rem; color: var(--text-muted);">"Dapat predikat Pakar! 😂 Boleh lah dipamerin ke temen-temen. Terima kasih dev!"</p>
-                    </div>
-                </div>
+        <!-- Global Reviews Section -->
+        <section id="global-reviews-section" style="display: none; margin-top: 40px; padding: 30px; background: var(--slate-gray); border: 1px solid var(--border-glass); border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+            <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--emerald-green); text-align: center;"><i class="fas fa-comments"></i> Ulasan Peserta</h3>
+            <div class="review-grid" id="global-review-list">
+                <!-- Injected via JS -->
             </div>
         </section>
     </main>
@@ -227,14 +233,14 @@
                     }
                     
                     if (data.reviews && data.reviews.length > 0) {
-                        const reviewList = document.querySelector('.review-list');
+                        document.getElementById('global-reviews-section').style.display = 'block';
+                        const reviewList = document.getElementById('global-review-list');
                         reviewList.innerHTML = ''; // clear mock
                         data.reviews.forEach(item => {
                             const rev = item.metadata;
                             if (!rev || !rev.name) return;
                             const newReview = document.createElement('div');
-                            newReview.className = 'review-item';
-                            newReview.style.cssText = 'background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;';
+                            newReview.className = 'review-item-card fade-in';
                             
                             let starsHtml = '';
                             for(let i=0; i<5; i++) {
@@ -242,11 +248,14 @@
                             }
                             
                             newReview.innerHTML = `
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                    <strong style="color: var(--text-white);">${rev.name}</strong>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <strong style="color: var(--text-white); font-size: 1.05rem;">${rev.name}</strong>
                                     <div style="color: #ffbd2e; font-size: 0.9rem;">${starsHtml}</div>
                                 </div>
-                                <p style="font-size: 0.95rem; color: var(--text-muted);">${rev.comment || ""}</p>
+                                <p style="font-size: 0.95rem; color: var(--text-muted); flex-grow: 1;">"${rev.comment || ""}"</p>
+                                <div style="margin-top: 10px; font-size: 0.8rem; color: var(--emerald-green); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;">
+                                    Skor: ${rev.score || 0}/100
+                                </div>
                             `;
                             reviewList.appendChild(newReview);
                         });
@@ -404,9 +413,8 @@
                 msgEl.innerHTML = `<span style="color:#ef4444">Maaf, Anda belum lulus. Minimal nilai kelulusan adalah 70.</span>`;
             }
             
-            // Show review section and other reviews
+            // Show review section
             document.getElementById('review-section').style.display = 'block';
-            document.getElementById('other-reviews-section').style.display = 'block';
             setupReview();
             setupShare();
             setupAnswersReview();
@@ -526,25 +534,8 @@
 
                 alert("Terima kasih atas ulasan Anda!");
                 
-                // Tampilkan review user langsung di daftar (simulasi agar instan)
-                const reviewList = document.querySelector('.review-list');
-                const newReview = document.createElement('div');
-                newReview.className = 'review-item fade-in';
-                newReview.style.cssText = 'background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 12px; border: 1px solid var(--emerald-green);';
-                
-                let starsHtml = '';
-                for(let i=0; i<5; i++) {
-                    starsHtml += i < currentRating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
-                }
-                
-                newReview.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                        <strong style="color: var(--text-white);">${participantName} (Anda)</strong>
-                        <div style="color: #ffbd2e; font-size: 0.9rem;">${starsHtml}</div>
-                    </div>
-                    <p style="font-size: 0.95rem; color: var(--text-white);">${comment || "Sangat bermanfaat!"}</p>
-                `;
-                reviewList.insertBefore(newReview, reviewList.firstChild);
+                // Reload list from server
+                fetchAnalytics();
 
                 // Hilangkan form
                 document.getElementById('review-section').innerHTML = '<p style="text-align:center; color:var(--emerald-green); font-weight:bold;">Ulasan berhasil dikirim. Terima kasih!</p>';
