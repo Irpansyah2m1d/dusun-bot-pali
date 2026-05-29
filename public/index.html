@@ -255,6 +255,7 @@
                 <h2 style="font-size: 3rem; margin: 20px 0; font-weight: 900; line-height: 1.1;">Seberapa Dusun <br><span class="gradient-text">Nga / Dengo?</span></h2>
                 <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 30px;">Ikuti ujian kompetensi Bahasa Dusun PALI secara interaktif. Hanya butuh waktu 3 menit untuk mengetahui seberapa jauh Anda mengenal bahasa daerah sendiri.</p>
                 <a href="/kuis.html" class="btn-primary" style="display: inline-flex; font-size: 1.1rem; padding: 18px 40px; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);">Mulai Tes Sekarang ➔</a>
+                <p id="kuis-attempt-count" style="margin-top: 15px; font-size: 0.95rem; color: var(--text-muted); display: none;"><i class="fas fa-users" style="color: var(--emerald-green);"></i> Bergabung bersama <span id="kuis-attempt-number">...</span> orang lainnya</p>
             </div>
             <div style="position: absolute; top: -50%; left: -10%; width: 300px; height: 300px; background: var(--emerald-green); filter: blur(100px); opacity: 0.2; z-index: 1;"></div>
             <div style="position: absolute; bottom: -50%; right: -10%; width: 300px; height: 300px; background: var(--cyan-accent); filter: blur(100px); opacity: 0.2; z-index: 1;"></div>
@@ -1680,6 +1681,24 @@
                 if(icon) icon.className = 'fas fa-play';
             };
         }
+
+        // Fetch Kuis Analytics to show attempts on home page
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/kuis-analytics')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.attempts > 0) {
+                        const countEl = document.getElementById('kuis-attempt-count');
+                        if (countEl) {
+                            // Show e.g., 10+, 20+, etc for realism, or just raw count if small
+                            const num = data.attempts >= 10 ? Math.floor(data.attempts / 10) * 10 + '+' : data.attempts;
+                            document.getElementById('kuis-attempt-number').innerHTML = `<strong>${num}</strong>`;
+                            countEl.style.display = 'block';
+                        }
+                    }
+                })
+                .catch(e => console.error(e));
+        });
     </script>
 </body>
 </html>
