@@ -1,0 +1,7 @@
+- [x] Create `api/kuis.js` to generate 20 random multiple-choice questions from `data/kamus.json`.
+- [x] Update `local-server.js` and `vercel.json` to route `/api/kuis`.
+- [x] Create `public/kuis.html` with UI for user name input, quiz interface, and certificate generation.
+- [x] Add 150-second (2.30) timer logic to `kuis.html`.
+- [x] Integrate `html2canvas` and `jspdf` for certificate generation.
+- [x] Update `public/index.html` to add the "Sertifikasi" section in the navigation and homepage body.
+- [x] Update `public/style.css` for the quiz and certificate layout.

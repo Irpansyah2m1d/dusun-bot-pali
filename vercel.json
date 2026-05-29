@@ -56,6 +56,10 @@
     {
       "source": "/api/admin-usulan",
       "destination": "/api/admin-usulan.js"
+    },
+    {
+      "source": "/api/kuis",
+      "destination": "/api/kuis.js"
     }
   ],
   "headers": [

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sertifikasi Bahasa Dusun PALI - Dusun Bot</title>
+    <link rel="stylesheet" href="style.css?v=1.5">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/dusun-bot.png">
+    
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="kuis-page">
+    <div class="glow-orb" id="orb1"></div>
+    <div class="glow-orb" id="orb2"></div>
+
+    <header>
+        <nav>
+            <div class="logo-area" onclick="window.location.href='/'">
+                <img src="/dusun-bot.png" alt="Dusun Bot Logo" class="nav-logo">
+                <span>Dusun Bot <span class="accent">PALI</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="/">Beranda</a>
+                <a href="/kamus.html">Kamus</a>
+                <a href="/kuis.html" class="active">Sertifikasi</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="kuis-main">
+        <!-- 1. Layar Selamat Datang -->
+        <section id="welcome-screen" class="kuis-card active">
+            <h2>Uji Kemahiran Bahasa Dusun PALI</h2>
+            <p>Uji seberapa luas pengetahuan Anda tentang kosa kata dan makna Bahasa Dusun PALI. Ujian ini terdiri dari <strong>20 Soal Pilihan Ganda</strong> yang diambil secara acak dari database kamus.</p>
+            <div class="kuis-rules">
+                <ul>
+                    <li><i class="fas fa-clock"></i> Waktu pengerjaan: <strong>3 Menit</strong> (180 detik)</li>
+                    <li><i class="fas fa-random"></i> Soal diambil acak dari 2.800+ kosa kata.</li>
+                    <li><i class="fas fa-ban"></i> Dilarang keluar atau me-refresh halaman saat ujian berlangsung.</li>
+                    <li><i class="fas fa-certificate"></i> Mendapatkan <strong>Sertifikat Digital</strong> jika nilai di atas 70.</li>
+                </ul>
+            </div>
+            
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Masukkan Nama Lengkap Anda (Untuk Sertifikat)</label>
+                <input type="text" id="peserta-nama" class="form-input" placeholder="Contoh: Irpansyah" required>
+            </div>
+            
+            <button id="btn-start" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 20px;">Mulai Ujian</button>
+            <div id="loading-msg" style="display:none; text-align:center; color:var(--emerald-green); margin-top: 10px;">Menyiapkan soal...</div>
+        </section>
+
+        <!-- 2. Layar Ujian -->
+        <section id="quiz-screen" class="kuis-card">
+            <div class="quiz-header">
+                <div class="quiz-progress">Soal <span id="current-q-num">1</span> dari 20</div>
+                <div class="quiz-timer" id="timer-display">03:00</div>
+            </div>
+            
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="quiz-progress-bar"></div>
+            </div>
+
+            <div class="question-container">
+                <h3 id="question-text">Memuat pertanyaan...</h3>
+                <div class="options-container" id="options-container">
+                    <!-- Options injected via JS -->
+                </div>
+            </div>
+
+            <button id="btn-next" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 20px;" disabled>Pilih Jawaban Dulu</button>
+        </section>
+
+        <!-- 3. Layar Hasil -->
+        <section id="result-screen" class="kuis-card">
+            <h2>Hasil Ujian</h2>
+            <div class="result-score">
+                <span id="final-score">0</span>
+                <div class="score-label">Nilai Akhir</div>
+            </div>
+            <p id="result-message" style="text-align: center; margin: 15px 0; font-size: 1.1rem;"></p>
+            
+            <div id="cert-action" style="display: none; text-align: center; width: 100%; margin-bottom: 20px;">
+                <button id="btn-download-cert" class="btn-primary" style="display: inline-flex; justify-content: center; margin: 0 auto; min-width: 250px;"><i class="fas fa-download"></i> Unduh Sertifikat PDF</button>
+            </div>
+            
+            <div id="review-section" style="display: none; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-glass);">
+                <h3 style="text-align: center; font-size: 1.2rem; margin-bottom: 10px;">Bagaimana pengalaman ujian ini?</h3>
+                <div class="stars" id="star-rating" style="color: #ffbd2e; font-size: 2rem; cursor: pointer; margin: 10px 0; text-align: center;">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                </div>
+                <textarea id="review-comment" class="form-input" placeholder="Tinggalkan komentar atau saran (opsional)" style="width:100%; height:80px; margin-bottom: 10px; resize: none;"></textarea>
+                <button id="btn-submit-review" class="btn-primary" style="width: 100%; justify-content: center;">Kirim Ulasan & Selesai</button>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="btn-share-result" class="btn-primary" style="flex: 1; justify-content: center; background-color: var(--cyan-accent); color: var(--slate-black);"><i class="fas fa-share-alt"></i> Bagikan Hasil</button>
+                <button onclick="window.location.reload()" class="btn-secondary" style="flex: 1; justify-content: center;">Coba Lagi</button>
+            </div>
+
+            <!-- Ulasan Orang Lain -->
+            <div id="other-reviews-section" style="display: none; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-glass);">
+                <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--emerald-green);"><i class="fas fa-comments"></i> Ulasan Peserta Lainnya</h3>
+                
+                <div class="review-list" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="review-item" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <strong style="color: var(--text-white);">Randi R.</strong>
+                            <div style="color: #ffbd2e; font-size: 0.9rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        </div>
+                        <p style="font-size: 0.95rem; color: var(--text-muted);">"Seru banget! Banyak kata-kata jadul yang aku udah lupa tapi ternyata masih ada di kamus ini. Bangga jadi wong PALI!"</p>
+                    </div>
+                    
+                    <div class="review-item" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <strong style="color: var(--text-white);">Siti M.</strong>
+                            <div style="color: #ffbd2e; font-size: 0.9rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                        </div>
+                        <p style="font-size: 0.95rem; color: var(--text-muted);">"Ujiannya lumayan menantang ya karena pakai waktu. Tapi bagus buat melestarikan bahasa daerah kita. Mantap Dusun Bot!"</p>
+                    </div>
+
+                    <div class="review-item" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <strong style="color: var(--text-white);">Dian F.</strong>
+                            <div style="color: #ffbd2e; font-size: 0.9rem;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        </div>
+                        <p style="font-size: 0.95rem; color: var(--text-muted);">"Dapat predikat Pakar! 😂 Boleh lah dipamerin ke temen-temen. Terima kasih dev!"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Template Sertifikat (Sembunyi dari UI tapi untuk render) -->
+    <div style="position: absolute; left: -9999px; top: 0;">
+        <div id="certificate-template" class="certificate">
+            <div class="cert-border">
+                <div class="cert-content">
+                    <div class="cert-logos" style="display: flex; justify-content: center; gap: 30px; align-items: center; margin-bottom: 30px;">
+                        <img src="/img/logo_kdai.png" alt="KDAI Logo" style="height: 100px; width: auto; object-fit: contain; margin: 0;">
+                        <img src="/dusun-bot.png" alt="Logo" style="height: 100px; width: auto; object-fit: contain; margin: 0;">
+                    </div>
+                    <h1 class="cert-title">SERTIFIKAT KEMAHIRAN</h1>
+                    <h2 class="cert-subtitle">Bahasa Dusun PALI</h2>
+                    <p class="cert-text">Sertifikat ini diberikan kepada:</p>
+                    <h3 class="cert-name" id="cert-name-text">Nama Peserta</h3>
+                    <p class="cert-text">Telah berhasil lulus Uji Kompetensi Bahasa Dusun PALI (Penukal Abab Lematang Ilir) berbasis AI dengan predikat:</p>
+                    <h2 class="cert-predicate" id="cert-pred-text">SANGAT MAHIR</h2>
+                    <p class="cert-score">Nilai: <span id="cert-score-text">100</span> / 100</p>
+                    
+                    <div class="cert-footer">
+                        <div class="cert-signature">
+                            <p style="font-weight: bold; margin-bottom: 60px;">Penanggung Jawab</p>
+                            <p>Kampung Digital Air Itam</p>
+                        </div>
+                        <div class="cert-date" id="cert-date-text">
+                            Diberikan pada: 1 Januari 2026
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz State
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timerInterval;
+        let timeLeft = 180; // 3 minutes
+        let participantName = "";
+        let isQuizActive = false;
+
+        // Elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const btnStart = document.getElementById('btn-start');
+        const nameInput = document.getElementById('peserta-nama');
+        const loadingMsg = document.getElementById('loading-msg');
+        
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const btnNext = document.getElementById('btn-next');
+        const timerDisplay = document.getElementById('timer-display');
+        const qNumDisplay = document.getElementById('current-q-num');
+        const progressBar = document.getElementById('quiz-progress-bar');
+        
+        let selectedOption = null;
+
+        // Mencegah user keluar
+        window.onbeforeunload = function() {
+            if (isQuizActive) {
+                return "Anda sedang mengerjakan ujian. Yakin ingin keluar?";
+            }
+        };
+
+        btnStart.addEventListener('click', async () => {
+            participantName = nameInput.value.trim();
+            if (!participantName) {
+                alert("Harap masukkan nama lengkap Anda!");
+                return;
+            }
+
+            btnStart.style.display = 'none';
+            loadingMsg.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/kuis');
+                const data = await response.json();
+                
+                if (data.success && data.questions && data.questions.length > 0) {
+                    questions = data.questions;
+                    startQuiz();
+                } else {
+                    alert("Gagal memuat soal dari server. Silakan coba lagi nanti.");
+                    btnStart.style.display = 'flex';
+                    loadingMsg.style.display = 'none';
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan koneksi.");
+                btnStart.style.display = 'flex';
+                loadingMsg.style.display = 'none';
+            }
+        });
+
+        function startQuiz() {
+            isQuizActive = true;
+            welcomeScreen.classList.remove('active');
+            quizScreen.classList.add('active');
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            timeLeft = 180;
+            
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    finishQuiz();
+                }
+            }, 1000);
+            
+            loadQuestion();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (timeLeft <= 30) {
+                timerDisplay.style.color = '#ef4444';
+            }
+        }
+
+        function loadQuestion() {
+            selectedOption = null;
+            btnNext.disabled = true;
+            btnNext.textContent = "Pilih Jawaban Dulu";
+            
+            const q = questions[currentQuestionIndex];
+            qNumDisplay.textContent = currentQuestionIndex + 1;
+            progressBar.style.width = `${((currentQuestionIndex) / 20) * 100}%`;
+            
+            // Format pertanyaan
+            questionText.innerHTML = q.question;
+            
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.textContent = opt;
+                btn.onclick = () => selectOption(btn, opt);
+                optionsContainer.appendChild(btn);
+            });
+            
+            if (currentQuestionIndex === questions.length - 1) {
+                btnNext.textContent = "Selesaikan Ujian";
+            }
+        }
+
+        function selectOption(element, option) {
+            document.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedOption = option;
+            
+            btnNext.disabled = false;
+            btnNext.textContent = currentQuestionIndex === questions.length - 1 ? "Selesaikan Ujian" : "Selanjutnya";
+        }
+
+        btnNext.addEventListener('click', () => {
+            if (!selectedOption) return;
+            
+            if (selectedOption === questions[currentQuestionIndex].answer) {
+                score += 5; // 20 soal * 5 = 100
+            }
+            
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        });
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            isQuizActive = false;
+            
+            quizScreen.classList.remove('active');
+            resultScreen.classList.add('active');
+            
+            document.getElementById('final-score').textContent = score;
+            const msgEl = document.getElementById('result-message');
+            const certAction = document.getElementById('cert-action');
+            
+            if (score >= 70) {
+                msgEl.innerHTML = `<span style="color:var(--emerald-green)">Selamat! Anda LULUS.</span>`;
+                certAction.style.display = 'block';
+                prepareCertificate();
+            } else {
+                msgEl.innerHTML = `<span style="color:#ef4444">Maaf, Anda belum lulus. Minimal nilai kelulusan adalah 70.</span>`;
+            }
+            
+            // Show review section and other reviews
+            document.getElementById('review-section').style.display = 'block';
+            document.getElementById('other-reviews-section').style.display = 'block';
+            setupReview();
+            setupShare();
+        }
+
+        function setupShare() {
+            document.getElementById('btn-share-result').addEventListener('click', async () => {
+                let predicate = "MAHIR";
+                if (score >= 90) predicate = "SANGAT MAHIR (PAKAR)";
+                else if (score >= 80) predicate = "MAHIR";
+                else if (score >= 70) predicate = "CUKUP MAHIR";
+                else predicate = "PEMULA";
+
+                const shareText = `Saya baru saja meraih predikat *${predicate}* dengan nilai ${score}/100 di Uji Kompetensi Bahasa Dusun PALI! 🔥\n\nSeberapa Dusun kamu? Yuk ikuti tesnya sekarang di:`;
+                const shareUrl = window.location.href;
+
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'Sertifikasi Bahasa Dusun PALI',
+                            text: shareText,
+                            url: shareUrl
+                        });
+                    } catch (err) {
+                        console.log('User cancelled share or error:', err);
+                    }
+                } else {
+                    // Fallback to clipboard
+                    try {
+                        await navigator.clipboard.writeText(shareText + " " + shareUrl);
+                        alert("Teks dan Link berhasil disalin! Silakan paste di sosmed Anda.");
+                    } catch (e) {
+                        alert("Gagal menyalin teks.");
+                    }
+                }
+            });
+        }
+
+        function setupReview() {
+            let currentRating = 0;
+            const stars = document.querySelectorAll('#star-rating i');
+            
+            stars.forEach(star => {
+                star.addEventListener('click', (e) => {
+                    currentRating = parseInt(e.target.dataset.rating);
+                    stars.forEach((s, idx) => {
+                        if (idx < currentRating) {
+                            s.classList.remove('far');
+                            s.classList.add('fas');
+                        } else {
+                            s.classList.remove('fas');
+                            s.classList.add('far');
+                        }
+                    });
+                });
+            });
+
+            document.getElementById('btn-submit-review').addEventListener('click', () => {
+                if (currentRating === 0) {
+                    alert("Harap berikan bintang ulasan.");
+                    return;
+                }
+                const comment = document.getElementById('review-comment').value;
+                alert("Terima kasih atas ulasan Anda!");
+                
+                // Tampilkan review user langsung di daftar (simulasi)
+                const reviewList = document.querySelector('.review-list');
+                const newReview = document.createElement('div');
+                newReview.className = 'review-item fade-in';
+                newReview.style.cssText = 'background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 12px; border: 1px solid var(--emerald-green);';
+                
+                let starsHtml = '';
+                for(let i=0; i<5; i++) {
+                    starsHtml += i < currentRating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                }
+                
+                newReview.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <strong style="color: var(--text-white);">${participantName} (Anda)</strong>
+                        <div style="color: #ffbd2e; font-size: 0.9rem;">${starsHtml}</div>
+                    </div>
+                    <p style="font-size: 0.95rem; color: var(--text-white);">${comment || "Sangat bermanfaat!"}</p>
+                `;
+                reviewList.insertBefore(newReview, reviewList.firstChild);
+
+                // Hilangkan form
+                document.getElementById('review-section').innerHTML = '<p style="text-align:center; color:var(--emerald-green); font-weight:bold;">Ulasan berhasil dikirim. Terima kasih!</p>';
+            });
+        }
+
+        function prepareCertificate() {
+            document.getElementById('cert-name-text').textContent = participantName;
+            document.getElementById('cert-score-text').textContent = score;
+            
+            let predicate = "MAHIR";
+            if (score >= 90) predicate = "SANGAT MAHIR (PAKAR)";
+            else if (score >= 80) predicate = "MAHIR";
+            else predicate = "CUKUP MAHIR";
+            
+            document.getElementById('cert-pred-text').textContent = predicate;
+            
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('cert-date-text').textContent = `Diberikan pada: ${today.toLocaleDateString('id-ID', options)}`;
+        }
+
+        document.getElementById('btn-download-cert').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-download-cert');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses PDF...';
+            btn.disabled = true;
+            
+            const certEl = document.getElementById('certificate-template');
+            
+            try {
+                const canvas = await html2canvas(certEl, {
+                    scale: 2,
+                    backgroundColor: '#ffffff'
+                });
+                
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                
+                const { jsPDF } = window.jspdf;
+                // Landscape A4
+                const pdf = new jsPDF('l', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                
+                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`Sertifikat_DusunPALI_${participantName.replace(/\s+/g, '_')}.pdf`);
+                
+            } catch (err) {
+                alert("Terjadi kesalahan saat membuat PDF.");
+                console.error(err);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
