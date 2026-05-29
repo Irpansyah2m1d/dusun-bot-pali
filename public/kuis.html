@@ -205,6 +205,52 @@
             }
         };
 
+        // Fetch existing stats and reviews
+        async function fetchAnalytics() {
+            try {
+                const res = await fetch('/api/kuis-analytics');
+                const data = await res.json();
+                if (data.success) {
+                    if (data.attempts > 0) {
+                        const statsEl = document.createElement('p');
+                        statsEl.style.cssText = 'text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-top: -10px; margin-bottom: 20px;';
+                        statsEl.innerHTML = `<i class="fas fa-fire" style="color:#ffbd2e;"></i> Ujian ini telah dicoba sebanyak <strong>${data.attempts}</strong> kali.`;
+                        document.querySelector('.kuis-rules').insertAdjacentElement('afterend', statsEl);
+                    }
+                    
+                    if (data.reviews && data.reviews.length > 0) {
+                        const reviewList = document.querySelector('.review-list');
+                        reviewList.innerHTML = ''; // clear mock
+                        data.reviews.forEach(item => {
+                            const rev = item.metadata;
+                            if (!rev || !rev.name) return;
+                            const newReview = document.createElement('div');
+                            newReview.className = 'review-item';
+                            newReview.style.cssText = 'background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;';
+                            
+                            let starsHtml = '';
+                            for(let i=0; i<5; i++) {
+                                starsHtml += i < rev.rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                            }
+                            
+                            newReview.innerHTML = `
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <strong style="color: var(--text-white);">${rev.name}</strong>
+                                    <div style="color: #ffbd2e; font-size: 0.9rem;">${starsHtml}</div>
+                                </div>
+                                <p style="font-size: 0.95rem; color: var(--text-muted);">${rev.comment || ""}</p>
+                            `;
+                            reviewList.appendChild(newReview);
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to fetch analytics:', err);
+            }
+        }
+        
+        fetchAnalytics();
+
         btnStart.addEventListener('click', async () => {
             participantName = nameInput.value.trim();
             if (!participantName) {
@@ -252,6 +298,13 @@
                     finishQuiz();
                 }
             }, 1000);
+            
+            // Log attempt
+            fetch('/api/kuis-analytics', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'attempt' })
+            }).catch(e => console.error(e));
             
             loadQuestion();
         }
@@ -393,15 +446,37 @@
                 });
             });
 
-            document.getElementById('btn-submit-review').addEventListener('click', () => {
+            document.getElementById('btn-submit-review').addEventListener('click', async () => {
                 if (currentRating === 0) {
                     alert("Harap berikan bintang ulasan.");
                     return;
                 }
                 const comment = document.getElementById('review-comment').value;
+                
+                document.getElementById('btn-submit-review').disabled = true;
+                document.getElementById('btn-submit-review').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+                
+                try {
+                    await fetch('/api/kuis-analytics', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'review',
+                            metadata: {
+                                name: participantName,
+                                score: score,
+                                rating: currentRating,
+                                comment: comment
+                            }
+                        })
+                    });
+                } catch(e) {
+                    console.error('Error posting review:', e);
+                }
+
                 alert("Terima kasih atas ulasan Anda!");
                 
-                // Tampilkan review user langsung di daftar (simulasi)
+                // Tampilkan review user langsung di daftar (simulasi agar instan)
                 const reviewList = document.querySelector('.review-list');
                 const newReview = document.createElement('div');
                 newReview.className = 'review-item fade-in';

@@ -60,6 +60,10 @@
     {
       "source": "/api/kuis",
       "destination": "/api/kuis.js"
+    },
+    {
+      "source": "/api/kuis-analytics",
+      "destination": "/api/kuis-analytics.js"
     }
   ],
   "headers": [
