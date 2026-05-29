@@ -31,6 +31,31 @@
             display: flex;
             flex-direction: column;
         }
+        .kuis-main {
+            max-width: 1200px !important;
+        }
+        .kuis-layout-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+        }
+        .kuis-left-panel, .kuis-right-panel {
+            width: 100%;
+        }
+        @media (min-width: 992px) {
+            .kuis-layout-wrapper {
+                flex-direction: row;
+                align-items: stretch;
+            }
+            .kuis-left-panel {
+                flex: 1.2;
+            }
+            .kuis-right-panel {
+                flex: 1;
+                margin-top: 0 !important;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -59,7 +84,10 @@
     </header>
 
     <main class="kuis-main">
-        <!-- 1. Layar Selamat Datang -->
+        <div class="kuis-layout-wrapper">
+            <!-- Kolom Kiri: Kuis -->
+            <div class="kuis-left-panel">
+                <!-- 1. Layar Selamat Datang -->
         <section id="welcome-screen" class="kuis-card active">
             <h2>Uji Kemahiran Bahasa Dusun PALI</h2>
             <p>Uji seberapa luas pengetahuan Anda tentang kosa kata dan makna Bahasa Dusun PALI. Ujian ini terdiri dari <strong>20 Soal Pilihan Ganda</strong> yang diambil secara acak dari database kamus.</p>
@@ -142,14 +170,16 @@
 
             </div>
         </section>
+        </div> <!-- End Kolom Kiri -->
 
         <!-- Global Reviews Section -->
-        <section id="global-reviews-section" style="display: none; margin-top: 40px; padding: 30px; background: var(--slate-gray); border: 1px solid var(--border-glass); border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+        <section id="global-reviews-section" class="kuis-right-panel" style="display: none; padding: 30px; background: var(--slate-gray); border: 1px solid var(--border-glass); border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
             <h3 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--emerald-green); text-align: center;"><i class="fas fa-comments"></i> Ulasan Peserta</h3>
             <div class="review-grid" id="global-review-list">
                 <!-- Injected via JS -->
             </div>
         </section>
+        </div> <!-- End Layout Wrapper -->
     </main>
 
     <!-- Template Sertifikat (Sembunyi dari UI tapi untuk render) -->
