@@ -105,6 +105,13 @@
                 <button id="btn-share-result" class="btn-primary" style="flex: 1; justify-content: center; background-color: var(--cyan-accent); color: var(--slate-black);"><i class="fas fa-share-alt"></i> Bagikan Hasil</button>
                 <button onclick="window.location.reload()" class="btn-secondary" style="flex: 1; justify-content: center;">Coba Lagi</button>
             </div>
+            
+            <button id="btn-review-answers" class="btn-secondary" style="width: 100%; justify-content: center; margin-top: 10px;"><i class="fas fa-list-check"></i> Lihat Kunci Jawaban</button>
+
+            <div id="answers-review-section" style="display: none; margin-top: 20px; text-align: left; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid var(--border-glass);">
+                <h3 style="font-size: 1.1rem; margin-bottom: 15px; color: var(--text-white);">Ulasan Jawaban Anda</h3>
+                <div id="answers-list" style="max-height: 400px; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 15px;"></div>
+            </div>
 
             <!-- Ulasan Orang Lain -->
             <div id="other-reviews-section" style="display: none; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-glass);">
@@ -176,9 +183,10 @@
         let currentQuestionIndex = 0;
         let score = 0;
         let timerInterval;
-        let timeLeft = 180; // 3 minutes
+        let selectedOption = null;
         let participantName = "";
         let isQuizActive = false;
+        let userAnswersData = [];
 
         // Elements
         const welcomeScreen = document.getElementById('welcome-screen');
@@ -288,6 +296,7 @@
             currentQuestionIndex = 0;
             score = 0;
             timeLeft = 180;
+            userAnswersData = [];
             
             updateTimerDisplay();
             timerInterval = setInterval(() => {
@@ -356,7 +365,15 @@
         btnNext.addEventListener('click', () => {
             if (!selectedOption) return;
             
-            if (selectedOption === questions[currentQuestionIndex].answer) {
+            const isCorrect = selectedOption === questions[currentQuestionIndex].answer;
+            userAnswersData.push({
+                question: questions[currentQuestionIndex].question,
+                correctAnswer: questions[currentQuestionIndex].answer,
+                userAnswer: selectedOption,
+                isCorrect: isCorrect
+            });
+
+            if (isCorrect) {
                 score += 5; // 20 soal * 5 = 100
             }
             
@@ -392,6 +409,39 @@
             document.getElementById('other-reviews-section').style.display = 'block';
             setupReview();
             setupShare();
+            setupAnswersReview();
+        }
+
+        function setupAnswersReview() {
+            document.getElementById('btn-review-answers').addEventListener('click', () => {
+                const reviewSection = document.getElementById('answers-review-section');
+                const btn = document.getElementById('btn-review-answers');
+                
+                if (reviewSection.style.display === 'none') {
+                    reviewSection.style.display = 'block';
+                    btn.innerHTML = '<i class="fas fa-eye-slash"></i> Sembunyikan Jawaban';
+                    
+                    const listContainer = document.getElementById('answers-list');
+                    listContainer.innerHTML = '';
+                    
+                    userAnswersData.forEach((ans, idx) => {
+                        const item = document.createElement('div');
+                        item.style.cssText = `padding: 10px; border-radius: 8px; border-left: 4px solid ${ans.isCorrect ? '#10b981' : '#ef4444'}; background: rgba(255,255,255,0.02);`;
+                        
+                        item.innerHTML = `
+                            <div style="font-size: 0.9rem; color: var(--text-white); margin-bottom: 5px;"><strong>${idx + 1}.</strong> ${ans.question}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 2px;">
+                                <span><i class="fas ${ans.isCorrect ? 'fa-check text-emerald-green' : 'fa-times text-red-500'}" style="color: ${ans.isCorrect ? '#10b981' : '#ef4444'}; width: 16px;"></i> Jawabanmu: <span style="color: ${ans.isCorrect ? '#10b981' : '#ef4444'};">${ans.userAnswer}</span></span>
+                                ${!ans.isCorrect ? `<span><i class="fas fa-arrow-right text-emerald-green" style="color: #10b981; width: 16px;"></i> Seharusnya: <span style="color: #10b981;">${ans.correctAnswer}</span></span>` : ''}
+                            </div>
+                        `;
+                        listContainer.appendChild(item);
+                    });
+                } else {
+                    reviewSection.style.display = 'none';
+                    btn.innerHTML = '<i class="fas fa-list-check"></i> Lihat Kunci Jawaban';
+                }
+            });
         }
 
         function setupShare() {
