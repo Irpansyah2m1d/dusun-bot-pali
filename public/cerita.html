@@ -194,5 +194,20 @@
             });
         }
     </script>
+
+    <script>
+        // Pencatatan Pengunjung (Visitor Analytics)
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toDateString();
+            if (localStorage.getItem('dusun_last_visit') !== today) {
+                fetch('/api/analytics', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ type: 'visitor' }) 
+                }).catch(e => {});
+                localStorage.setItem('dusun_last_visit', today);
+            }
+        });
+    </script>
 </body>
 </html>
