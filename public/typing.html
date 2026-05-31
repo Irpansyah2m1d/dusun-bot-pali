@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ketik Cepat Bahasa Dusun PALI - Dusun Bot</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .typing-main {
+            max-width: 1000px !important;
+            margin: 0 auto;
+        }
+        .typing-card {
+            background: rgba(16, 24, 39, 0.7);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            backdrop-filter: blur(20px);
+            text-align: center;
+        }
+        
+        .typing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--emerald-green);
+        }
+
+        .words-container {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            line-height: 1.8;
+            height: 140px; /* Approx 3 lines */
+            overflow: hidden;
+            text-align: left;
+            position: relative;
+            user-select: none;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .word {
+            display: inline-block;
+            margin-right: 12px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .word.active {
+            border-bottom: 2px solid var(--cyan-accent);
+        }
+
+        .letter {
+            color: var(--text-muted);
+        }
+
+        .letter.correct {
+            color: var(--text-white);
+        }
+
+        .letter.incorrect {
+            color: #ef4444;
+        }
+
+        .word.error {
+            text-decoration: underline;
+            text-decoration-color: #ef4444;
+        }
+
+        .typing-input {
+            width: 100%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid var(--border-glass);
+            color: var(--text-white);
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .typing-input:focus {
+            border-color: var(--emerald-green);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .typing-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-restart {
+            margin-top: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Results Screen */
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 20px 40px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--emerald-green);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #result-screen {
+            display: none;
+        }
+
+        #test-screen {
+            display: none;
+        }
+
+        /* Leaderboard */
+        .leaderboard-section {
+            margin-top: 40px;
+            text-align: left;
+        }
+        .leaderboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        @media (min-width: 768px) {
+            .leaderboard-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .leaderboard-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .rank-badge {
+            background: var(--emerald-green);
+            color: var(--slate-black);
+            font-weight: 800;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .lb-details {
+            flex-grow: 1;
+        }
+        .lb-name {
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 3px;
+        }
+        .lb-stats {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .lb-time {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            text-align: right;
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/dusun-bot.png">
+</head>
+<body class="kuis-page">
+    <div class="glow-orb" id="orb1"></div>
+    <div class="glow-orb" id="orb2"></div>
+
+    <header>
+        <nav>
+            <div class="logo-area" onclick="window.location.href='/'">
+                <img src="/dusun-bot.png" alt="Dusun Bot Logo" class="nav-logo">
+                <span>Dusun Bot <span class="accent">PALI</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="/">Beranda</a>
+                <a href="/kamus.html">Kamus</a>
+                <a href="/kuis.html">Sertifikasi</a>
+                <a href="/typing.html" class="active">Ketik Cepat</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="typing-main">
+        <!-- Layar Mulai -->
+        <section id="welcome-screen" class="typing-card active">
+            <h2 style="font-size: 2.5rem; margin-bottom: 10px;">Fast Finger <span class="gradient-text">Dusun PALI</span></h2>
+            <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px;">Uji seberapa cepat Anda mengetik kata-kata dalam Bahasa Dusun PALI. Anda memiliki waktu 60 detik.</p>
+            
+            <div style="max-width: 400px; margin: 0 auto 30px; text-align: left;">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Masukkan Nama Anda</label>
+                <input type="text" id="peserta-nama" class="typing-input" style="padding: 15px; font-size: 1.2rem; text-align: left;" placeholder="Contoh: Irpansyah">
+            </div>
+
+            <button id="btn-start" class="btn-primary" style="display: inline-flex; padding: 18px 40px; font-size: 1.2rem;">Mulai Tes (Waktu: 60s)</button>
+            <div id="loading-msg" style="display:none; text-align:center; color:var(--emerald-green); margin-top: 15px;">Menyiapkan kata...</div>
+
+            <div class="leaderboard-section">
+                <h3 style="color: var(--emerald-green); border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;"><i class="fas fa-trophy"></i> Top 30 Tercepat</h3>
+                <div class="leaderboard-grid" id="leaderboard-container">
+                    <div style="color: var(--text-muted); text-align: center; grid-column: 1 / -1; padding: 20px;">Memuat papan peringkat...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layar Tes Mengetik -->
+        <section id="test-screen" class="typing-card">
+            <div class="typing-header">
+                <div class="timer"><i class="fas fa-clock"></i> <span id="time-left">60</span>s</div>
+                <button class="btn-secondary" onclick="resetTest()" style="padding: 8px 16px; font-size: 0.9rem;"><i class="fas fa-redo"></i> Ulang</button>
+            </div>
+
+            <div class="words-container" id="words-container">
+                <!-- Words injected here -->
+            </div>
+
+            <input type="text" id="typing-input" class="typing-input" placeholder="Ketik kata di sini lalu tekan Spasi..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        </section>
+
+        <!-- Layar Hasil -->
+        <section id="result-screen" class="typing-card">
+            <h2 style="font-size: 2.5rem;">Waktu Habis!</h2>
+            <p style="color: var(--text-muted);">Berikut adalah hasil kecepatan mengetik Anda (Words Per Minute).</p>
+            
+            <div class="result-stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="wpm-result">0</div>
+                    <div class="stat-label">WPM</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="accuracy-result">0%</div>
+                    <div class="stat-label">Akurasi</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 30px; justify-content: center; margin-top: 10px; color: var(--text-muted); font-size: 0.9rem;">
+                <div>Keystrokes: <span id="keystrokes-result" style="color: var(--text-white);">0</span> (<span style="color: var(--emerald-green);" id="correct-keys">0</span> | <span style="color: #ef4444;" id="wrong-keys">0</span>)</div>
+                <div>Kata Benar: <span id="correct-words-result" style="color: var(--emerald-green);">0</span></div>
+                <div>Kata Salah: <span id="wrong-words-result" style="color: #ef4444;">0</span></div>
+            </div>
+            
+            <button class="btn-primary btn-restart" onclick="resetTest()" style="padding: 16px 40px; font-size: 1.1rem;"><i class="fas fa-redo"></i> Coba Lagi</button>
+            <button class="btn-secondary btn-restart" onclick="shareResult()" style="padding: 16px 40px; font-size: 1.1rem;"><i class="fas fa-share-alt"></i> Bagikan</button>
+        </section>
+    </main>
+
+    <script>
+        // State
+        let words = [];
+        let timeTotal = 60;
+        let timeLeft = timeTotal;
+        let timerInterval = null;
+        let isPlaying = false;
+        
+        let currentWordIndex = 0;
+        let currentLetterIndex = 0;
+        
+        // Stats
+        let correctKeystrokes = 0;
+        let wrongKeystrokes = 0;
+        let totalKeystrokes = 0;
+        let correctWords = 0;
+        let wrongWords = 0;
+
+        // Elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const testScreen = document.getElementById('test-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const btnStart = document.getElementById('btn-start');
+        const loadingMsg = document.getElementById('loading-msg');
+        
+        const wordsContainer = document.getElementById('words-container');
+        const typingInput = document.getElementById('typing-input');
+        const timeDisplay = document.getElementById('time-left');
+        const pesertaNamaInput = document.getElementById('peserta-nama');
+
+        // Restore name if exists
+        if (localStorage.getItem('peserta_nama')) {
+            pesertaNamaInput.value = localStorage.getItem('peserta_nama');
+        }
+
+        // Fetch Leaderboard
+        async function fetchLeaderboard() {
+            try {
+                const res = await fetch('/api/typing-analytics');
+                const data = await res.json();
+                if (data.success) {
+                    renderLeaderboard(data.leaderboard);
+                }
+            } catch (err) {
+                console.error('Failed to load leaderboard', err);
+            }
+        }
+
+        function timeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            if (seconds < 60) return `${seconds} dtk lalu`;
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes} mnt lalu`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} jam lalu`;
+            const days = Math.floor(hours / 24);
+            return `${days} hari lalu`;
+        }
+
+        function renderLeaderboard(list) {
+            const container = document.getElementById('leaderboard-container');
+            container.innerHTML = '';
+            
+            if (!list || list.length === 0) {
+                container.innerHTML = '<div style="color: var(--text-muted); text-align: center; grid-column: 1 / -1; padding: 20px;">Belum ada skor yang tersimpan. Jadilah yang pertama!</div>';
+                return;
+            }
+
+            list.forEach((item, idx) => {
+                const badgeColor = idx === 0 ? '#fbbf24' : (idx === 1 ? '#94a3b8' : (idx === 2 ? '#b45309' : 'var(--emerald-green)'));
+                const badgeTextCol = idx <= 2 ? '#fff' : 'var(--slate-black)';
+                
+                const el = document.createElement('div');
+                el.className = 'leaderboard-item';
+                el.innerHTML = `
+                    <div class="rank-badge" style="background: ${badgeColor}; color: ${badgeTextCol};">${idx + 1}</div>
+                    <div class="lb-details">
+                        <div class="lb-name">${escapeHTML(item.name)}</div>
+                        <div class="lb-stats"><b>${item.wpm} WPM</b> • Akurasi: ${item.accuracy}%</div>
+                    </div>
+                    <div class="lb-time">${timeAgo(item.created_at)}</div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        fetchLeaderboard();
+
+        // Helper
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Fetch words
+        btnStart.addEventListener('click', async () => {
+            const nama = pesertaNamaInput.value.trim();
+            if (!nama) {
+                alert('Silakan masukkan nama Anda terlebih dahulu!');
+                pesertaNamaInput.focus();
+                return;
+            }
+            
+            localStorage.setItem('peserta_nama', nama);
+            btnStart.style.display = 'none';
+            loadingMsg.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/typing');
+                const data = await response.json();
+                
+                if (data.success && data.words && data.words.length > 0) {
+                    words = data.words;
+                    initTest();
+                } else {
+                    alert("Gagal memuat kata dari server.");
+                    btnStart.style.display = 'inline-flex';
+                    loadingMsg.style.display = 'none';
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan koneksi.");
+                btnStart.style.display = 'inline-flex';
+                loadingMsg.style.display = 'none';
+            }
+        });
+
+        function initTest() {
+            welcomeScreen.style.display = 'none';
+            resultScreen.style.display = 'none';
+            testScreen.style.display = 'block';
+            
+            // Reset Stats
+            timeLeft = timeTotal;
+            isPlaying = false;
+            currentWordIndex = 0;
+            currentLetterIndex = 0;
+            correctKeystrokes = 0;
+            wrongKeystrokes = 0;
+            totalKeystrokes = 0;
+            correctWords = 0;
+            wrongWords = 0;
+            
+            timeDisplay.textContent = timeLeft;
+            timeDisplay.style.color = 'var(--emerald-green)';
+            typingInput.value = '';
+            typingInput.disabled = false;
+            
+            renderWords();
+            typingInput.focus();
+        }
+
+        async function resetTest() {
+            clearInterval(timerInterval);
+            
+            // Re-fetch to get new random words
+            testScreen.style.display = 'none';
+            resultScreen.style.display = 'none';
+            welcomeScreen.style.display = 'block';
+            
+            btnStart.style.display = 'inline-flex';
+            loadingMsg.style.display = 'none';
+        }
+
+        function renderWords() {
+            wordsContainer.innerHTML = '';
+            words.forEach((word, wordIdx) => {
+                const wordEl = document.createElement('div');
+                wordEl.className = 'word';
+                if (wordIdx === 0) wordEl.classList.add('active');
+                
+                // Split into letters
+                const letters = word.split('');
+                letters.forEach(char => {
+                    const charEl = document.createElement('span');
+                    charEl.className = 'letter';
+                    charEl.textContent = char;
+                    wordEl.appendChild(charEl);
+                });
+                
+                wordsContainer.appendChild(wordEl);
+            });
+        }
+
+        function startGame() {
+            isPlaying = true;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timeDisplay.textContent = timeLeft;
+                
+                if (timeLeft <= 10) {
+                    timeDisplay.style.color = '#ef4444';
+                }
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            isPlaying = false;
+            typingInput.disabled = true;
+            
+            testScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+            
+            // Calculate WPM: (correct keystrokes / 5) / (time in mins)
+            const timeInMins = timeTotal / 60;
+            const wpm = Math.round((correctKeystrokes / 5) / timeInMins);
+            
+            // Accuracy
+            const accuracy = totalKeystrokes > 0 ? Math.round((correctKeystrokes / totalKeystrokes) * 100) : 0;
+            
+            document.getElementById('wpm-result').textContent = wpm;
+            document.getElementById('accuracy-result').textContent = accuracy + '%';
+            document.getElementById('keystrokes-result').textContent = totalKeystrokes;
+            document.getElementById('correct-keys').textContent = correctKeystrokes;
+            document.getElementById('wrong-keys').textContent = wrongKeystrokes;
+            document.getElementById('correct-words-result').textContent = correctWords;
+            document.getElementById('wrong-words-result').textContent = wrongWords;
+            
+            // Simpan Skor
+            saveScore(wpm, accuracy);
+        }
+
+        async function saveScore(wpm, accuracy) {
+            const nama = pesertaNamaInput.value.trim() || 'Anonim';
+            try {
+                await fetch('/api/typing-analytics', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'save_score',
+                        metadata: { name: nama, wpm, accuracy }
+                    })
+                });
+                // Update leaderboard in background
+                fetchLeaderboard();
+            } catch (err) {
+                console.error('Gagal menyimpan skor:', err);
+            }
+        }
+
+        // Input Handling
+        typingInput.addEventListener('input', (e) => {
+            if (!isPlaying && timeLeft === timeTotal) {
+                startGame();
+            }
+            
+            const typedText = typingInput.value;
+            const wordElements = document.querySelectorAll('.word');
+            const currentWordEl = wordElements[currentWordIndex];
+            const letterElements = currentWordEl.querySelectorAll('.letter');
+            
+            // If user typed space, move to next word
+            if (typedText.endsWith(' ')) {
+                const typedWord = typedText.trim();
+                const expectedWord = words[currentWordIndex];
+                
+                if (typedWord === expectedWord) {
+                    correctWords++;
+                } else {
+                    wrongWords++;
+                    currentWordEl.classList.add('error');
+                }
+                
+                // Add space to keystrokes
+                totalKeystrokes++;
+                correctKeystrokes++; // count space as correct if they finished the word (simplified)
+
+                currentWordEl.classList.remove('active');
+                currentWordIndex++;
+                
+                // End if out of words
+                if (currentWordIndex >= words.length) {
+                    endGame();
+                    return;
+                }
+                
+                const nextWordEl = wordElements[currentWordIndex];
+                nextWordEl.classList.add('active');
+                
+                // Scroll container if needed
+                if (nextWordEl.offsetTop > wordsContainer.scrollTop + 50) {
+                    wordsContainer.scrollTop = nextWordEl.offsetTop - 20;
+                }
+                
+                typingInput.value = '';
+                return;
+            }
+            
+            // Live validation of current word
+            totalKeystrokes++;
+            const expectedWord = words[currentWordIndex];
+            
+            // Reset all letter classes for this word
+            letterElements.forEach(el => {
+                el.classList.remove('correct', 'incorrect');
+            });
+            
+            for (let i = 0; i < typedText.length; i++) {
+                if (i < expectedWord.length) {
+                    if (typedText[i] === expectedWord[i]) {
+                        letterElements[i].classList.add('correct');
+                        if (i === typedText.length - 1) correctKeystrokes++;
+                    } else {
+                        letterElements[i].classList.add('incorrect');
+                        if (i === typedText.length - 1) wrongKeystrokes++;
+                    }
+                } else {
+                    // Typed more characters than word length
+                    if (i === typedText.length - 1) wrongKeystrokes++;
+                }
+            }
+        });
+
+        // Prevent pasting
+        typingInput.addEventListener('paste', e => e.preventDefault());
+
+        async function shareResult() {
+            const wpm = document.getElementById('wpm-result').textContent;
+            const acc = document.getElementById('accuracy-result').textContent;
+            
+            let predicate = "MAHIR";
+            if (wpm >= 60) predicate = "SANGAT MAHIR (PAKAR)";
+            else if (wpm >= 40) predicate = "MAHIR";
+            else if (wpm >= 20) predicate = "CUKUP MAHIR";
+            else predicate = "PEMULA";
+
+            const shareText = `Saya berhasil mengetik kosa kata Dusun PALI dengan kecepatan *${wpm} WPM* dan akurasi *${acc}*! (Tingkat: ${predicate}) 🔥\n\nYuk adu cepat ketik kata Dusun di:`;
+            const shareUrl = window.location.href;
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Ketik Cepat Dusun PALI',
+                        text: shareText,
+                        url: shareUrl
+                    });
+                } catch (err) {
+                    console.log('User cancelled share or error:', err);
+                }
+            } else {
+                try {
+                    await navigator.clipboard.writeText(shareText + " " + shareUrl);
+                    alert("Teks dan Link berhasil disalin! Silakan paste di sosmed Anda.");
+                } catch (e) {
+                    alert("Gagal menyalin teks.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

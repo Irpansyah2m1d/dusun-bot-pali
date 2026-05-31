@@ -208,7 +208,7 @@
         }
 
         function validateInput(text) {
-            if (!text) return true;
+            if (!text) return { valid: true };
             // Check for suspicious script tags or patterns
             const scriptPattern = /<script|javascript:|onload=|onerror=|onclick=|onmouseover=|<\/script>/gi;
             if (scriptPattern.test(text)) {

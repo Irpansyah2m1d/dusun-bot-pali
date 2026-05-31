@@ -64,6 +64,14 @@
     {
       "source": "/api/kuis-analytics",
       "destination": "/api/kuis-analytics.js"
+    },
+    {
+      "source": "/api/typing-analytics",
+      "destination": "/api/typing-analytics.js"
+    },
+    {
+      "source": "/api/typing",
+      "destination": "/api/typing.js"
     }
   ],
   "headers": [
