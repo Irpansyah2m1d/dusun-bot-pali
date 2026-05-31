@@ -59,19 +59,19 @@
     },
     {
       "source": "/api/kuis",
-      "destination": "/api/kuis.js"
+      "destination": "/api/games.js?route=kuis"
     },
     {
       "source": "/api/kuis-analytics",
-      "destination": "/api/kuis-analytics.js"
+      "destination": "/api/games.js?route=kuis-analytics"
     },
     {
       "source": "/api/typing-analytics",
-      "destination": "/api/typing-analytics.js"
+      "destination": "/api/games.js?route=typing-analytics"
     },
     {
       "source": "/api/typing",
-      "destination": "/api/typing.js"
+      "destination": "/api/games.js?route=typing"
     }
   ],
   "headers": [
@@ -102,6 +102,10 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob: https://ui-avatars.com; connect-src 'self' *; media-src 'self' * blob: data:;"
         }
       ]
     },
