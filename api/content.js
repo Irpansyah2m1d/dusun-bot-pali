@@ -103,5 +103,36 @@ module.exports = async (req, res) => {
         }
     }
 
+    // 4. Komentar
+    if (type === 'komentar') {
+        if (req.method === 'GET') {
+            const { slug } = req.query;
+            if (!slug) return res.status(400).json({ success: false, message: 'Slug diperlukan.' });
+            
+            const { data, error } = await supabase
+                .from('komentar_cerita')
+                .select('*')
+                .eq('cerita_slug', slug)
+                .order('created_at', { ascending: true });
+                
+            if (error) return res.status(500).json({ success: false, message: error.message });
+            return res.status(200).json({ success: true, data: data || [] });
+        }
+        
+        if (req.method === 'POST') {
+            const { cerita_slug, nama, komentar } = req.body;
+            if (!cerita_slug || !nama || !komentar) {
+                return res.status(400).json({ success: false, message: 'Data tidak lengkap.' });
+            }
+            
+            const { error } = await supabase
+                .from('komentar_cerita')
+                .insert([{ cerita_slug, nama, komentar, created_at: new Date().toISOString() }]);
+                
+            if (error) return res.status(500).json({ success: false, message: error.message });
+            return res.status(200).json({ success: true, message: 'Komentar berhasil ditambahkan.' });
+        }
+    }
+
     return res.status(405).json({ success: false, message: 'Method Not Allowed' });
 };
