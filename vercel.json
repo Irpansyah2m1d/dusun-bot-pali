@@ -14,6 +14,10 @@
       "destination": "/api/content.js?type=cerita-rakyat"
     },
     {
+      "source": "/api/komentar",
+      "destination": "/api/content.js?type=komentar"
+    },
+    {
       "source": "/api/nasehat",
       "destination": "/api/content.js?type=nasehat"
     },

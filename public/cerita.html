@@ -29,6 +29,47 @@
         
         .loading-state { color: rgba(255,255,255,0.5); font-style: italic; }
 
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .recommendation-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .recommendation-card:hover {
+            border-color: #10b981;
+            transform: translateY(-2px);
+        }
+        .rec-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+        .rec-content {
+            padding: 10px 15px;
+            flex: 1;
+        }
+        .rec-title {
+            font-size: 0.95rem;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+        .rec-cat {
+            font-size: 0.75rem;
+            color: #10b981;
+        }
+
         @media (max-width: 768px) {
             .story-title { font-size: 2rem; }
             .story-page { padding-top: 100px; }
@@ -71,7 +112,6 @@
         <!-- Back to Top -->
         <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">↑</button>
     </main>
-    </main>
 
     <script>
         // Security Helper: Escape HTML to prevent XSS
@@ -112,7 +152,7 @@
                         </div>
                         <img src="${escapeHTML(story.image_url || '/gallery/heritage.png')}" class="story-cover" alt="${escapeHTML(story.title)}">
                         <div class="story-content">
-                            ${story.content.replace(/\n/g, '<br>')}
+                            ${story.content}
                         </div>
                         
                         <div style="margin-top: 50px; padding: 25px; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 16px; display: flex; flex-direction: column; gap: 10px;">
@@ -152,6 +192,11 @@
                                 <button type="submit" id="btn-submit-comment" class="btn-primary" style="padding: 12px; border-radius: 8px; border: none; cursor: pointer; justify-content: center;">Kirim Komentar</button>
                             </form>
                         </div>
+                        
+                        <div id="story-sidebar" style="margin-top: 50px; display: none;">
+                            <h3 style="color: #10b981; font-size: 1.2rem; margin-top: 0; margin-bottom: 20px;"><i class="fas fa-book-open"></i> Cerita Lainnya</h3>
+                            <div id="recommendation-list" class="recommendations-grid">Memuat...</div>
+                        </div>
                     `;
 
                     // Handle Meta Tags
@@ -164,6 +209,10 @@
                     // Load comments
                     loadComments(slug);
 
+                    // Load recommendations
+                    document.getElementById('story-sidebar').style.display = 'block';
+                    loadRecommendations(slug);
+
                 } else {
                     container.innerHTML = "<div style='text-align:center;'><h2>Maaf, cerita tidak ditemukan.</h2><p><a href='/' style='color:#10b981;'>Kembali ke Beranda</a></p></div>";
                 }
@@ -172,10 +221,14 @@
             }
         });
 
-        mobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-            navLinks.classList.toggle('active');
-        });
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        if (mobileMenu && navLinks) {
+            mobileMenu.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+        }
 
         // Visitor Tracking & Back to Top Logic
         document.addEventListener('DOMContentLoaded', () => {
@@ -209,10 +262,40 @@
             });
         }
 
+        async function loadRecommendations(currentSlug) {
+            const list = document.getElementById('recommendation-list');
+            try {
+                const res = await fetch('/api/cerita-rakyat');
+                const result = await res.json();
+                if (result.success && result.data.length > 0) {
+                    // Filter out current story and take 4 random stories
+                    const others = result.data.filter(s => s.slug !== currentSlug);
+                    const shuffled = others.sort(() => 0.5 - Math.random());
+                    const recommendations = shuffled.slice(0, 4);
+
+                    if (recommendations.length > 0) {
+                        list.innerHTML = recommendations.map(s => `
+                            <div class="recommendation-card" onclick="window.location.href='/cerita.html?slug=${escapeHTML(s.slug || s.id)}'">
+                                <img src="${escapeHTML(s.image_url || '/gallery/heritage.png')}" class="rec-img" alt="${escapeHTML(s.title)}">
+                                <div class="rec-content">
+                                    <div class="rec-title">${escapeHTML(s.title)}</div>
+                                    <div class="rec-cat">${escapeHTML(s.category || 'Cerita Rakyat')}</div>
+                                </div>
+                            </div>
+                        `).join('');
+                    } else {
+                        list.innerHTML = '<div style="color: rgba(255,255,255,0.5); font-style: italic; font-size: 0.9rem;">Belum ada cerita lainnya.</div>';
+                    }
+                }
+            } catch (err) {
+                list.innerHTML = '<div style="color: rgba(255,255,255,0.5); font-style: italic; font-size: 0.9rem;">Gagal memuat rekomendasi.</div>';
+            }
+        }
+
         async function loadComments(slug) {
             const list = document.getElementById('comments-list');
             try {
-                const res = await fetch(`/api/content?type=komentar&slug=${encodeURIComponent(slug)}`);
+                const res = await fetch(`/api/komentar?slug=${encodeURIComponent(slug)}`);
                 const result = await res.json();
                 if (result.success && result.data.length > 0) {
                     list.innerHTML = result.data.map(c => `
@@ -244,7 +327,7 @@
             btn.disabled = true;
             
             try {
-                const res = await fetch('/api/content?type=komentar', {
+                const res = await fetch('/api/komentar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ cerita_slug: slug, nama, komentar })
