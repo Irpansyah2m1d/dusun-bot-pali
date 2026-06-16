@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamus Digital Bahasa Dusun PALI - 2800+ Kosa Kata | Dusun Bot</title>
+    <title>Kamus Digital Bahasa Dusun PALI - 2800+ Kosa Kata | Dusun Bot PALI</title>
     <meta name="description" content="Kamus digital Bahasa Dusun PALI (Penukal Abab Lematang Ilir) terlengkap dengan 2800+ kosa kata. Terjemahkan Indonesia ke Dusun PALI dan sebaliknya secara gratis dan interaktif.">
     <meta name="keywords" content="Kamus Bahasa Dusun, PALI, Kamus Dusun PALI, Bahasa Daerah Sumatera Selatan, Terjemahan Bahasa Dusun, Kosa Kata Dusun, Penukal Abab Lematang Ilir">
     <meta name="author" content="Irpansyah">
@@ -21,6 +21,8 @@
     <meta property="og:image" content="https://dusun-bot-pali.vercel.app/dusun-bot.png">
     <meta property="og:locale" content="id_ID">
     <meta property="og:site_name" content="Dusun Bot PALI">
+    <meta name="application-name" content="Dusun Bot PALI">
+    <meta name="apple-mobile-web-app-title" content="Dusun Bot PALI">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
@@ -28,7 +30,7 @@
     <meta name="twitter:description" content="Telusuri 2800+ kosa kata Bahasa Dusun PALI interaktif.">
     <meta name="twitter:image" content="https://dusun-bot-pali.vercel.app/dusun-bot.png">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,9 +173,12 @@
                 <button class="toggle-btn" data-dir="dusun-to-id">PALI ➔ ID</button>
             </div>
 
-            <div class="search-box">
-                <input type="text" id="kamus-input" placeholder="Masukkan kata Bahasa Indonesia...">
-                <div class="search-icon">🔍</div>
+            <div class="search-box" style="position: relative; display: flex; align-items: center;">
+                <input type="text" id="kamus-input" placeholder="Masukkan kata Bahasa Indonesia..." style="padding-right: 80px; width: 100%;">
+                <div style="position: absolute; right: 20px; display: flex; align-items: center; gap: 12px; pointer-events: auto; z-index: 10;">
+                    <button type="button" id="btn-voice-search" title="Cari dengan Suara" style="background: none; border: none; color: var(--emerald-green); cursor: pointer; font-size: 1.25rem; display: flex; align-items: center; padding: 4px; transition: transform 0.2s; outline: none;"><i class="fas fa-microphone"></i></button>
+                    <div class="search-icon" style="position: static; transform: none; display: flex; align-items: center; font-size: 1.2rem; color: var(--text-muted); cursor: default; pointer-events: none;">🔍</div>
+                </div>
             </div>
             
             <div id="total-stats" class="total-stats">Ditemukan 0 hasil</div>
@@ -275,6 +280,57 @@
 
         const kamusInput = document.getElementById('kamus-input');
         const kamusResult = document.getElementById('kamus-result');
+
+        // Voice Search Logic (Web Speech API)
+        const voiceBtn = document.getElementById('btn-voice-search');
+        if (voiceBtn) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'id-ID';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                voiceBtn.addEventListener('click', () => {
+                    if (voiceBtn.classList.contains('recording')) {
+                        recognition.stop();
+                    } else {
+                        voiceBtn.classList.add('recording');
+                        voiceBtn.style.color = '#ef4444';
+                        voiceBtn.style.transform = 'scale(1.2)';
+                        voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                        recognition.start();
+                    }
+                });
+
+                recognition.onresult = (event) => {
+                    const speechToText = event.results[0][0].transcript;
+                    kamusInput.value = speechToText;
+                    kamusInput.dispatchEvent(new Event('input', { bubbles: true }));
+                };
+
+                recognition.onspeechend = () => {
+                    recognition.stop();
+                };
+
+                recognition.onend = () => {
+                    voiceBtn.classList.remove('recording');
+                    voiceBtn.style.color = 'var(--emerald-green)';
+                    voiceBtn.style.transform = 'scale(1)';
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                };
+
+                recognition.onerror = (event) => {
+                    console.error("Speech recognition error:", event.error);
+                    voiceBtn.classList.remove('recording');
+                    voiceBtn.style.color = 'var(--emerald-green)';
+                    voiceBtn.style.transform = 'scale(1)';
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                };
+            } else {
+                voiceBtn.style.display = 'none';
+            }
+        }
         const totalStats = document.getElementById('total-stats');
         const toggleBtns = document.querySelectorAll('.toggle-btn');
         let currentDir = 'id-to-dusun';

@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pustaka Digital PALI | Cerita Rakyat & Sejarah</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Pustaka Digital PALI | Cerita Rakyat & Sejarah - Dusun Bot PALI</title>
+    <meta property="og:site_name" content="Dusun Bot PALI">
+    <meta name="application-name" content="Dusun Bot PALI">
+    <meta name="apple-mobile-web-app-title" content="Dusun Bot PALI">
+    <link rel="stylesheet" href="style.css?v=1.5">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/png" href="/dusun-bot.png">
@@ -112,7 +115,7 @@
             grid.innerHTML = filtered.map((item, idx) => `
                 <article class="folklore-card" id="card-${idx}" style="position:relative; cursor:pointer;">
                     <div class="category-badge">${escapeHTML(item.category || 'Sejarah')}</div>
-                    <img src="${escapeHTML(item.image_url || '/gallery/heritage.png')}" class="folklore-img" alt="${escapeHTML(item.title)}">
+                    <img src="${escapeHTML(item.image_url || '/gallery/heritage.png')}" class="folklore-img" alt="${escapeHTML(item.title)}" loading="lazy">
                     <div class="folklore-card-body">
                         <h3 style="font-size: 1.1rem; margin-bottom: 5px;">${escapeHTML(item.title)}</h3>
                         <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">

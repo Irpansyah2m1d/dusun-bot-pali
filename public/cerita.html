@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cerita Rakyat PALI - Dusun Bot PALI</title>
     <link rel="icon" type="image/png" href="/dusun-bot.png">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.5">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <meta property="og:title" content="Cerita Rakyat PALI - Dusun Bot PALI" id="og-title">
     <meta property="og:description" content="Baca cerita rakyat dan sejarah dari Kabupaten PALI." id="og-desc">
     <meta property="og:image" content="/gallery/heritage.png" id="og-image">
     <meta property="og:url" content="" id="og-url">
     <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Dusun Bot PALI">
+    <meta name="application-name" content="Dusun Bot PALI">
+    <meta name="apple-mobile-web-app-title" content="Dusun Bot PALI">
     <meta name="twitter:card" content="summary_large_image">
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: https://ui-avatars.com; connect-src 'self'; media-src 'self' * blob: data:;">
@@ -276,7 +279,7 @@
                     if (recommendations.length > 0) {
                         list.innerHTML = recommendations.map(s => `
                             <div class="recommendation-card" onclick="window.location.href='/cerita.html?slug=${escapeHTML(s.slug || s.id)}'">
-                                <img src="${escapeHTML(s.image_url || '/gallery/heritage.png')}" class="rec-img" alt="${escapeHTML(s.title)}">
+                                <img src="${escapeHTML(s.image_url || '/gallery/heritage.png')}" class="rec-img" alt="${escapeHTML(s.title)}" loading="lazy">
                                 <div class="rec-content">
                                     <div class="rec-title">${escapeHTML(s.title)}</div>
                                     <div class="rec-cat">${escapeHTML(s.category || 'Cerita Rakyat')}</div>

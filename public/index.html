@@ -25,6 +25,8 @@
     <meta property="og:image:alt" content="Dusun Bot PALI - Chatbot AI Bahasa Dusun">
     <meta property="og:locale" content="id_ID">
     <meta property="og:site_name" content="Dusun Bot PALI">
+    <meta name="application-name" content="Dusun Bot PALI">
+    <meta name="apple-mobile-web-app-title" content="Dusun Bot PALI">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
@@ -34,10 +36,11 @@
     <meta name="twitter:image" content="https://dusun-bot-pali.vercel.app/dusun-bot.png">
     <meta name="twitter:image:alt" content="Dusun Bot PALI Logo">
 
-    <link rel="stylesheet" href="style.css?v=1.4">
+    <link rel="stylesheet" href="style.css?v=1.5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -203,6 +206,7 @@
                 <div class="wisdom-icon">“</div>
                 <div class="wisdom-text" id="wisdom-text"></div>
                 <div class="wisdom-meaning" id="wisdom-meaning"></div>
+                <button class="btn-primary" id="btn-share-wisdom" onclick="generateWisdomCard()" style="margin: 20px auto 0 auto; display: inline-flex; padding: 10px 20px; font-size: 0.9rem; align-items: center; gap: 8px; border: none; cursor: pointer; border-radius: 12px; background: var(--emerald-green); color: var(--slate-black); font-weight: bold;"><i class="fas fa-image"></i> Bagikan Nasehat</button>
             </div>
         </section>
 
@@ -318,28 +322,28 @@
             <h2 class="section-title">Pesona Budaya PALI</h2>
             <div class="gallery-track">
                 <div class="gallery-item">
-                    <img src="/gallery/heritage.png" alt="Rumah Limas PALI">
+                    <img src="/gallery/heritage.png" alt="Rumah Limas PALI" loading="lazy">
                     <div class="gallery-overlay">Rumah Limas Tradisional</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="/gallery/river.png" alt="Sungai Lematang">
+                    <img src="/gallery/river.png" alt="Sungai Lematang" loading="lazy">
                     <div class="gallery-overlay">Aliran Sungai Lematang</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="/gallery/rubber.png" alt="Perkebunan Karet PALI">
+                    <img src="/gallery/rubber.png" alt="Perkebunan Karet PALI" loading="lazy">
                     <div class="gallery-overlay">Potensi Alam PALI</div>
                 </div>
                 <!-- Duplicate for seamless scroll -->
                 <div class="gallery-item">
-                    <img src="/gallery/heritage.png" alt="Rumah Limas PALI">
+                    <img src="/gallery/heritage.png" alt="Rumah Limas PALI" loading="lazy">
                     <div class="gallery-overlay">Rumah Limas Tradisional</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="/gallery/river.png" alt="Sungai Lematang">
+                    <img src="/gallery/river.png" alt="Sungai Lematang" loading="lazy">
                     <div class="gallery-overlay">Aliran Sungai Lematang</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="/gallery/rubber.png" alt="Perkebunan Karet PALI">
+                    <img src="/gallery/rubber.png" alt="Perkebunan Karet PALI" loading="lazy">
                     <div class="gallery-overlay">Potensi Alam PALI</div>
                 </div>
             </div>
@@ -1070,7 +1074,7 @@
             grid.innerHTML = displayed.map(item => `
                 <article class="folklore-card" onclick="openCerita('${escapeHTML(item.slug || 'detail')}', ${parseInt(item.id)})" style="position:relative;">
                     <div class="category-badge">${escapeHTML(item.category || 'Sejarah')}</div>
-                    <img src="${escapeHTML(item.image_url || '/gallery/heritage.png')}" class="folklore-img" alt="${escapeHTML(item.title)}">
+                    <img src="${escapeHTML(item.image_url || '/gallery/heritage.png')}" class="folklore-img" alt="${escapeHTML(item.title)}" loading="lazy">
                     <div class="folklore-card-body">
                         <h3 style="font-size: 1.1rem; margin-bottom: 5px;">${escapeHTML(item.title)}</h3>
                         <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">
@@ -1594,7 +1598,10 @@
             <div class="wotd-popup-word" id="popup-word"></div>
             <div class="wotd-popup-meaning" id="popup-meaning"></div>
             <div class="wotd-popup-example" id="popup-example"></div>
-            <button class="btn-close-wotd" onclick="closeWotdModal()">Lanjut ke Beranda</button>
+            <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: center; width: 100%;">
+                <button class="btn-primary" id="btn-share-wotd" onclick="generateWotdCard()" style="flex: 1; padding: 12px 20px; border: none; cursor: pointer; border-radius: 10px; font-size: 0.95rem; font-family: inherit; font-weight: bold; display: inline-flex; justify-content: center; align-items: center; gap: 8px; background: var(--emerald-green); color: var(--slate-black);"><i class="fas fa-image"></i> Bagikan</button>
+                <button class="btn-close-wotd" onclick="closeWotdModal()" style="flex: 1; margin: 0; padding: 12px 20px; border-radius: 10px; font-size: 0.95rem;">Lanjut</button>
+            </div>
         </div>
     </div>
 
@@ -1715,6 +1722,92 @@
                 localStorage.setItem('dusun_last_visit', today);
             }
         });
+    </script>
+
+    <!-- Hidden templates for Share Card Generator -->
+    <div style="position: absolute; left: -9999px; top: 0; pointer-events: none;">
+        <div id="wisdom-card-template" style="width: 800px; height: 800px; background: radial-gradient(circle at top left, #0e1a2f, #070d19); padding: 65px; display: flex; flex-direction: column; justify-content: space-between; border: 4px solid #10b981; border-radius: 36px; font-family: 'Outfit', sans-serif; color: white; box-sizing: border-box; position: relative; overflow: hidden;">
+            <div style="position: absolute; top: -150px; left: -150px; width: 400px; height: 400px; background: rgba(16, 185, 129, 0.18); filter: blur(80px); border-radius: 50%;"></div>
+            <div style="position: absolute; bottom: -150px; right: -150px; width: 400px; height: 400px; background: rgba(6, 182, 212, 0.18); filter: blur(80px); border-radius: 50%;"></div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 25px; z-index: 2;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <img src="/dusun-bot.png" style="width: 50px; height: 50px; object-fit: contain;">
+                    <span style="font-weight: 800; font-size: 1.6rem; letter-spacing: 0.5px;">Dusun Bot <span style="color: #10b981;">PALI</span></span>
+                </div>
+                <span style="font-size: 1.1rem; color: #10b981; font-weight: 700; border: 1.5px solid #10b981; padding: 6px 18px; border-radius: 100px; letter-spacing: 1px; text-transform: uppercase;" id="template-card-badge">Nasehat Daerah</span>
+            </div>
+
+            <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px 20px; z-index: 2;">
+                <div style="font-size: 6rem; color: #10b981; line-height: 1; margin-bottom: 10px; font-family: serif; opacity: 0.5;">“</div>
+                <div id="template-card-main-text" style="font-size: 2.8rem; font-weight: 800; line-height: 1.35; color: white; margin-bottom: 30px; word-wrap: break-word; max-width: 100%;">Ayer Tenang, Terus Menghanyutkan</div>
+                <div id="template-card-sub-text" style="font-size: 1.5rem; color: #94a3b8; font-weight: 400; line-height: 1.5; max-width: 90%;">Jangan meremehkan orang yang pendiam, karena mereka biasanya memiliki kekuatan besar.</div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 25px; z-index: 2; font-size: 0.95rem; color: #64748b;">
+                <span>Melestarikan Bahasa, Menghubungkan Teknologi</span>
+                <span style="font-family: 'JetBrains Mono', monospace; color: #06b6d4;">dusun-bot-pali.vercel.app</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts for Card Generation -->
+    <script>
+        async function generateShareCard(badge, mainText, subText, filename) {
+            document.getElementById('template-card-badge').textContent = badge;
+            document.getElementById('template-card-main-text').textContent = mainText;
+            document.getElementById('template-card-sub-text').textContent = subText;
+            
+            await new Promise(r => setTimeout(r, 150));
+            
+            const cardEl = document.getElementById('wisdom-card-template');
+            try {
+                const canvas = await html2canvas(cardEl, {
+                    scale: 2,
+                    backgroundColor: null,
+                    useCORS: true
+                });
+                
+                const imgData = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = filename;
+                link.href = imgData;
+                link.click();
+            } catch (err) {
+                console.error("Gagal membuat gambar kartu share:", err);
+                alert("Gagal men-generate gambar kartu share.");
+            }
+        }
+
+        async function generateWisdomCard() {
+            const btn = document.getElementById('btn-share-wisdom');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            btn.disabled = true;
+            
+            const wisdomText = document.getElementById('wisdom-text').textContent.replace(/"/g, '');
+            const wisdomMeaning = document.getElementById('wisdom-meaning').textContent;
+            
+            await generateShareCard("Nasehat PALI", wisdomText, wisdomMeaning, `Nasehat_PALI_${Date.now()}.png`);
+            
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+        }
+
+        async function generateWotdCard() {
+            const btn = document.getElementById('btn-share-wotd');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>...';
+            btn.disabled = true;
+            
+            const rawWord = document.getElementById('popup-word').textContent.replace('PALI/DSN', '');
+            const rawMeaning = document.getElementById('popup-meaning').textContent.replace('ID', '').replace(/contoh kalimat:.*$/gi, '');
+            
+            await generateShareCard("Kata Hari Ini", rawWord.trim(), rawMeaning.trim(), `Kata_Hari_Ini_${Date.now()}.png`);
+            
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+        }
     </script>
 </body>
 </html>
